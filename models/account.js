@@ -7,8 +7,20 @@ var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
-    username: String,
-    password: String
+    birth: String,
+    gender: String,
+    email: String,
+    phone: String,
+    post: {
+        id: String,
+        time: String,
+        content: String
+    },
+    order: {
+        id: String,
+        time: String,
+        content: String
+    }
 });
 
 Account.plugin(passportLocalMongoose);

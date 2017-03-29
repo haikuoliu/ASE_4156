@@ -37,6 +37,22 @@ app.use('/', routes);
 
 // passport config
 var Account = require('./models/account');
+//
+// var PassportLocalStrategy = require('passport-local');
+//
+// var authStrategy = new PassportLocalStrategy({
+//     usernameField: 'username',
+//     passwordField: 'password'
+// }, function(username, password, done) {
+//     Account.authenticate(username, password, function(error, user){
+//         // You can write any kind of message you'd like.
+//         // The message will be displayed on the next page the user visits.
+//         // We're currently not displaying any success message for logging in.
+//         done(error, user, error ? { message: error.message } : null);
+//     });
+// });
+// passport.use(authStrategy);
+
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
