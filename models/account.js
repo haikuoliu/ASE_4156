@@ -11,16 +11,24 @@ var Account = new Schema({
     gender: String,
     email: String,
     phone: String,
-    post: {
+    petsInfo: [{
+        species: String,
+        birth: String
+    }],
+    centersInfo: [{
+        species: String,
+        birth: String
+    }],
+    post: [{
         id: String,
         time: String,
         content: String
-    },
-    order: {
+    }],
+    order: [{
         id: String,
         time: String,
         content: String
-    }
+    }]
 });
 
 Account.plugin(passportLocalMongoose);
