@@ -132,6 +132,24 @@ router.get('/logout', function(req, res) {
 // })
 
 router.get('/ping', function(req, res){
+    Account.register(new Account({
+        username : "test1",
+        birth : "1992",
+        gender : "male",
+        email : "test1@aa.com",
+        phone : "2312312",
+        petsInfo: [
+            {
+                species: "big dog",
+                birth: "2000"
+            }
+        ],
+        order: [
+            {
+                id: "123",
+                time: "927",
+                content: "first"
+            }]}), "test", function(err, account) {});
     res.status(200).send("pong!");
 });
 

@@ -7,11 +7,14 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var cors = require('cors')
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,22 +40,6 @@ app.use('/', routes);
 
 // passport config
 var Account = require('./models/account');
-//
-// var PassportLocalStrategy = require('passport-local');
-//
-// var authStrategy = new PassportLocalStrategy({
-//     usernameField: 'username',
-//     passwordField: 'password'
-// }, function(username, password, done) {
-//     Account.authenticate(username, password, function(error, user){
-//         // You can write any kind of message you'd like.
-//         // The message will be displayed on the next page the user visits.
-//         // We're currently not displaying any success message for logging in.
-//         done(error, user, error ? { message: error.message } : null);
-//     });
-// });
-// passport.use(authStrategy);
-
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
