@@ -36,15 +36,10 @@ class LoginApp extends Component {
   switchLoginPanel() {
     // this.setState({ isLogin: !this.state.isLogin })
   }
-  clientLogin(uid) {
+  clientLogin(username) {
     // Login as Normal User
-    if (uid > 0) {
-      this.props.persistentActions.persistentSet('userId', uid)
-      this.props.router.push('/main')
-    } else { // Login in as Visitor
-      this.props.persistentActions.persistentSet('userId', 0)
-      this.props.router.push('/main')
-    }
+    this.props.persistentActions.persistentSet('username', username)
+    this.props.router.push('/main')
   }
   render() {
     return (

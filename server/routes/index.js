@@ -26,11 +26,11 @@ router.post('/login', function(req, res) {
     Account.authenticate()(req.body.username, req.body.password, function (err, user, options) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Fail due to unknow err"}}));
-            res.end();  
+            res.end();
         }
         if (user === false) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Fail due to incorrect username or password"}}));
-            res.end();  
+            res.end();
         } else {
             res.write(JSON.stringify({status: "succ", result: {username: req.body.username}}));
             res.end();
@@ -47,8 +47,8 @@ router.get('/getBasicInfo', function(req, res) {
         // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
         // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
-            res.write(JSON.stringify({status: "succ", result: {username: account.username, 
-                birth : account.birth, gender : account.gender, 
+            res.write(JSON.stringify({status: "succ", result: {username: account.username,
+                birth : account.birth, gender : account.gender,
                 email : account.email, phone : account.phone
             }}));
             res.end();

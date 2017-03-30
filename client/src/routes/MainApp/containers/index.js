@@ -62,7 +62,7 @@ class AdsApp extends Component {
                     style={{ height: '80px', lineHeight: '80px', background: '#404040' }}
                     >
                     <Icon type="user" style={{ marginRight: '10px' }} />
-                    {`Hi, ${this.props.sponsorInfo.name}`}
+                    {`Hi, ${this.props.persistentStore.username}`}
                   </h1>
                 </Link>
               </Col>
