@@ -1,0 +1,22 @@
+.custom-image1{
+  background: url('SRC/assets/img/client.jpg');
+}
+.custom-image2{
+  background: url('SRC/assets/img/ads.jpg');
+}
+.custom-image1,
+.custom-image2 {
+  height: 70%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+
+.custom-card {
+  height:30%;
+  padding: 10px 16px;
+}
+.custom-card p {
+  color: #999;
+}

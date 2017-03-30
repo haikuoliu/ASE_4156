@@ -1,0 +1,21 @@
+{
+  "extends": "eslint-config-airbnb",
+    "rules": {
+      "global-require": 0,
+      "comma-dangle": [2, "never"],
+      "semi": [2, "never"],
+      "import/no-unresolved": 0,
+      "max-len": 0,
+      "no-underscore-dangle": 0,
+      "new-cap": 0,
+      "radix": 0,
+      "one-var": 0,
+      "no-else-return": 0,
+      "no-constant-condition": 0,
+      "react/prefer-stateless-function": 0,
+      "react/jsx-pascal-case": 0,
+      "react/jsx-closing-bracket-location": [2, "props-aligned"],
+      "react/jsx-no-bind": [0]
+    },
+  "parser" : "babel-eslint"
+}
