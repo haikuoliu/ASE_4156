@@ -133,22 +133,35 @@ router.get('/logout', function(req, res) {
 
 router.get('/ping', function(req, res){
     Account.register(new Account({
-        username : "test1",
-        birth : "1992",
+        username : "test3",
+        birth : "1994",
         gender : "male",
-        email : "test1@aa.com",
-        phone : "2312312",
+        email : "test3@aa.com",
+        phone : "982232",
         petsInfo: [
             {
-                species: "big dog",
-                birth: "2000"
+                species: "small cat",
+                birth: "2002"
+            }
+        ],
+        centersInfo: [
+            {
+                location: "country",
+                size: "small"
+            }
+        ],
+        post: [
+            {
+                id: "3484324",
+                time: "4324827",
+                content: "third"
             }
         ],
         order: [
             {
-                id: "123",
-                time: "927",
-                content: "first"
+                id: "43289423",
+                time: "9281443",
+                content: "third"
             }]}), "test", function(err, account) {});
     res.status(200).send("pong!");
 });

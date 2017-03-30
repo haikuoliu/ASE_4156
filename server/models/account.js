@@ -16,8 +16,8 @@ var Account = new Schema({
         birth: String
     }],
     centersInfo: [{
-        species: String,
-        birth: String
+        location: String,
+        size: String
     }],
     post: [{
         id: String,
