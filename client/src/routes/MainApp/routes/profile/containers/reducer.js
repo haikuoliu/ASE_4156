@@ -1,14 +1,16 @@
 // import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 
-// import { CLIENT_USER } from 'SRC/constants/action_const'
+import { PROFILE } from 'SRC/constants/action_const'
 
 const initialState = Immutable.fromJS({
   basicInfo: {
     userName: 'Unkown',
-    sex: 'Male',
+    gender: 'Male',
     birth: 1478236926748,
-    email: 'example@gmail.com'
+    email: 'example@gmail.com',
+    phone: '3471345678',
+    isSelf: true
   },
   history: [{
     id: 123,
@@ -17,7 +19,8 @@ const initialState = Immutable.fromJS({
   }],
   petsList: [{
     name: 'pets name',
-    type: 'dog'
+    species: 'dog',
+    birth: 1900
   }],
   centersList: [{
     name: 'center name',
@@ -27,18 +30,20 @@ const initialState = Immutable.fromJS({
 
 /* eslint-disable arrow-body-style, no-unused-vars*/
 const reducerMap = {
-  // [CLIENT_USER.LOAD]: (state, action) => {
-  //   return state.merge(Immutable.Map({
-  //     userName: action.result.name,
-  //     sex: action.result.sex ? 'Male' : 'Female',
-  //     birth: action.result.birth,
-  //     email: action.result.email,
-  //     followerNum: action.result.follows
-  //   }))
-  // },
-  // [CLIENT_USER.UPDATE]: (state, action) => {
-  //   return state
-  // }
+  [PROFILE.LOAD_BASIC_INFO]: (state, action) => {
+    return state.update('basicInfo', oldValue => (
+      oldValue.merge(Immutable.Map({
+        userName: action.result.username,
+        gender: action.result.gender === 'male' ? 'Male' : 'Female',
+        birth: new Date(action.result.birth).getTime(),
+        email: action.result.email,
+        phone: action.result.phone
+      }))
+    ))
+  },
+  [PROFILE.LOAD_PETS_INFO]: (state, action) => {
+    return state.set('petsList', Immutable.fromJS(action.result.petsInfo))
+  }
 }
 
 function userProfile(state = initialState, action) {

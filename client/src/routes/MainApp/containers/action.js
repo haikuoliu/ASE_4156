@@ -1,5 +1,5 @@
 import fetchPro from 'SRC/utils/fetchPro'
-import { ADS } from 'SRC/constants/action_const'
+import { PROFILE } from 'SRC/constants/action_const'
 import api from 'SRC/apis'
 import logger from 'SRC/utils/logger'
 
@@ -18,19 +18,19 @@ import logger from 'SRC/utils/logger'
 
 */
 
-export function loadMySponsorInfo(sponsorId) {
+export function loadBasicInfo(username) {
   return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
-    fetchPro(api('ads:getSponsors', sponsorId))
+    fetchPro(api('account:getBasicInfo', username))
       .then(response => response.json())
       .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
       .then(json => {
         if (json.status === 'fail') {
-          logger.error(api('ads:getSponsors', sponsorId), json.result.msg)
+          logger.error(api('account:getBasicInfo', username), json.result.msg)
           return
         }
         dispatch({
-          type: ADS.LOAD_SPONSOR_INFO,
-          result: json.result.filter(r => parseInt(r.sid) === parseInt(sponsorId))[0]
+          type: PROFILE.LOAD_BASIC_INFO,
+          result: json.result
         })
       })
   )

@@ -1,3 +1,10 @@
+export const PROFILE = {
+  LOAD_BASIC_INFO: '@PROFILE/LOAD_BASIC_INFO',
+  LOAD_PETS_INFO: '@PROFILE/LOAD_PETS_INFO'
+}
+
+// ------------------------
+
 export const CLIENT_USER = {
   LOAD: '@Client/user/info/LOAD',
   UPDATE: '@Client/user/info/UPDATE'

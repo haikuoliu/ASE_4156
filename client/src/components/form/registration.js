@@ -129,7 +129,7 @@ class RegistrationForm extends Component {
           >
           {getFieldDecorator('phone', {
             rules: [{
-              type: 'number', message: 'The input is not valid Phone Number!'
+              type: 'string', message: 'The input is not valid Phone Number!'
             }, {
               required: true, message: 'Please input your phone number!'
             }]

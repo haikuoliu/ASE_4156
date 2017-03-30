@@ -6,14 +6,9 @@ import * as PersistentActions from 'SRC/action'
 
 import { Row, Col, Button, Card } from 'antd'
 
-import moment from 'moment'
-import { throttle } from 'SRC/utils/utils'
+// import moment from 'moment'
 
 class PetsList extends Component {
-  constructor(props) {
-    super(props)
-    // this.switchFollowStatus = throttle(this.switchFollowStatus, 5000).bind(this)
-  }
   render() {
     const { petsList } = this.props
     return (
@@ -24,9 +19,9 @@ class PetsList extends Component {
               bordered
               style={{ height: '100%' }}
               >
-              {`name: ${pet.name}, type: ${pet.type}`}
+              {`specy: ${pet.species}, birth: ${pet.birth}`}
             </Card>
-          )) 
+          ))
         }
       </div>
     )
@@ -35,7 +30,7 @@ class PetsList extends Component {
 
 PetsList.propTypes = {
   location: React.PropTypes.object,
-  history: React.PropTypes.object,
+  petsList: React.PropTypes.object,
   persistentStore: React.PropTypes.object,
   persistentActions: React.PropTypes.object,
   actions: React.PropTypes.object

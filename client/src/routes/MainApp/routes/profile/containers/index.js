@@ -8,7 +8,7 @@ import * as PersistentActions from 'SRC/action'
 import { Row, Col, Menu, Card } from 'antd'
 import moment from 'moment'
 
-const BASIC_HEIGHT = '300px'
+const BASIC_HEIGHT = '360px'
 
 const menus = [
   { name: 'History', path: '/main/profile/history' },
@@ -18,31 +18,31 @@ const menus = [
 
 const infoList = [
   ['User Name', 'userName'],
-  ['Sex', 'sex'],
+  ['Gender', 'gender'],
   ['Birth Day', 'birth', (timestamp) => moment(timestamp).format('YYYY-MM-DD')],
   ['Email', 'email'],
-  ['Followed By', 'followerNum']
+  ['Phone', 'phone']
 ]
 
 class Profile extends Component {
   componentWillMount() {
-    // const query = this.props.location.query
-    // const { userId } = this.props.persistentStore
-    // this.props.actions.loadUserInfo(userId, query.uid || userId)
-    // this.props.actions.getTopicsOfUser(query.uid || userId)
+    const query = this.props.location.query
+    const { username } = this.props.persistentStore
+    this.props.actions.loadBasicInfo(username, query.username || username)
+    this.props.actions.loadPetsInfo(query.username || username)
     // this.props.actions.getPostsOfUser(query.uid || userId, userId)
     // this.props.actions.getUsersFollowedBy(query.uid || userId)
   }
   componentWillReceiveProps(nextProps) {
-    // const query = this.props.location.query
-    // const nextQuery = nextProps.location.query
-    // if (query.uid !== nextQuery.uid) {
-    //   const { userId } = this.props.persistentStore
-      // this.props.actions.loadUserInfo(userId, nextQuery.uid || userId)
-    //   this.props.actions.getTopicsOfUser(nextQuery.uid || userId)
+    const query = this.props.location.query
+    const nextQuery = nextProps.location.query
+    if (query.username !== nextQuery.username) {
+      const { username } = this.props.persistentStore
+      this.props.actions.loadBasicInfo(username, nextQuery.username || username)
+      this.props.actions.loadPetsInfo(nextQuery.username || username)
       // this.props.actions.getPostsOfUser(nextQuery.uid || userId, userId)
-    //   this.props.actions.getUsersFollowedBy(nextQuery.uid || userId)
-    // }
+      // this.props.actions.getUsersFollowedBy(nextQuery.uid || userId)
+    }
   }
   render() {
     const pathname = this.props.location.pathname
@@ -88,7 +88,7 @@ class Profile extends Component {
                     </Menu.Item>
                   ))
                 }
-              </Menu>
+            </Menu>
             {this.props.children}
           </div>
         </div>
