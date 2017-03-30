@@ -38,7 +38,7 @@ router.post('/login', function(req, res) {
     });
 });
 
-router.get('/getByUName', function(req, res) {
+router.get('/getBasicInfo', function(req, res) {
     Account.findOne({ 'username' : req.query.username}, 'username birth gender email phone', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
@@ -51,6 +51,66 @@ router.get('/getByUName', function(req, res) {
                 birth : account.birth, gender : account.gender, 
                 email : account.email, phone : account.phone
             }}));
+            res.end();
+        }
+    });
+});
+
+router.get('/getPetsInfo', function(req, res) {
+    Account.findOne({ 'username' : req.query.username}, 'username petsInfo', function (err, account) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find pets information"}}));
+            res.end();
+        }
+        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
+        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
+        else {
+            res.write(JSON.stringify({status: "succ", result: {petsInfo: account.petsInfo}}));
+            res.end();
+        }
+    });
+});
+
+router.get('/getCentersInfo', function(req, res) {
+    Account.findOne({ 'username' : req.query.username}, 'username centersInfo', function (err, account) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
+            res.end();
+        }
+        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
+        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
+        else {
+            res.write(JSON.stringify({status: "succ", result: {centersInfo: account.centersInfo}}));
+            res.end();
+        }
+    });
+});
+
+router.get('/getPost', function(req, res) {
+    Account.findOne({ 'username' : req.query.username}, 'username post', function (err, account) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find post information"}}));
+            res.end();
+        }
+        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
+        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
+        else {
+            res.write(JSON.stringify({status: "succ", result: {post: account.post}}));
+            res.end();
+        }
+    });
+});
+
+router.get('/getOrder', function(req, res) {
+    Account.findOne({ 'username' : req.query.username}, 'username order', function (err, account) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find order information"}}));
+            res.end();
+        }
+        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
+        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
+        else {
+            res.write(JSON.stringify({status: "succ", result: {order: account.order}}));
             res.end();
         }
     });
@@ -75,18 +135,18 @@ router.get('/ping', function(req, res){
     res.status(200).send("pong!");
 });
 
-router.get('/test', function (req, res) {
-    console.log(req.session);
-    console.log("-------------");
-    console.log(req.body);
-    console.log("-------------");
-    console.log(req.user);
-    Account.find(function (err, account) {
-        if (err) return console.error(err);
-        console.log(account);
-        // if (req.session.passport.user == account.username) console.log(account);
-    })
-    res.status(200).send(req.session.passport.user);
-})
+// router.get('/test', function (req, res) {
+//     console.log(req.session);
+//     console.log("-------------");
+//     console.log(req.body);
+//     console.log("-------------");
+//     console.log(req.user);
+//     Account.find(function (err, account) {
+//         if (err) return console.error(err);
+//         console.log(account);
+//         // if (req.session.passport.user == account.username) console.log(account);
+//     })
+//     res.status(200).send(req.session.passport.user);
+// })
 
 module.exports = router;
