@@ -22,7 +22,7 @@ class NormalLoginForm extends Component {
         //   password: values.password.trim()
         // })
         userLogin({
-          email: values.userName.trim(),
+          username: values.userName.trim(),
           password: values.password.trim()
         }).then(res => {
           if (res.status === 'fail') {
@@ -30,7 +30,7 @@ class NormalLoginForm extends Component {
               loginStatus: { status: 'error', msg: res.result.msg }
             })
           } else {
-            this.props.onSubmit(res.result.uid)
+            this.props.onSubmit(res.result.username)
           }
         })
         // this.props.form.resetFields()
@@ -48,7 +48,7 @@ class NormalLoginForm extends Component {
           {getFieldDecorator('userName', {
             rules: [{
               required: true,
-              type: 'email',
+              type: 'string',
               message: 'Invalid Username!',
               transform(value) {
                 return value.toLowerCase()
@@ -58,7 +58,7 @@ class NormalLoginForm extends Component {
               // transform: (value) => value.trim()
             }]
           })(
-            <Input addonBefore={<Icon type="user" />} placeholder="Email" />
+            <Input addonBefore={<Icon type="user" />} placeholder="Username" />
           )}
         </FormItem>
         <FormItem>

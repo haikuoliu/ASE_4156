@@ -30,7 +30,7 @@ class RegistrationForm extends Component {
                 emailValid: { status: 'error', msg: json.result.msg }
               })
             } else {
-              this.props.onSubmit(json.result.uid)
+              this.props.onSubmit(json.result.username)
             }
           })
       }
@@ -67,6 +67,17 @@ class RegistrationForm extends Component {
     }
     return (
       <Form horizontal onSubmit={this.handleSubmit} className="login-form">
+        <FormItem
+          {...formItemLayout}
+          label="Username"
+          hasFeedback
+          >
+          {getFieldDecorator('username', {
+            rules: [{ required: true, message: 'Please input your username!' }]
+          })(
+            <Input />
+          )}
+        </FormItem>
         <FormItem
           {...formItemLayout}
           label="E-mail"
@@ -114,20 +125,23 @@ class RegistrationForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Nickname"
-          hasFeedback
+          label="Phone Number"
           >
-          {getFieldDecorator('nickname', {
-            rules: [{ required: true, message: 'Please input your nickname!' }]
+          {getFieldDecorator('phone', {
+            rules: [{
+              type: 'number', message: 'The input is not valid Phone Number!'
+            }, {
+              required: true, message: 'Please input your phone number!'
+            }]
           })(
             <Input />
           )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Sex"
+          label="Gender"
           >
-          {getFieldDecorator('sex', {
+          {getFieldDecorator('gender', {
             initialValue: 'male',
             rules: [
               { required: true, message: 'Please select Sex!' }

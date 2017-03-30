@@ -3,13 +3,15 @@ import topics from './topics'
 import events from './events'
 import feeds from './feeds'
 import ads from './ads'
+import account from './account'
 
 const dirs = {
   users,
   topics,
   events,
   feeds,
-  ads
+  ads,
+  account
 }
 
 function api(rawPath, ...args) {
