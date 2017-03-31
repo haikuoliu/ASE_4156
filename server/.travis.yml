@@ -1,10 +1,14 @@
 sudo: required
-cd server
 language: node_js
 node_js:
   - "iojs"
-  - "7"
+  - "6"
 
-npm install
-node ./bin/www
-npm test
+
+install:
+    - cd server
+    - npm install
+
+script:
+    - node ./bin/www
+    - npm test
