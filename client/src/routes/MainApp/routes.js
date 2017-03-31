@@ -14,7 +14,7 @@ export default (store) => ({ // eslint-disable-line no-unused-vars
     // require('./routes/home/routes.js').default,
     // require('./routes/ads_list/routes.js').default(store),
     // require('./routes/push/routes.js').default(store),
-    // require('./routes/user_sets/routes.js').default(store),
+    require('./routes/post/routes.js').default(store),
     require('./routes/profile/routes.js').default(store)
   ]
 })

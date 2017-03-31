@@ -44,8 +44,8 @@ class AdsApp extends Component {
                   theme="dark"
                   mode="horizontal"
                   >
-                  <Menu.Item key="ads_list">
-                    <Link to="/main/ads_list"><Icon type="appstore" />Advertisemnts</Link>
+                  <Menu.Item key="post">
+                    <Link to="/main/post/edit"><Icon type="appstore" />Post</Link>
                   </Menu.Item>
                   <Menu.Item key="user_sets">
                     <Link to="/main/user_sets"><Icon type="mail" />User Sets</Link>
