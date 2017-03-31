@@ -6,4 +6,5 @@ node_js:
   - "7"
 
 npm install
+node ./bin/www
 npm test
