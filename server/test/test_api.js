@@ -25,7 +25,7 @@ describe('test user login functions', function() {
 
         var request = require('request');
         var formData = {   
-            username: "zehao" + myDate.toString(),
+            username: "zehao" + myDate.getTime().toString(),
             password: "zehao",
             birth: 1995,
             gender: "male",
