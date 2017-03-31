@@ -10,5 +10,6 @@ install:
     - npm install
 
 script:
-    - node ./bin/www
+    - node ./bin/www &
+    -
     - npm test
