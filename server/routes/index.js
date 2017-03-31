@@ -47,6 +47,11 @@ router.get('/getBasicInfo', function(req, res) {
         // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
         // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
+            console.log(account)
+            if (account == null) {
+                res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
+                res.end();
+            }
             res.write(JSON.stringify({status: "succ", result: {username: account.username,
                 birth : account.birth, gender : account.gender,
                 email : account.email, phone : account.phone
