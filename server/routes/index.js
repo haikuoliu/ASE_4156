@@ -90,21 +90,21 @@ router.get('/getCentersInfo', function(req, res) {
         }
     });
 });
-
-router.get('/getPost', function(req, res) {
-    Account.findOne({ 'username' : req.query.username}, 'username post', function (err, account) {
-        if (err) {
-            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find post information"}}));
-            res.end();
-        }
-        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
-        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
-        else {
-            res.write(JSON.stringify({status: "succ", result: {post: account.post}}));
-            res.end();
-        }
-    });
-});
+//
+// router.get('/getPost', function(req, res) {
+//     Account.findOne({ 'username' : req.query.username}, 'username post', function (err, account) {
+//         if (err) {
+//             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find post information"}}));
+//             res.end();
+//         }
+//         // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
+//         // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
+//         else {
+//             res.write(JSON.stringify({status: "succ", result: {post: account.post}}));
+//             res.end();
+//         }
+//     });
+// });
 
 router.get('/getOrder', function(req, res) {
     Account.findOne({ 'username' : req.query.username}, 'username order', function (err, account) {
@@ -120,6 +120,50 @@ router.get('/getOrder', function(req, res) {
         }
     });
 });
+
+router.post('/addPost', function (req, res) {
+    Account.findOne({ 'username' : req.body.username}, 'username post', function(err, account) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find post information"}}));
+            res.end();
+        }
+        else {
+            account.post.push({eid: req.body.eid, title: req.body.title, content: req.body.content, description: req.body.description});
+            res.write(JSON.stringify({status: "succ", result: {username: req.body.username, eid: req.body.eid}}));
+            res.end();
+        }
+    });
+});
+
+router.get('/getPost', function (req, res) {
+    Account.findOne({ 'username' : req.query.username}, 'username post', function(err, account) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find post information"}}));
+            res.end();
+        }
+        else {
+            for (var i = 0; i < account.post.length; i++) {
+                if (req.query.eid == account.post[i].eid) {
+                    res.write(JSON.stringify({status: "succ", result: {username: account.username, eid: account.post[i].eid, title: account.post[i].title, content: account.post[i].content, description: account.post[i].content}}));
+                }
+            }
+            res.end();
+        }
+    });
+});
+
+// router.get('/getPost', function (req, res) {
+//     Account.findOne({ 'username' : req.query.username, 'post.eid' : req.query.eid}, 'username post', function(err, account) {
+//         if (err) {
+//             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find post information"}}));
+//             res.end();
+//         }
+//         else {
+//             res.write(JSON.stringify({status: "succ", result: {username: account.username, eid: account.post.eid, title: account.post.title, content: account.post.content, description: account.post.content}}));
+//             res.end();
+//         }
+//     });
+// });
 
 router.get('/logout', function(req, res) {
     req.logout();
@@ -138,7 +182,7 @@ router.get('/logout', function(req, res) {
 
 router.get('/ping', function(req, res){
     Account.register(new Account({
-        username : "test3",
+        username : "test0",
         birth : "1994",
         gender : "male",
         email : "test3@aa.com",
@@ -157,9 +201,10 @@ router.get('/ping', function(req, res){
         ],
         post: [
             {
-                id: "3484324",
-                time: "4324827",
-                content: "third"
+                eid: "1",
+                title: "test",
+                content: "test test test",
+                description: "test test"
             }
         ],
         order: [

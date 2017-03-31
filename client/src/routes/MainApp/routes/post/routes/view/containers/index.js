@@ -19,19 +19,20 @@ class BlogView extends Component {
   }
   componentWillMount() {
     const eid = this.props.location.query.eid
-    if (eid > 0) {
-      const myid = this.props.persistentStore.userId
-      this.props.actions.loadSingleEvent(eid, myid)
-      this.props.actions.loadComments(eid)
+    const username = this.props.location.query.username
+    if (username && eid > 0) {
+      const myUserName = this.props.persistentStore.username
+      this.props.actions.loadSingleEvent(eid, myUserName)
+      // this.props.actions.loadComments(eid)
     }
   }
   componentWillReceiveProps(nextProps) { // eslint-disable-line no-unused-vars
     const eid = this.props.location.query.eid
     const nextEid = nextProps.location.query.eid
     if (eid != nextEid) { // eslint-disable-line eqeqeq
-      const myid = this.props.persistentStore.userId
-      this.props.actions.loadSingleEvent(nextEid, myid)
-      this.props.actions.loadComments(nextEid)
+      const myUserName = this.props.persistentStore.username
+      this.props.actions.loadSingleEvent(nextEid, myUserName)
+      // this.props.actions.loadComments(nextEid)
     }
   }
   switchLike(eid, type = 'like') {
@@ -145,7 +146,7 @@ function mapState(state) { // eslint-disable-line no-unused-vars
   return {
     persistentStore: state.persistentStore.toJS(),
     comments: state.clientEvent.get('comments').toJS(),
-    event: state.clientEvent.get('event').toJS()
+    event: state.post.toJS()
   }
 }
 
