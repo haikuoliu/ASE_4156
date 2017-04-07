@@ -18,7 +18,6 @@ const initialState = Immutable.fromJS({
     date: 1478236926748
   }],
   petsList: [{
-    name: 'pets name',
     species: 'dog',
     birth: 1900
   }],

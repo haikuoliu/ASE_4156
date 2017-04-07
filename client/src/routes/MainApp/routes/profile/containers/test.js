@@ -9,6 +9,7 @@ const mockStore = configureMockStore(middlewares)
 import Immutable from 'immutable'
 import reducer from './reducer'
 
+/* global it, expect*/
 it('loadBasicInfo', () => {
   const expectedActions = [{
     type: PROFILE.LOAD_BASIC_INFO,
@@ -56,7 +57,6 @@ const initialState = Immutable.fromJS({
     date: 1478236926748
   }],
   petsList: [{
-    name: 'pets name',
     species: 'dog',
     birth: 1900
   }],
@@ -67,7 +67,43 @@ const initialState = Immutable.fromJS({
 })
 
 it('should return the initial state', () => {
-    expect(
-      reducer(undefined, {})
-    ).toEqual(initialState)
+  expect(
+    reducer(undefined, {})
+  ).toEqual(initialState)
+})
+
+it('reducer load pets info', () => {
+  expect(
+    reducer(initialState, {
+      type: PROFILE.LOAD_PETS_INFO,
+      result: {
+        petsInfo: [{
+          species: 'big dog',
+          birth: '2000'
+        }]
+      }
+    })
+  ).toEqual(Immutable.fromJS({
+    basicInfo: {
+      userName: 'Unkown',
+      gender: 'Male',
+      birth: 1478236926748,
+      email: 'example@gmail.com',
+      phone: '3471345678',
+      isSelf: true
+    },
+    history: [{
+      id: 123,
+      title: 'Order',
+      date: 1478236926748
+    }],
+    petsList: [{
+      species: 'big dog',
+      birth: '2000'
+    }],
+    centersList: [{
+      size: 'big',
+      location: 'New York'
+    }]
+  }))
 })
