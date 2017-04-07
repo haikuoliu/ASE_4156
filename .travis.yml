@@ -9,6 +9,11 @@ node_js:
 install:
     - cd server
     - npm install
+    - cd ../client
+    - npm install
+    - npm test
+    - cd ../server
+
 
 script:
     - node ./bin/www &
