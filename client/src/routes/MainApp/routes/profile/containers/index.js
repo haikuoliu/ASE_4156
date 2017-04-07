@@ -30,6 +30,7 @@ class Profile extends Component {
     const { username } = this.props.persistentStore
     this.props.actions.loadBasicInfo(username, query.username || username)
     this.props.actions.loadPetsInfo(query.username || username)
+    this.props.actions.loadCentersInfo(query.username || username)
     // this.props.actions.getPostsOfUser(query.uid || userId, userId)
     // this.props.actions.getUsersFollowedBy(query.uid || userId)
   }
@@ -40,6 +41,7 @@ class Profile extends Component {
       const { username } = this.props.persistentStore
       this.props.actions.loadBasicInfo(username, nextQuery.username || username)
       this.props.actions.loadPetsInfo(nextQuery.username || username)
+      this.props.actions.loadCentersInfo(nextQuery.username || username)
       // this.props.actions.getPostsOfUser(nextQuery.uid || userId, userId)
       // this.props.actions.getUsersFollowedBy(nextQuery.uid || userId)
     }

@@ -9,6 +9,12 @@
     ["import", {
       "libraryName": "antd",
       "style": true
-      }]
+      },
+      "module-resolver", {
+        "alias": {
+          "SRC": "./src"
+        }
+      }
+    ]
   ]
 }

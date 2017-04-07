@@ -23,7 +23,7 @@ const initialState = Immutable.fromJS({
     birth: 1900
   }],
   centersList: [{
-    name: 'center name',
+    size: 'big',
     location: 'New York'
   }]
 })
@@ -43,6 +43,9 @@ const reducerMap = {
   },
   [PROFILE.LOAD_PETS_INFO]: (state, action) => {
     return state.set('petsList', Immutable.fromJS(action.result.petsInfo))
+  },
+  [PROFILE.LOAD_CENTERS_INFO]: (state, action) => {
+    return state.set('centersList', Immutable.fromJS(action.result.centersInfo))
   }
 }
 
