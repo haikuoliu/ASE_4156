@@ -1,5 +1,5 @@
 import fetchPro from 'SRC/utils/fetchPro'
-import { PROFILE, CLIENT_PROFILE_USER_INFO, CLIENT_TOPICS, CLIENT_EVENTS } from 'SRC/constants/action_const'
+import { PROFILE, CLIENT_PROFILE_USER_INFO } from 'SRC/constants/action_const'
 import api from 'SRC/apis'
 import logger from 'SRC/utils/logger'
 
@@ -49,6 +49,24 @@ export function loadPetsInfo(username) {
         }
         dispatch({
           type: PROFILE.LOAD_PETS_INFO,
+          result: json.result
+        })
+      })
+  )
+}
+
+export function loadCentersInfo(username) {
+  return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
+    fetchPro(api('account:getCentersInfo', username))
+      .then(response => response.json())
+      .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+      .then(json => {
+        if (json.status === 'fail') {
+          logger.error(api('account:getCentersInfo', username), json.result.msg)
+          return
+        }
+        dispatch({
+          type: PROFILE.LOAD_CENTERS_INFO,
           result: json.result
         })
       })

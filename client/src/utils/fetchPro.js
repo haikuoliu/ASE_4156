@@ -6,6 +6,8 @@ export const FETCH_TIMEOUT = 'fetch timeout'
 let mockAPIConfig
 if (process.env.NODE_ENV === 'production') {
   mockAPIConfig = { rules: [] }
+} else if (process.env.NODE_ENV === 'test') {
+  mockAPIConfig = require('./mockAPIConfigTest').default
 } else {
   mockAPIConfig = require('./mockAPIConfig').default
 }

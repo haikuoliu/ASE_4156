@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ClientProfileAction from '../../../containers/action'
-import * as PersistentActions from 'SRC/action'
+// import * as PersistentActions from 'SRC/action'
 
-import { Row, Col, Button, Card } from 'antd'
-
-import moment from 'moment'
-import { throttle } from 'SRC/utils/utils'
+import { Card } from 'antd'
+//
+// import moment from 'moment'
+// import { throttle } from 'SRC/utils/utils'
 
 class CentersList extends Component {
-  constructor(props) {
-    super(props)
-    // this.switchFollowStatus = throttle(this.switchFollowStatus, 5000).bind(this)
-  }
+  // constructor(props) {
+  //   super(props)
+  //   // this.switchFollowStatus = throttle(this.switchFollowStatus, 5000).bind(this)
+  // }
   render() {
     const { centersList } = this.props
     return (
@@ -24,9 +24,9 @@ class CentersList extends Component {
               bordered
               style={{ height: '100%' }}
               >
-              {`name: ${center.name}, location: ${center.location}`}
+              {`size: ${center.size}, location: ${center.location}`}
             </Card>
-          )) 
+          ))
         }
       </div>
     )
