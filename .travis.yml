@@ -11,11 +11,12 @@ install:
     - npm install
     - cd ../client
     - npm install
-    - npm test
-    - cd ../server
+
 
 
 script:
+    - npm test
+    - cd ../server
     - node ./bin/www &
     -
     - npm test
