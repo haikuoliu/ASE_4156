@@ -4,7 +4,7 @@ var Account = require('../models/account');
 var router = express.Router();
 
 router.post('/register', function(req, res) {
-    Account.register(new Account({ username : req.body.username, birth : req.body.birth, gender : req.body.gender, email : req.body.email, phone : req.body.phone}), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username, birth : req.body.birth, gender : req.body.gender, email : req.body.email, phone : req.body.phone, petsInfo: [], centersInfo: [], order: []}), req.body.password, function(err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Register fail"}}));
             res.end();

@@ -8,27 +8,32 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
     // username: String,
-    birth: String,
+    birth: Schema.Types.Date, //Schema.Timestamp,
     gender: String,
     email: String,
     phone: String,
     petsInfo: [{
         species: String,
-        birth: String
+        birth: Schema.Types.Date
     }],
     centersInfo: [{
-        location: String,
-        size: String
-    }],
-    post: [{
-        eid: String,
+        cid: Schema.Types.ObjectId,
         title: String,
         content: String,
-        description: String
+        location: {
+            lat: Number,
+            lng: Number,
+            street: String,
+            city: String,
+            state: String,
+            zip: Number
+        },
+        size: Number,
+        timestamp: Schema.Types.Date
     }],
     order: [{
-        id: String,
-        time: String,
+        oid: Schema.Types.ObjectId,
+        time: Schema.Types.Date,
         content: String
     }]
 });

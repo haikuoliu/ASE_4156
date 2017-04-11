@@ -46,7 +46,7 @@ router.get('/getBasicInfo', function(req, res) {
         // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
             console.log(account)
-            if (account == null) {
+            if (account === null) {
                 res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
                 res.end();
             }
