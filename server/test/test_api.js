@@ -11,7 +11,7 @@ describe('test user login functions', function() {
             username: "zehao",
             password: "zehao"
         };
-        request.post({url:'http://localhost:3000/login', formData: formData}, function optionalCallback(err, res, body) {
+        request.post({url:'http://localhost:3000/user/login', formData: formData}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
@@ -31,7 +31,7 @@ describe('test user login functions', function() {
             email: "zehao@gmail.com",
             phone: "123"
         };
-        request.post({url:'http://localhost:3000/register', formData: formData}, function optionalCallback(err, res, body) {
+        request.post({url:'http://localhost:3000/user/register', formData: formData}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
@@ -47,7 +47,7 @@ describe('test get info functions', function() {
     this.timeout(15000);
     it('test getBasicInfo', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/getBasicInfo?username=zehao'}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/user/getBasicInfo?username=zehao'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
@@ -62,7 +62,7 @@ describe('test get info functions', function() {
 
     it('test getPetsInfo', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/getPetsInfo?username=test2'}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/pet/getPetsInfo?username=test2'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
@@ -72,7 +72,7 @@ describe('test get info functions', function() {
 
     it('test getCentersInfo', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/getCentersInfo?username=test2'}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/center/getCentersInfo?username=test2'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
@@ -82,7 +82,7 @@ describe('test get info functions', function() {
 
     it('test getOrder', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/getOrder?username=test2'}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/order/getOrder?username=test2'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
