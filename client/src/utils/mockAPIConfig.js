@@ -8,23 +8,22 @@
 
 /* eslint-disable quote-props, quotes */
 export const mockAPIConfig = {
-  enabled: false,
+  enabled: true,
   rules: [
     {
       // 返回结果－直接返回
       enabled: true,
-      url: new RegExp('http://localhost:8080/api/users/view_profile\\?myid=2&otherid=2'),
+      url: new RegExp('http://localhost:3000/centers/getNeighCenters'),
       type: 'normal',
       dalay: 1000,
       response: {
         status: 'succ',
         result: {
-          "uid": 2,
-          "email": "ZehaoSong@gmail.com",
-          "birth": "2000-02-13",
-          "sex": "male",
-          "name": "ZehaoSong",
-          "follows": 123
+          centersList: [
+            { location: { lat: 40.809322, lng: -73.9612294 }, description: 'Center1' },
+            { location: { lat: 40.810877, lng: -73.957235 }, description: 'Center2' },
+            { location: { lat: 40.807629, lng: -73.966097 }, description: 'Center3' }
+          ]
         }
       }
     }, {

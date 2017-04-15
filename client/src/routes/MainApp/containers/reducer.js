@@ -4,6 +4,7 @@ import Immutable from 'immutable'
 import { ADS } from 'SRC/constants/action_const'
 
 import userProfile from '../routes/profile/containers/reducer'
+import search from '../routes/search/containers/reducer'
 // import blogContent from '../routes/content/containers/reducer'
 
 const initialState = Immutable.fromJS({
@@ -41,7 +42,8 @@ function general(state = initialState, action) {
 
 export default combineReducers({
   general,
-  userProfile
+  userProfile,
+  search
   // blogList,
   // blogContent
 })

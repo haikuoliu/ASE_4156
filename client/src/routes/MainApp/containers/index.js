@@ -47,8 +47,8 @@ class AdsApp extends Component {
                   <Menu.Item key="post">
                     <Link to="/main/post/edit"><Icon type="appstore" />Post</Link>
                   </Menu.Item>
-                  <Menu.Item key="user_sets">
-                    <Link to="/main/user_sets"><Icon type="mail" />User Sets</Link>
+                  <Menu.Item key="search">
+                    <Link to="/main/search"><Icon type="mail" />Search</Link>
                   </Menu.Item>
                   <Menu.Item key="push">
                     <Link to="/main/push"><Icon type="cloud-upload" />Push</Link>

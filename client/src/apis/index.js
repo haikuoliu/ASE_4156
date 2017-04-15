@@ -4,6 +4,7 @@ import events from './events'
 import feeds from './feeds'
 import ads from './ads'
 import account from './account'
+import centers from './centers'
 
 const dirs = {
   users,
@@ -11,7 +12,8 @@ const dirs = {
   events,
   feeds,
   ads,
-  account
+  account,
+  centers
 }
 
 function api(rawPath, ...args) {

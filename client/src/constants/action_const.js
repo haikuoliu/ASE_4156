@@ -4,6 +4,10 @@ export const PROFILE = {
   LOAD_CENTERS_INFO: '@PROFILE/LOAD_CENTERS_INFO'
 }
 
+export const CENTERS = {
+  LOAD_NEIGH_CENTERS: '@CENTERS/LOAD_NEIGH_CENTERS'
+}
+
 // ------------------------
 
 export const CLIENT_USER = {
