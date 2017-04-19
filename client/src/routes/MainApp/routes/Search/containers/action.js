@@ -3,6 +3,12 @@ import { CENTERS } from 'SRC/constants/action_const'
 import api from 'SRC/apis'
 import logger from 'SRC/utils/logger'
 
+export function changeSearchCenter(loc) {
+  return {
+    type: CENTERS.CHANGE_SEARCH_CENTER,
+    result: loc
+  }
+}
 /**
 
   Async Actions

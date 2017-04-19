@@ -14,12 +14,20 @@ import { Row, Col } from 'antd'
 class Search extends Component {
   constructor(props) {
     super(props)
-    // this.handleSubmit = this.handleSubmit.bind(this)
+    this.onMapClick = this.onMapClick.bind(this)
   }
   componentWillMount() {
     this.props.actions.loadNeighCenters()
   }
   componentWillReceiveProps(nextProps) {
+    const center = this.props.store.centerLocation
+    const nextCenter = nextProps.store.centerLocation
+    if (nextCenter.lng !== center.lng || nextCenter.lat !== center.lat) {
+      this.props.actions.loadNeighCenters()
+    }
+  }
+  onMapClick(loc) {
+    this.props.actions.changeSearchCenter(loc)
     this.props.actions.loadNeighCenters()
   }
   render() {
@@ -36,14 +44,17 @@ class Search extends Component {
             <Row style={{ height: '100%' }}>
               <Col span={6} className="full-height">
                 <div className="full">
-                  {markers.map(r => (
-                    <div style={{ height: '40px' }}>{r.description}</div>
+                  {markers.map((r, i) => (
+                    <div key={r.description + i} style={{ height: '40px' }}>{r.description}</div>
                   ))}
                 </div>
               </Col>
               <Col span={18} className="full-height">
                 <div className="full" style={{ padding: '10px' }} >
-                  <GoogleMap markers={markers} />
+                  <GoogleMap
+                    markers={markers}
+                    onClick={this.onMapClick}
+                    />
                 </div>
               </Col>
             </Row>

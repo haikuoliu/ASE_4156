@@ -4,11 +4,15 @@ import GoogleMapReact from 'google-map-react'
 import googleAPIKey, { getCurrentLocation } from 'SRC/utils/googleAPI'
 import { Icon, Popover } from 'antd'
 
-export class MapMaker extends Component {
+import logger from 'SRC/utils/logger'
+
+/* eslint-disable react/no-multi-comp */
+
+class MapMaker extends Component {
   render() {
     return (
       <div style={{ position: 'absolute', top: '-24px', left: '5px' }}>
-        <div className="text-center" style={{ fontSize: '24px', color: '#ff2700' }}>
+        <div className="text-center" style={{ fontSize: '24px', color: this.props.color }}>
           <Popover content={this.props.description} title="Title">
             <Icon type="environment" />
           </Popover>
@@ -19,9 +23,26 @@ export class MapMaker extends Component {
 }
 
 MapMaker.propTypes = {
-  description: React.PropTypes.string
+  description: React.PropTypes.string,
+  color: React.PropTypes.string
 }
 
+MapMaker.defaultProps = {
+  description: '',
+  color: '#ff2700'
+}
+
+class CenterMarker extends Component {
+  render() {
+    return (
+      <div style={{ position: 'absolute', top: '-24px', left: '5px' }}>
+        <div className="text-center" style={{ fontSize: '24px', color: 'rgb(0, 31, 125)' }}>
+          <Icon type="environment" />
+        </div>
+      </div>
+    )
+  }
+}
 
 /* eslint-disable react/no-multi-comp */
 class GoogleMap extends Component {
@@ -30,6 +51,7 @@ class GoogleMap extends Component {
     this.state = {
       currentlocation: { lat: 40.809322, lng: -73.9612294 } // { lat: 59.95, lng: 30.33 }
     }
+    this._onClick = this._onClick.bind(this)
   }
   componentWillMount() {
     // Set Current Location
@@ -40,6 +62,14 @@ class GoogleMap extends Component {
         })
       })
   }
+  _onClick(args) {
+    // logger.log(args)
+    const location = { lat: args.lat, lng: args.lng }
+    this.setState({
+      currentlocation: location
+    })
+    this.props.onClick(location)
+  }
   render() {
     return (
       <GoogleMapReact
@@ -48,6 +78,7 @@ class GoogleMap extends Component {
         }}
         center={this.state.currentlocation}
         defaultZoom={this.props.zoom}
+        onClick={this._onClick}
         >
         {
           this.props.markers.map((r) => (
@@ -59,6 +90,10 @@ class GoogleMap extends Component {
               />
           ))
         }
+        <CenterMarker
+          lat={this.state.currentlocation.lat}
+          lng={this.state.currentlocation.lng}
+          />
       </GoogleMapReact>
     )
   }
@@ -73,7 +108,8 @@ GoogleMap.propTypes = {
       lng: React.PropTypes.number,
       description: React.PropTypes.string
     })
-  )
+  ),
+  onClick: React.PropTypes.func
 }
 
 GoogleMap.defaultProps = {
@@ -81,7 +117,8 @@ GoogleMap.defaultProps = {
   markers: [
     { lat: 40.809322, lng: -73.9612294, description: 'Center1' },
     { lat: 40.810877, lng: -73.957235, description: 'Center2' }
-  ]
+  ],
+  onClick: () => {}
 }
 
 export default GoogleMap
