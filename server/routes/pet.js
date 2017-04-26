@@ -4,7 +4,7 @@ var passport = require('passport');
 var Account = require('../models/account');
 
 
-router.get('/getPetsInfo', function(req, res) {
+router.get('/petInfo', function(req, res) {
     Account.findOne({ 'username' : req.query.username}, 'username petsInfo', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find pets information"}}));

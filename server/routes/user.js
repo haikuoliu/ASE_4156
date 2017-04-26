@@ -33,7 +33,7 @@ router.post('/login', function(req, res) {
     });
 });
 
-router.get('/getBasicInfo', function(req, res) {
+router.get('/basicInfo', function(req, res) {
     Account.findOne({ 'username' : req.query.username}, 'username birth gender email phone', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
