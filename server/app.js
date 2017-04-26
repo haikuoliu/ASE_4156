@@ -53,11 +53,11 @@ var order = require('./routes/order');
 var search = require('./routes/search');
 
 
-app.use('/user', user);
-app.use('/pet', pet);
-app.use('/center', center);
-app.use('/order', order);
-app.use('/search', search);
+app.use('/', user);
+app.use('/', pet);
+app.use('/', center);
+app.use('/', order);
+app.use('/', search);
 
 // catch 404 error
 app.use(function(req, res, next) {
