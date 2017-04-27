@@ -56,4 +56,21 @@ router.get('/basicInfo', function(req, res) {
     });
 });
 
+
+router.get('/fblogin', passport.authenticate('facebook', { scope : 'email' }));
+
+// handle the callback after facebook has authenticated the user
+router.get('/fblogin/callback',
+    passport.authenticate('facebook', {
+        successRedirect : '/basicInfo',
+        failureRedirect : '/user'
+    }));
+
+// route for logging out
+// router.get('/logout', function(req, res) {
+//     req.logout();
+//     res.redirect('/');
+// });
+
+
 module.exports = router;

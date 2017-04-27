@@ -8,6 +8,12 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
     // username: String,
+    facebook         : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    },
     birth: Number, //Schema.Timestamp,
     gender: String,
     email: String,
