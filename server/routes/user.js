@@ -42,7 +42,8 @@ router.get('/basicInfo', function(req, res) {
         // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
         // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
-            console.log(account)
+            console.log("account: " +account);
+
             if (account == null) {
                 res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
                 res.end();
@@ -62,7 +63,7 @@ router.get('/fblogin', passport.authenticate('facebook', { scope : 'email' }));
 // handle the callback after facebook has authenticated the user
 router.get('/fblogin/callback',
     passport.authenticate('facebook', {
-        successRedirect : '/basicInfo',
+        successRedirect : '/basicInfo', //should goes to register page??
         failureRedirect : '/user'
     }));
 
@@ -72,5 +73,15 @@ router.get('/fblogin/callback',
 //     res.redirect('/');
 // });
 
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 module.exports = router;

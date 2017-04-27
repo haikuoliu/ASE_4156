@@ -11,7 +11,7 @@ var Account = new Schema({
     facebook         : {
         id           : String,
         token        : String,
-        email        : String,
+        // email        : String,
         name         : String
     },
     birth: Number, //Schema.Timestamp,
