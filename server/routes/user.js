@@ -58,14 +58,37 @@ router.get('/basicInfo', function(req, res) {
 });
 
 
-router.get('/fblogin', passport.authenticate('facebook', { scope : 'email' }));
+router.get('/fblogin', passport.authenticate('facebook', { scope : ['email','user_birthday'] }));
 
 // handle the callback after facebook has authenticated the user
 router.get('/fblogin/callback',
-    passport.authenticate('facebook', {
-        successRedirect : '/basicInfo', //should goes to register page??
-        failureRedirect : '/user'
-    }));
+    passport.authenticate('facebook', { failureRedirect: '/#/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        var username = req.user._doc.facebook.name;
+        console.log("username: "+username);
+
+        // res.write(JSON.stringify({status: "succ", result: {username: username}}));
+        // res.end();
+        Account.findOne({ 'facebook.name' : username}, 'username birth gender email phone', function (err, account) {
+            if (err) {
+                res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
+                res.end();
+            }
+            else {
+                console.log("account: " +account);
+                if (account == null) {
+                    res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
+                    res.end();
+                }
+                res.write(JSON.stringify({status: "succ", result: {username: username,
+                    birth : account.birth, gender : account.gender,
+                    email : account.email, phone : account.phone
+                }}));
+                res.end();
+            }
+        });
+    });
 
 // route for logging out
 // router.get('/logout', function(req, res) {
@@ -74,14 +97,14 @@ router.get('/fblogin/callback',
 // });
 
 // route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
+// function isLoggedIn(req, res, next) {
+//
+//     // if user is authenticated in the session, carry on
+//     if (req.isAuthenticated())
+//         return next();
+//
+//     // if they aren't redirect them to the home page
+//     res.redirect('/');
+// }
 
 module.exports = router;
