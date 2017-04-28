@@ -42,6 +42,7 @@ All front-end codes are in client folder and all back-end codes are in server fo
 ```
 wget https://downloads.mongodb.org/osx/mongodb-shell-osx-ssl-x86_64-3.4.4.tgz
 tar xzvf mongodb-shell-osx-ssl-x86_64-3.4.4.tgz
-./mongodb-shell-osx-ssl-x86_64-3.4.4/mongo "mongodb://cluster0-shard-00-00-qx1je.mongodb.net:27017,cluster0-shard-00-01-qx1je.mongodb.net:27017,cluster0-shard-00-02-qx1je.mongodb.net:27017/test?replicaSet=Cluster0-shard-0" --authenticationDatabase admin --ssl --username MastersParty --password MastersParty
-
+./mongodb-osx-x86_64-3.4.4/mongo "mongodb://cluster0-shard-00-00-qx1je.mongodb.net:27017,cluster0-shard-00-01-qx1je.mongodb.net:27017,cluster0-shard-00-02-qx1je.mongodb.net:27017/test?replicaSet=Cluster0-shard-0" --authenticationDatabase admin --ssl --username MastersParty --password MastersParty
+use Cluster0
+db.accounts.find()
 ```
