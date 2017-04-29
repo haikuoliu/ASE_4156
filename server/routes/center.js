@@ -128,17 +128,17 @@ http://localhost:3000/centersInfoSpec?cid=9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682
  */
 router.get('/centersInfoSpec', function(req, res) {
     var cid = req.query.cid;
-    console.log(cid);
+    // console.log(cid);
     Account.findOne({ 'centersInfo.cid' : cid}, 'centersInfo', function (err, account) {
         if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
             res.end();
         }
         else {
-            console.log(account);
+            // console.log(account);
             for (var i = 0; i < account.centersInfo.length; i++) {
-                console.log(account.centersInfo[i]);
-                console.log(account.centersInfo[i].cid);
+                // console.log(account.centersInfo[i]);
+                // console.log(account.centersInfo[i].cid);
                 if (cid === account.centersInfo[i].cid) {
                     res.write(JSON.stringify({status: "succ", result: {centersInfo: account.centersInfo[i]}}));
                     res.end();
@@ -174,7 +174,7 @@ timestamp = 13494949249
  */
 router.post('/centersInfo', function (req, res) {
     // create centersInfo
-    console.log(req.body.username);
+    // console.log(req.body.username);
     Account.findOne({ 'username' : req.body.username}, 'username centersInfo', function(err, account) {
         if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user"}}));
@@ -317,7 +317,7 @@ cid = "5904efdd9d7f825835f7461a"
 */
 router.delete('/centersInfo', function(req, res) {
     Account.findOne({ 'username' : req.body.username}, 'username centersInfo', function (err, account) {
-        if (err) {
+        if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
             res.end();
         }
@@ -334,7 +334,7 @@ router.delete('/centersInfo', function(req, res) {
                             res.write(JSON.stringify({status: "succ", result: {username: account.username, cid: req.query.cid}}));
                             res.end();
                         }
-                    })
+                    });
                     return;
                 }
             }
