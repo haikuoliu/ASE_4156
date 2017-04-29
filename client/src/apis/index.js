@@ -5,6 +5,7 @@ import feeds from './feeds'
 import ads from './ads'
 import account from './account'
 import centers from './centers'
+import rest from './rest'
 
 const dirs = {
   users,
@@ -13,7 +14,8 @@ const dirs = {
   feeds,
   ads,
   account,
-  centers
+  centers,
+  rest
 }
 
 function api(rawPath, ...args) {
