@@ -18,4 +18,4 @@ script:
 
 before_install:
     - openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
-      -in auth.js.enc -out config/auth.js -d
+      -in ./server/auth.js.enc -out ./server/config/auth.js -d
