@@ -6,14 +6,14 @@ export function userLogin(args) {
   const formData = new FormData()
   formData.append('username', args.username)
   formData.append('password', args.password)
-  return fetchPro(api('account:login'), {
+  return fetchPro(api('rest:login'), {
     method: 'post',
     body: formData
   }).then(response => response.json())
     .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
     .then(json => {
       if (json.status === 'fail') {
-        logger.error(api('account:login'), json.result.msg)
+        logger.error(api('rest:login'), json.result.msg)
       }
       return json
     })
@@ -24,17 +24,17 @@ export function userRegister(args) {
   formData.append('username', args.username)
   formData.append('email', args.email)
   formData.append('password', args.password)
-  formData.append('birth', args.birth.format('YYYY-MM-DD'))
+  formData.append('birth', args.birth.valueOf())
   formData.append('gender', args.gender)
   formData.append('phone', args.phone)
-  return fetchPro(api('account:register'), {
+  return fetchPro(api('rest:register'), {
     method: 'post',
     body: formData
   }).then(response => response.json())
     .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
     .then(json => {
       if (json.status === 'fail') {
-        logger.error(api('account:register'), json.result.msg)
+        logger.error(api('rest:register'), json.result.msg)
       }
       return json
     })

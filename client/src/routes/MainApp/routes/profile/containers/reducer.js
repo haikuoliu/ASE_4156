@@ -34,7 +34,7 @@ const reducerMap = {
       oldValue.merge(Immutable.Map({
         userName: action.result.username,
         gender: action.result.gender === 'male' ? 'Male' : 'Female',
-        birth: new Date(action.result.birth).getTime(),
+        birth: action.result.birth,
         email: action.result.email,
         phone: action.result.phone
       }))

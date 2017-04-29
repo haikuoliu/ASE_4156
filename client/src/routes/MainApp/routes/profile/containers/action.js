@@ -21,12 +21,12 @@ export function profileUserInfoUpdate(key, value) {
 
 export function loadBasicInfo(myUsername, username) {
   return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
-    fetchPro(api('account:getBasicInfo', username))
+    fetchPro(api('rest:basicInfo_get', username))
       .then(response => response.json())
       .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
       .then(json => {
         if (json.status === 'fail') {
-          logger.error(api('account:getBasicInfo', username), json.result.msg)
+          logger.error(api('rest:basicInfo_get', username), json.result.msg)
           return
         }
         dispatch({
