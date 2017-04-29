@@ -45,22 +45,22 @@ passport.deserializeUser(Account.deserializeUser());
 mongoose.connect('mongodb://MastersParty:MastersParty@cluster0-shard-00-00-qx1je.mongodb.net:27017,cluster0-shard-00-01-qx1je.mongodb.net:27017,cluster0-shard-00-02-qx1je.mongodb.net:27017/Cluster0?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
 
 
-
 var user = require('./routes/user');
 var pet = require('./routes/pet');
 var center = require('./routes/center');
 var order = require('./routes/order');
 var search = require('./routes/search');
-
+var social = require('./routes/social_login');
 
 app.use('/', user);
 app.use('/', pet);
 app.use('/', center);
 app.use('/', order);
 app.use('/', search);
+app.use('/', social);
 
 // catch 404 error
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.write(JSON.stringify({status: "fail", result: {msg: "Request URI doesn't exist"}}));
     res.end();
 });

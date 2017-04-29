@@ -10,7 +10,7 @@
     "@google/maps": "^0.3.1",
     "body-parser": "~1.16.0",
     "busboy-body-parser": "^0.3.0",
-    "chai": "^1.8.1",
+    "chai": "^3.5.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.2",
@@ -18,14 +18,15 @@
     "express": "~4.14.1",
     "express-session": "^1.10.1",
     "jade": "~1.11.0",
-    "mocha": "~1.14.0",
+    "mocha": "^3.3.0",
     "mongoose": "^4.4.1",
     "morgan": "~1.7.0",
     "passport": "^0.2.1",
+    "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^1.0.0",
     "request": "^2.81.0",
     "serve-favicon": "~2.3.2",
-    "should": "~2.1.0"
+    "should": "^11.2.1"
   }
 }

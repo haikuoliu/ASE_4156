@@ -19,6 +19,8 @@ function searchAddress(address, callback) {
             var coord = response.json.results[0].geometry.location;
             // console.log("success: ",coord);
             var zipcode = response.json.results[0].address_components[6].long_name;
+            if (zipcode === "United States")
+                zipcode = response.json.results[0].address_components[7].long_name;
             // console.log("success: ",zipcode);
             callback(coord, zipcode);
             // return {coord:coord,zipcode:zipcode};

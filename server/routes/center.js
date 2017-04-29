@@ -90,16 +90,26 @@ router.put('/centersInfo', function (req, res) {
         } else {
             for (var i = 0; i < account.centersInfo.length; i++) {
                 if (req.query.cid === account.centersInfo[i].cid.toString()) {
-                    account.centersInfo[i].title = req.body.title;
-                    account.centersInfo[i].content = req.body.content;
-                    account.centersInfo[i].location.lat = req.body.lat;
-                    account.centersInfo[i].location.lng = req.body.lng;
-                    account.centersInfo[i].location.street = req.body.street;
-                    account.centersInfo[i].location.city = req.body.city;
-                    account.centersInfo[i].location.state = req.body.state;
-                    account.centersInfo[i].location.zip = req.body.zip;
-                    account.centersInfo[i].size = req.body.size;
-                    account.centersInfo[i].timestamp = req.body.timestamp;
+                    if (req.body.title != null)
+                        account.centersInfo[i].title = req.body.title;
+                    if (req.body.content != null)
+                        account.centersInfo[i].content = req.body.content;
+                    if (req.body.lat != null)
+                        account.centersInfo[i].location.lat = req.body.lat;
+                    if (req.body.lng != null)
+                        account.centersInfo[i].location.lng = req.body.lng;
+                    if (req.body.street != null)
+                        account.centersInfo[i].location.street = req.body.street;
+                    if (req.body.city != null)
+                        account.centersInfo[i].location.city = req.body.city;
+                    if (req.body.state != null)
+                        account.centersInfo[i].location.state = req.body.state;
+                    if (req.body.zip != null)
+                        account.centersInfo[i].location.zip = req.body.zip;
+                    if (req.body.size != null)
+                        account.centersInfo[i].size = req.body.size;
+                    if (req.body.timestamp != null)
+                        account.centersInfo[i].timestamp = req.body.timestamp;
                     account.save(function (err) {
                         if (err) {
                             res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
