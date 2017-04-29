@@ -57,12 +57,12 @@ export function loadPetsInfo(username) {
 
 export function loadCentersInfo(username) {
   return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
-    fetchPro(api('account:getCentersInfo', username))
+    fetchPro(api('rest:centersInfo_user_get', username))
       .then(response => response.json())
       .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
       .then(json => {
         if (json.status === 'fail') {
-          logger.error(api('account:getCentersInfo', username), json.result.msg)
+          logger.error(api('rest:centersInfo_user_get', username), json.result.msg)
           return
         }
         dispatch({
