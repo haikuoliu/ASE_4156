@@ -4,4 +4,4 @@ server/node_modules
 npm-debug.log
 
 .idea
-/server/config/auth.js
+/server/config/

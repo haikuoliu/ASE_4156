@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@google/maps": "^0.3.1",
+    "aws-sdk": "^2.48.0",
     "body-parser": "~1.16.0",
     "busboy-body-parser": "^0.3.0",
     "chai": "^3.5.0",
@@ -27,6 +28,7 @@
     "passport-local-mongoose": "^1.0.0",
     "request": "^2.81.0",
     "serve-favicon": "~2.3.2",
-    "should": "^11.2.1"
+    "should": "^11.2.1",
+    "twilio": "^2.11.1"
   }
 }
