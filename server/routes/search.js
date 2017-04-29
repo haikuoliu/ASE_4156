@@ -10,7 +10,7 @@ var Account = require('../models/account');
 
 
 function searchAddress(address, callback) {
-    console.log('Search Address')
+    console.log('Search Address');
     // Geocode an address.
     googleMapsClient.geocode({
         address: address
@@ -46,11 +46,17 @@ router.post('/addr', function(req, res) {
     });
 });
 
+function cal_dist(x1, y1, x2, y2) {
+    return Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+}
+
 
 router.post('/geo', function (req,res) {
    var zipcode = Number(req.body.zipcode);
+   var cent_lat = req.body.lat;
+   var cent_lng = req.body.lng;
    var scope = 3;
-   zips = [];
+   var zips = [];
    for (i = zipcode - scope; i < zipcode + scope; i++) {
        zips[i - (zipcode - scope)] = i;
    }
@@ -61,22 +67,60 @@ router.post('/geo', function (req,res) {
            res.end();
        }
        else {
-           var locations = [];
-           for (i = 0; i < account.length; i++) {
-               centers = account[i].centersInfo;
-               for (j = 0; j < centers.length; j++) {
-                   for (k = 0; k < zips.length;k++) {
+           var res_centers = [];
+           for (var i = 0; i < account.length; i++) {
+               var centers = account[i].centersInfo;
+               for (var j = 0; j < centers.length; j++) {
+                   for (var k = 0; k < zips.length;k++) {
                        if (centers[j].location.zip == zips[k]) {
-                           locations.push(centers[j]);
+                           res_centers.push(centers[j]);
                            break;
                        }
                    }
                }
            }
+           var alat = 0;
+           var alng = 0;
+           var blat = 0;
+           var blng = 0;
+           res_centers.sort(function(a, b) {
+               if (a.location.lat === undefined) {
+                   alat = cent_lat;
+               }
+               else {
+                   alat = a.location.lat;
+               }
+
+               if (a.location.lng === undefined) {
+                    alng = cent_lng;
+               }
+               else {
+                    alng = a.location.lng;
+               }
+
+               if (b.location.lat === undefined) {
+                    blat = cent_lat;
+               }
+               else {
+                    blat = b.location.lat;
+               }
+
+               if (b.location.lng === undefined) {
+                    blng = cent_lng;
+               }
+               else {
+                    blng = b.location.lng;
+               }
+
+               return cal_dist(alat, cent_lat, alng, cent_lng) - cal_dist(blat, cent_lat, blng, cent_lng);
+           });
+
+           // we want the nearest 20
+           res_centers = res_centers.slice(0, 20);
 
            res.write(JSON.stringify({
                status: "succ", result: {
-                   centersInfo: locations
+                   centersInfo: res_centers
                }
            }));
            res.end();
