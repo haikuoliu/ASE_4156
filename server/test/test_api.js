@@ -174,6 +174,35 @@ describe('test center functions', function() {
 });
 
 
+describe('test search functions', function() {
+    this.timeout(15000);
+
+
+    it('test get addr', function(done) {
+        var request = require('request');
+        request.get({url:'http://localhost:3000/addr?location=Columbia Univeristy'}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            expect(body.result.coordinate.lat).to.equal(40.8075355);
+            expect(body.result.coordinate.lng).to.equal(-73.9625727);
+            expect(body.result.zipcode).to.equal("10027");
+            done();
+        });
+    });
+
+    it('test get near', function(done) {
+        var request = require('request');
+        request.get({url:'http://localhost:3000/near?zipcode=10027&lat=12&lng=20'}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+});
+
+
 // describe('test post functions', function() {           
 //     this.timeout(15000);
 

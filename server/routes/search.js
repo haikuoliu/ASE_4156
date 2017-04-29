@@ -9,7 +9,7 @@ var search = require('../helpers/util');
 
 /*
 --------input--------:
-http://localhost:3000/addr?location="180 Claremont Ave"
+http://localhost:3000/addr?location=180 Claremont Ave
 
 --------output--------:
 {
