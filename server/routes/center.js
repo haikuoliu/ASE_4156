@@ -5,7 +5,7 @@ var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
 var search = require('../helpers/util');
 
-
+// for test only
 router.get('/updateCenter', function(req, res) {
     Account.find('username centersInfo', function (err, account) {
         if (err) {
@@ -50,20 +50,96 @@ router.get('/updateCenter', function(req, res) {
     });
 });
 
+/*
+--------input--------:
+http://localhost:3000/centersInfoUser?username=zehao
 
-
-
-router.get('/centersInfo', function(req, res) {
-    Account.findOne({ 'username' : req.query.username}, 'username centersInfo', function (err, account) {
-        if (err) {
+--------output--------:
+{
+    "status":"succ",
+    "result":{
+        "centersInfo":[
+            {
+                "cid":"40380416-8206-4565-a112-efde3bd885d5",
+                "title":"parallelism",
+                "content":"Pellentesque eget nunc.",
+                "size":95,
+                "timestamp":20173687,
+                "location":{
+                    "street":" 326 W 47th St",
+                    "zip":10036,
+                    "lat":40.7608265,
+                    "lng":-73.9889803
+                }
+            },
+            {
+                "cid":"9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682",
+                "title":"software",
+                "content":"Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.",
+                "size":186,
+                "timestamp":20178115,
+                "location":{
+                    "street":"301 Elmside Drive",
+                    "zip":77042,
+                    "lat":29.7328935,
+                    "lng":-95.5431595
+                }
+            }
+        ]
+    }
+}
+*/
+router.get('/centersInfoUser', function(req, res) {
+    Account.findOne({ 'username' : req.query.username}, 'centersInfo', function (err, account) {
+        if (err || account === null ||account.centersInfo === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
             res.end();
         }
-        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
-        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
+            res.write(JSON.stringify({status: "succ", result: {centersInfo: account.centersInfo}}));
+            res.end();
+        }
+    });
+});
+
+/*
+--------input--------:
+http://localhost:3000/centersInfoSpec?cid=9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682
+
+--------output--------:
+{
+    "status":"succ",
+    "result":{
+        "centersInfo":{
+            "cid":"9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682",
+            "title":"software",
+            "content":"Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.",
+            "size":186,
+            "timestamp":20178115,
+            "location":{
+                "street":"301 Elmside Drive",
+                "zip":77042,
+                "lat":29.7328935,
+                "lng":-95.5431595
+            }
+        }
+    }
+}
+ */
+router.get('/centersInfoSpec', function(req, res) {
+    var cid = req.query.cid;
+    console.log(cid);
+    Account.findOne({ 'centersInfo.cid' : cid}, 'centersInfo', function (err, account) {
+        if (err || account === null) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
+            res.end();
+        }
+        else {
+            console.log(account);
             for (var i = 0; i < account.centersInfo.length; i++) {
-                if (req.query.cid === account.centersInfo[i].cid) {
+                console.log(account.centersInfo[i]);
+                console.log(account.centersInfo[i].cid);
+                if (cid === account.centersInfo[i].cid) {
                     res.write(JSON.stringify({status: "succ", result: {centersInfo: account.centersInfo[i]}}));
                     res.end();
                     return;
@@ -75,11 +151,32 @@ router.get('/centersInfo', function(req, res) {
     });
 });
 
+/*
+--------input--------:
+http://localhost:3000/centersInfo
+username = "zehao"
+content = "hahaha"
+title = "heihei"
+street = "180 Claremont Ave"
+city = "New York"
+state = "NY"
+size = 50
+timestamp = 13494949249
 
+--------output--------:
+{
+    "status":"succ",
+    "result":{
+        "username":"master",
+        "cid":"5904efdd9d7f825835f7461a"
+    }
+}
+ */
 router.post('/centersInfo', function (req, res) {
     // create centersInfo
+    console.log(req.body.username);
     Account.findOne({ 'username' : req.body.username}, 'username centersInfo', function(err, account) {
-        if (err) {
+        if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user"}}));
             res.end();
         } else {
@@ -114,20 +211,38 @@ router.post('/centersInfo', function (req, res) {
                         }
                     })
                 } else {
-                    res.write(JSON.stringify({status: "fail", result: {msg: "Search request failed"}}));
+                    res.write(JSON.stringify({status: "fail", result: {msg: "create center failed"}}));
                     res.end();
                 }
             });
-
         }
     });
 });
 
+/*
+--------input--------:
+http://localhost:3000/centersInfo
+username = "zehao"
+cid = "5904efdd9d7f825835f7461a"
+title = "heihei"
+street = "180 Claremont Ave"
+city = "New York"
+state = "NY"
+size = 50
+timestamp = 13494949249
 
+--------output--------:
+{"status":"succ",
+    "result":{
+        "username":"master",
+        "cid":"5904efdd9d7f825835f7461a"
+    }
+}
+ */
 router.put('/centersInfo', function (req, res) {
     // edit centersInfo
     Account.findOne({ 'username' : req.body.username, 'centersInfo.cid' : req.body.cid}, 'username centersInfo', function(err, account) {
-        if (err) {
+        if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find center"}}));
             res.end();
         } else {
@@ -186,14 +301,26 @@ router.put('/centersInfo', function (req, res) {
     });
 });
 
+/*
+--------input--------:
+http://localhost:3000/centersInfo
+username = "zehao"
+cid = "5904efdd9d7f825835f7461a"
+
+--------output--------:
+{
+    "status":"succ",
+    "result":{
+        "username":"master"
+    }
+}
+*/
 router.delete('/centersInfo', function(req, res) {
     Account.findOne({ 'username' : req.body.username}, 'username centersInfo', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
             res.end();
         }
-        // res.render('/profile', {username : account.username, birth : account.birth, gender : account.gender, email : account.email, phone : account.phone});
-        // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
             for (var i = 0; i < account.centersInfo.length; i++) {
                 if (req.body.cid === account.centersInfo[i].cid) {
