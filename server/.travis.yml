@@ -3,19 +3,19 @@ language: node_js
 node_js:
 - '6'
 install:
-  - cd server
-  - npm install
-  - cd ../client
-  - npm install
-
-
+- cd server
+- npm install
+- cd ../client
+- npm install
 script:
-  - npm test
-  - cd ../server
-  - node ./bin/www &
-
-  - npm test
-
+- npm test
+- cd ../server
+- node ./bin/www &
+- npm test
 before_install:
 - openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
-  -in auth.js.enc -out config/auth.js -d
+  -in secrets.tar.enc -out secrets.tar -d
+#- openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
+#  -in twillio-keys.js.enc -out config/twillio-keys.js -d
+#- openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
+#  -in auth.js.enc -out config/auth.js -d
