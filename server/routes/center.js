@@ -3,6 +3,34 @@ var router = express.Router();
 var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
+var googleMapsClient = require('@google/maps').createClient({
+    key: 'AIzaSyCYAXFUzdidNb5J_EnXz9Pa6Jbsedt6FdM'
+});
+
+function searchAddress(address, callback) {
+    console.log('Search Address')
+    // Geocode an address.
+    googleMapsClient.geocode({
+        address: address
+    }, function(err, response) {
+        if (!err) {
+            var coord = response.json.results[0].geometry.location;
+            // console.log("success: ",coord);
+            var zipcode;
+            if (response.json.results[0].address_components[6].types[0] === "postal_code")
+                zipcode = response.json.results[0].address_components[6].long_name;
+            else if (response.json.results[0].address_components[7].types[0] === "postal_code")
+                zipcode = response.json.results[0].address_components[7].long_name;
+            // console.log("success: ",zipcode);
+            callback(coord, zipcode);
+            // return {coord:coord,zipcode:zipcode};
+        } else {
+            console.log("The Geocode was not successful for the following reason: " + status);
+            return null;
+        }
+
+    });
+}
 
 
 // router.get('/getCentersInfo', function(req, res) {
@@ -52,30 +80,38 @@ router.post('/centersInfo', function (req, res) {
             res.end();
         } else {
             var objectId = new ObjectID();
-            account.centersInfo.push({
-                cid: objectId,
-                title: req.body.title,
-                content: req.body.content,
-                location: {
-                    lat: req.body.lat,
-                    lng: req.body.lng,
-                    street: req.body.street,
-                    city: req.body.city,
-                    state: req.body.state,
-                    zip: req.body.zip
-                },
-                size: req.body.size,
-                timestamp: req.body.timestamp
-            });
-            account.save(function (err) {
-                if (err) {
-                    res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
-                    res.end();
+            searchAddress(req.body.street, function(coord,zipcode) {
+                if (coord!=null) {
+                    account.centersInfo.push({
+                        cid: objectId,
+                        title: req.body.title,
+                        content: req.body.content,
+                        location: {
+                            lat: coord.lat,
+                            lng: coord.lng,
+                            street: req.body.street,
+                            city: req.body.city,
+                            state: req.body.state,
+                            zip: zipcode
+                        },
+                        size: req.body.size,
+                        timestamp: req.body.timestamp
+                    });
+                    account.save(function (err) {
+                        if (err) {
+                            res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
+                            res.end();
+                        } else {
+                            res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: objectId}}));
+                            res.end();
+                        }
+                    })
                 } else {
-                    res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: objectId}}));
+                    res.write(JSON.stringify({status: "fail", result: {msg: "Search request failed"}}));
                     res.end();
                 }
-            })
+            });
+
         }
     });
 });
@@ -88,42 +124,57 @@ router.put('/centersInfo', function (req, res) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find center"}}));
             res.end();
         } else {
-            for (var i = 0; i < account.centersInfo.length; i++) {
-                if (req.query.cid === account.centersInfo[i].cid.toString()) {
-                    if (req.body.title != null)
-                        account.centersInfo[i].title = req.body.title;
-                    if (req.body.content != null)
-                        account.centersInfo[i].content = req.body.content;
-                    if (req.body.lat != null)
-                        account.centersInfo[i].location.lat = req.body.lat;
-                    if (req.body.lng != null)
-                        account.centersInfo[i].location.lng = req.body.lng;
-                    if (req.body.street != null)
-                        account.centersInfo[i].location.street = req.body.street;
-                    if (req.body.city != null)
-                        account.centersInfo[i].location.city = req.body.city;
-                    if (req.body.state != null)
-                        account.centersInfo[i].location.state = req.body.state;
-                    if (req.body.zip != null)
-                        account.centersInfo[i].location.zip = req.body.zip;
-                    if (req.body.size != null)
-                        account.centersInfo[i].size = req.body.size;
-                    if (req.body.timestamp != null)
-                        account.centersInfo[i].timestamp = req.body.timestamp;
-                    account.save(function (err) {
-                        if (err) {
-                            res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
-                            res.end();
-                        } else {
-                            res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: req.body.cid}}));
-                            res.end();
-                        }
-                    })
-                    return;
+            var i;
+            for (i = 0; i < account.centersInfo.length; i++) {
+                if (req.body.cid === account.centersInfo[i].cid.toString()) {
+                    break;
                 }
             }
-            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find center"}}));
-            res.end();
+            if (i === account.centersInfo.length){
+                res.write(JSON.stringify({status: "fail", result: {msg: "Can't find center"}}));
+                res.end();
+            }
+            else {
+                if (req.body.title != null)
+                    account.centersInfo[i].title = req.body.title;
+                if (req.body.content != null)
+                    account.centersInfo[i].content = req.body.content;
+                if (req.body.city != null)
+                    account.centersInfo[i].location.city = req.body.city;
+                if (req.body.state != null)
+                    account.centersInfo[i].location.state = req.body.state;
+                if (req.body.timestamp != null)
+                    account.centersInfo[i].timestamp = req.body.timestamp;
+
+                if (req.body.street != null)
+                {
+                    searchAddress(req.body.street, function(coord,zipcode) {
+                        if (coord!=null) {
+                            account.centersInfo[i].location.lat = coord.lat;
+                            account.centersInfo[i].location.lng = coord.lng;
+                            account.centersInfo[i].location.street = req.body.street;
+                            account.centersInfo[i].location.zip = zipcode;
+
+                            account.save(function (err) {
+                                if (err) {
+                                    res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
+                                    res.end();
+                                } else {
+                                    res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: req.body.cid}}));
+                                    res.end();
+                                }
+                            })
+
+
+                        } else {
+                            res.write(JSON.stringify({status: "fail", result: {msg: "Search request failed"}}));
+                            res.end();
+                        }
+                    });
+                }
+            }
+
+
         }
     });
 });

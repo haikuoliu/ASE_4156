@@ -42,7 +42,7 @@ router.post('/addr', function(req, res) {
             res.write(JSON.stringify({status: "succ", result: {coordinate: coord, zipcode: zipcode}}));
             res.end();
         } else {
-            res.write(JSON.stringify({status: "fail", result: {msg: "Search request filaed"}}));
+            res.write(JSON.stringify({status: "fail", result: {msg: "Search request failed"}}));
             res.end();
         }
     });
