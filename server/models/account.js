@@ -23,7 +23,7 @@ var Account = new Schema({
         birth: Number
     }],
     centersInfo: [{
-        cid: Schema.Types.ObjectId,
+        cid: String, //Schema.Types.ObjectId,
         title: String,
         content: String,
         location: {
@@ -38,7 +38,7 @@ var Account = new Schema({
         timestamp: Number
     }],
     order: [{
-        oid: Schema.Types.ObjectId,
+        oid: String, //Schema.Types.ObjectId,
         content: String,
         timestamp: Number
     }]

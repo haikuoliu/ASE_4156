@@ -5,25 +5,12 @@ var expect = chai.expect
 
 describe('test user login functions', function() {           
     this.timeout(15000);
-    it('test user login', function(done) {
-        var request = require('request');
-        var formData = {     
-            username: "zehao",
-            password: "zehao"
-        };
-        request.post({url:'http://localhost:3000/login', formData: formData}, function optionalCallback(err, res, body) {
-            var body = JSON.parse(body);
-            expect(err).to.equal(null);
-            expect(body.status).to.equal("succ");
-            done();
-        });
-    });
 
     it('test user register', function(done) {
         var myDate = new Date();
 
         var request = require('request');
-        var formData = {   
+        var formData = {
             username: "zehao" + myDate.getTime().toString(),
             password: "zehao",
             birth: 1995,
@@ -38,6 +25,22 @@ describe('test user login functions', function() {
             done();
         });
     });
+
+    it('test user login', function(done) {
+        var request = require('request');
+        var formData = {     
+            username: "master",
+            password: "master"
+        };
+        request.post({url:'http://localhost:3000/login', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
+
 
 });
 
@@ -55,7 +58,7 @@ describe('test get info functions', function() {
             expect(body.result.birth).to.equal(20170425);
             expect(body.result.gender).to.equal("male");
             expect(body.result.email).to.equal("master@columbia.edu");
-            expect(body.result.phone).to.equal("929208");
+            expect(body.result.phone).to.equal("9292081111");
             done();
         });
     });
@@ -72,7 +75,7 @@ describe('test get info functions', function() {
 
     it('test getCentersInfo', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/centersInfo?username=master&cid=59000248af916211379ab8d5'}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/centersInfo?username=master&cid=5904bec68c5ce60eeffa6d72'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
