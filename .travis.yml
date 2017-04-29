@@ -20,3 +20,5 @@ before_install:
     - mkdir server/config
     - openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
       -in ./server/auth.js.enc -out ./server/config/auth.js -d
+    - openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
+      -in ./server/twillio-keys.js.enc -out ./server/config/twillio-keys.js -d
