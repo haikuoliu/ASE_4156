@@ -58,7 +58,7 @@ router.get('/basicInfo', function(req, res) {
 });
 
 router.put('/basicInfo', function(req, res) {
-    Account.findOne({ 'username' : req.query.username}, 'username birth gender email phone', function (err, account) {
+    Account.findOne({ 'username' : req.body.username}, 'username birth gender email phone', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
             res.end();

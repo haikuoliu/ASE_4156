@@ -85,6 +85,8 @@ router.post('/centersInfo', function (req, res) {
         } else {
             var objectId = new ObjectID();
             var id = objectId.toString();
+            if (req.body.cid != null)
+                id = req.body.cid;
             search.searchAddress(req.body.street, function(coord,zipcode) {
                 if (coord!=null) {
                     account.centersInfo.push({
@@ -185,7 +187,7 @@ router.put('/centersInfo', function (req, res) {
 });
 
 router.delete('/centersInfo', function(req, res) {
-    Account.findOne({ 'username' : req.query.username}, 'username centersInfo', function (err, account) {
+    Account.findOne({ 'username' : req.body.username}, 'username centersInfo', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
             res.end();
@@ -194,7 +196,7 @@ router.delete('/centersInfo', function(req, res) {
         // console.log("username : " + account.username + " birth : " + account.birth + " gender : " + account.gender + " email : " + account.email + " phone " + account.email);
         else {
             for (var i = 0; i < account.centersInfo.length; i++) {
-                if (req.query.cid === account.centersInfo[i].cid) {
+                if (req.body.cid === account.centersInfo[i].cid) {
                     //delete account.centersInfo[i];
                     account.centersInfo.splice(i, 1);
                     account.save(function (err) {
