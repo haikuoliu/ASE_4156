@@ -18,8 +18,10 @@ function searchAddress(address, callback) {
         if (!err) {
             var coord = response.json.results[0].geometry.location;
             // console.log("success: ",coord);
-            var zipcode = response.json.results[0].address_components[6].long_name;
-            if (zipcode === "United States")
+            var zipcode;
+            if (response.json.results[0].address_components[6].types[0] === "postal_code")
+                zipcode = response.json.results[0].address_components[6].long_name;
+            else if (response.json.results[0].address_components[7].types[0] === "postal_code")
                 zipcode = response.json.results[0].address_components[7].long_name;
             // console.log("success: ",zipcode);
             callback(coord, zipcode);
