@@ -1,13 +1,21 @@
 sudo: required
 language: node_js
 node_js:
-  - "iojs"
-  - "6"
-
-
+- '6'
 install:
-    - npm install
+  - cd server
+  - npm install
+  - cd ../client
+  - npm install
+
 
 script:
-    - node ./bin/www
-    - npm test
+  - npm test
+  - cd ../server
+  - node ./bin/www &
+
+  - npm test
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
+  -in auth.js.enc -out config/auth.js -d
