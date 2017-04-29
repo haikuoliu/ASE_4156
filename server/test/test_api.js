@@ -6,17 +6,19 @@ var expect = chai.expect
 describe('test user functions', function() {
     this.timeout(15000);
 
+    var myDate = new Date();
+    var username = "master" + myDate.getTime().toString()
+
     it('test user register', function(done) {
-        var myDate = new Date();
 
         var request = require('request');
         var formData = {
-            username: "zehao" + myDate.getTime().toString(),
-            password: "zehao",
+            username: username,
+            password: "master",
             birth: 1995,
             gender: "male",
-            email: "zehao@gmail.com",
-            phone: "123"
+            email: "master@gmail.com",
+            phone: "9290000001"
         };
         request.post({url:'http://localhost:3000/register', formData: formData}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -29,7 +31,7 @@ describe('test user functions', function() {
     it('test user login', function(done) {
         var request = require('request');
         var formData = {     
-            username: "master",
+            username: username,
             password: "master"
         };
         request.post({url:'http://localhost:3000/login', formData: formData}, function optionalCallback(err, res, body) {
@@ -47,17 +49,17 @@ describe('test user functions', function() {
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
             expect(body.result.username).to.equal("master");
-            expect(body.result.birth).to.equal(20170425);
+            expect(body.result.birth).to.equal(1993);
             expect(body.result.gender).to.equal("male");
-            expect(body.result.email).to.equal("master@columbia.edu");
-            expect(body.result.phone).to.equal("9292081111");
+            expect(body.result.email).to.equal("master@gmail.com");
+            expect(body.result.phone).to.equal("9292081000");
             done();
         });
     });
 
     it('test put basicInfo', function(done) {
         var formData = {
-            username: "master1",
+            username: "master",
             birth: 1993,
             gender: "male",
             email: "master@gmail.com",
@@ -71,6 +73,8 @@ describe('test user functions', function() {
             done();
         });
     });
+
+
 
 });
 
@@ -89,17 +93,6 @@ describe('test center functions', function() {
     //         done();
     //     });
     // });
-
-    it('test get centersInfo', function(done) {
-        var request = require('request');
-        request.get({url:'http://localhost:3000/centersInfo?username=master&cid=5904bec68c5ce60eeffa6d72'}, function optionalCallback(err, res, body) {
-            var body = JSON.parse(body);
-            expect(err).to.equal(null);
-            expect(body.status).to.equal("succ");
-            done();
-        });
-    });
-
     it('test post centersInfo', function(done) {
         var formData = {
             username: "master",
@@ -141,6 +134,18 @@ describe('test center functions', function() {
             done();
         });
     });
+
+    it('test get centersInfo', function(done) {
+        var request = require('request');
+        request.get({url:'http://localhost:3000/centersInfo?username=master&cid=20170429'}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
+
 
     it('test delete centersInfo', function(done) {
         var formData = {
