@@ -26,6 +26,8 @@ var Account = new Schema({
         cid: String, //Schema.Types.ObjectId,
         title: String,
         content: String,
+        price: Number,
+        available: Boolean,
         location: {
             lat: Number,
             lng: Number,
@@ -39,7 +41,9 @@ var Account = new Schema({
     }],
     order: [{
         oid: String, //Schema.Types.ObjectId,
-        content: String,
+        cid: String,
+        type: String,
+        another: Account,
         timestamp: Number
     }]
 });

@@ -137,7 +137,7 @@ describe('test center functions', function() {
 
     it('test get centersInfo', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/centersInfo?username=master&cid=20170429'}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/centersInfoSpec?username=master&cid=20170429'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");

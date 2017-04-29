@@ -190,6 +190,8 @@ router.post('/centersInfo', function (req, res) {
                         cid: id,
                         title: req.body.title,
                         content: req.body.content,
+                        price: req.body.price,
+                        available: req.body.available,
                         location: {
                             lat: coord.lat,
                             lng: coord.lng,
@@ -261,6 +263,10 @@ router.put('/centersInfo', function (req, res) {
                     account.centersInfo[i].title = req.body.title;
                 if (req.body.content != null)
                     account.centersInfo[i].content = req.body.content;
+                if (req.body.price != null)
+                    account.centersInfo[i].price = req.body.price;
+                if (req.body.available != null)
+                    account.centersInfo[i].available = req.body.available;
                 if (req.body.city != null)
                     account.centersInfo[i].location.city = req.body.city;
                 if (req.body.state != null)
