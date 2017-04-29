@@ -51,6 +51,7 @@ var center = require('./routes/center');
 var order = require('./routes/order');
 var search = require('./routes/search');
 var social = require('./routes/social_login');
+var msg = require('./routes/message');
 
 app.use('/', user);
 app.use('/', pet);
@@ -58,6 +59,7 @@ app.use('/', center);
 app.use('/', order);
 app.use('/', search);
 app.use('/', social);
+app.use('/', msg);
 
 // catch 404 error
 app.use(function (req, res, next) {
