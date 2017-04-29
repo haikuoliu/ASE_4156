@@ -3,35 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
-var googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyCYAXFUzdidNb5J_EnXz9Pa6Jbsedt6FdM'
-});
-
-function searchAddress(address, callback) {
-    console.log('Search Address')
-    // Geocode an address.
-    googleMapsClient.geocode({
-        address: address
-    }, function(err, response) {
-        if (!err) {
-            var coord = response.json.results[0].geometry.location;
-            // console.log("success: ",coord);
-            var zipcode;
-            if (response.json.results[0].address_components[6].types[0] === "postal_code")
-                zipcode = response.json.results[0].address_components[6].long_name;
-            else if (response.json.results[0].address_components[7].types[0] === "postal_code")
-                zipcode = response.json.results[0].address_components[7].long_name;
-            // console.log("success: ",zipcode);
-            callback(coord, zipcode);
-            // return {coord:coord,zipcode:zipcode};
-        } else {
-            console.log("The Geocode was not successful for the following reason: " + status);
-            return null;
-        }
-
-    });
-}
-
+var search = require('../helpers/util');
 
 
 router.get('/updateCenter', function(req, res) {
@@ -46,7 +18,7 @@ router.get('/updateCenter', function(req, res) {
             account.forEach(function(acc, i)  {
                 acc.centersInfo.forEach(function ( center, j) {
                     console.log("street = " + account[i].centersInfo[j].location.street);
-                    searchAddress(account[i].centersInfo[j].location.street, function(coord,zipcode) {
+                    search.searchAddress(account[i].centersInfo[j].location.street, function(coord,zipcode) {
                         console.log("coord = " + coord + " zip = " + zipcode);
                         if (coord!=null) {
                             account[i].centersInfo[j].location.lat = coord.lat;
@@ -113,7 +85,7 @@ router.post('/centersInfo', function (req, res) {
         } else {
             var objectId = new ObjectID();
             var id = objectId.toString();
-            searchAddress(req.body.street, function(coord,zipcode) {
+            search.searchAddress(req.body.street, function(coord,zipcode) {
                 if (coord!=null) {
                     account.centersInfo.push({
                         cid: id,
@@ -181,7 +153,7 @@ router.put('/centersInfo', function (req, res) {
 
                 if (req.body.street != null)
                 {
-                    searchAddress(req.body.street, function(coord,zipcode) {
+                    search.searchAddress(req.body.street, function(coord,zipcode) {
                         if (coord!=null) {
                             account.centersInfo[i].location.lat = coord.lat;
                             account.centersInfo[i].location.lng = coord.lng;
