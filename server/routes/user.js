@@ -72,10 +72,19 @@ router.put('/basicInfo', function(req, res) {
                 res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
                 res.end();
             }
-            account.birth = req.body.birth;
-            account.gender = req.body.gender;
-            account.email = req.body.email;
-            account.phone = req.body.phone;
+            // console.log("------" + req.body.birth)
+            // if (req.body.gender != null)
+            //     console.log("not null");
+            // if (req.body.birth == null)
+            //     console.log("null");
+            if (req.body.birth != null)
+                account.birth = req.body.birth;
+            if (req.body.gender != null)
+                account.gender = req.body.gender;
+            if (req.body.email != null)
+                account.email = req.body.email;
+            if (req.body.phone != null)
+                account.phone = req.body.phone;
             account.save(function (err) {
                 if (err) {
                     res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
