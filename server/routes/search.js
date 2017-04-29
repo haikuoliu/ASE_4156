@@ -6,9 +6,26 @@ var router = express.Router();
 var Account = require('../models/account');
 var search = require('../helpers/util');
 
-router.post('/addr', function(req, res) {
-    var addr = req.body.location;
-    // console.log(addr);
+
+/*
+--------input--------:
+http://localhost:3000/addr?location="180 Claremont Ave"
+
+--------output--------:
+{
+    "status":"succ",
+    "result":{
+        "coordinate":{
+            "lat":40.8143426,
+            "lng":-73.9604739
+        },
+        "zipcode":"10027"
+    }
+}
+*/
+router.get('/addr', function(req, res) {
+    var addr = req.query.location;
+    console.log(addr);
     search.searchAddress(addr, function(coord,zipcode) {
         if (coord!=null) {
             res.write(JSON.stringify({status: "succ", result: {coordinate: coord, zipcode: zipcode}}));
@@ -24,11 +41,44 @@ function cal_dist(x1, y1, x2, y2) {
     return Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
 }
 
+/*
+--------input--------:
+http://localhost:3000/near?zipcode=10027&lat=12&lng=20
 
-router.post('/geo', function (req,res) {
-   var zipcode = Number(req.body.zipcode);
-   var cent_lat = req.body.lat;
-   var cent_lng = req.body.lng;
+--------output--------:
+{
+    "status":"succ",
+    "result":{
+        "centersInfo":[
+            {
+                "cid":"d4bdc3d8-03e3-433f-bdb8-3f794bede318",
+                "title":"service-desk",
+                "content":"Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.",
+                "size":127,
+                "timestamp":20178861,
+                "location":{
+                    "street":"7 Pearson Park",
+                    "zip":10027
+                }
+            },
+            {
+                "cid":"50a41ba8-aa82-4094-bc16-33763919c29c",
+                "title":"Virtual",
+                "content":"Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl.","size":33,"timestamp":20174760,
+                "location":{
+                    "street":"415 Upham Drive",
+                    "zip":10027
+                }
+            }
+        ]
+    }
+}
+
+*/
+router.get('/near', function (req,res) {
+   var zipcode = Number(req.query.zipcode);
+   var cent_lat = req.query.lat;
+   var cent_lng = req.query.lng;
    var scope = 3;
    var zips = [];
    for (i = zipcode - scope; i < zipcode + scope; i++) {
