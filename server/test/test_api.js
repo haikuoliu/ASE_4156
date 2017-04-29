@@ -3,7 +3,7 @@ var chai = require('chai')
 var expect = chai.expect
 
 
-describe('test user login functions', function() {           
+describe('test user functions', function() {
     this.timeout(15000);
 
     it('test user register', function(done) {
@@ -40,15 +40,7 @@ describe('test user login functions', function() {
         });
     });
 
-
-
-});
-
-
-
-describe('test get info functions', function() {           
-    this.timeout(15000);
-    it('test getBasicInfo', function(done) {
+    it('test get basicInfo', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/basicInfo?username=master'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -63,6 +55,31 @@ describe('test get info functions', function() {
         });
     });
 
+    it('test put basicInfo', function(done) {
+        var formData = {
+            username: "master1",
+            birth: 1993,
+            gender: "male",
+            email: "master@gmail.com",
+            phone: "9292081000"
+        };
+        var request = require('request');
+        request.put({url:'http://localhost:3000/basicInfo', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
+});
+
+
+
+describe('test center functions', function() {
+    this.timeout(15000);
+
+
     // it('test getPetsInfo', function(done) {
     //     var request = require('request');
     //     request.get({url:'http://localhost:3000/petsInfo?username=test2'}, function optionalCallback(err, res, body) {
@@ -73,7 +90,7 @@ describe('test get info functions', function() {
     //     });
     // });
 
-    it('test getCentersInfo', function(done) {
+    it('test get centersInfo', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/centersInfo?username=master&cid=5904bec68c5ce60eeffa6d72'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -82,6 +99,63 @@ describe('test get info functions', function() {
             done();
         });
     });
+
+    it('test post centersInfo', function(done) {
+        var formData = {
+            username: "master",
+            cid: "20170429",
+            title: "master center",
+            content: "master center content",
+            street: "Columbia University",
+            city: "New York",
+            state: "NY",
+            size: 15,
+            timestamp: 201704291413
+        };
+        var request = require('request');
+        request.post({url:'http://localhost:3000/centersInfo', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
+    it('test put centersInfo', function(done) {
+        var formData = {
+            username: "master",
+            cid: "20170429",
+            title: "master center revised",
+            content: "master center content",
+            street: "Columbia University",
+            city: "New York",
+            state: "NY",
+            size: 15,
+            timestamp: 201704291413
+        };
+        var request = require('request');
+        request.put({url:'http://localhost:3000/centersInfo', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
+    it('test delete centersInfo', function(done) {
+        var formData = {
+            username: "master",
+            cid: "20170429",
+        };
+        var request = require('request');
+        request.delete({url:'http://localhost:3000/centersInfo', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
 
     // it('test getOrder', function(done) {
     //     var request = require('request');
