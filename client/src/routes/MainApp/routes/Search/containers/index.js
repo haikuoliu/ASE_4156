@@ -53,7 +53,7 @@ class Search extends Component {
                 <div className="full" style={{ padding: '10px' }} >
                   <GoogleMap
                     markers={markers}
-                    onClick={this.onMapClick}
+                    onSearch={this.onMapClick}
                     />
                 </div>
               </Col>

@@ -4,7 +4,68 @@ var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
 
+/*
+ --------input--------:
+ http://localhost:3000/ordersInfoUser?username=owner
 
+ --------output--------:
+{
+    "status":
+        "succ",
+    "result":
+    {
+        "ordersInfo":
+        [
+            {
+                "oid": "59054404f839cd1af1eb67fa",
+                "cid": "20170429",
+                "types": "Owner",
+                "timestamp": 1493517316293,
+                "_id": "59054404f839cd1af1eb67fb",
+                "center": {
+                    "title": "Carer Post",
+                    "price": 100,
+                    "size": 50,
+                    "location": {
+                        "state": "NY",
+                        "city": "New York",
+                        "lng": -73.9625727,
+                        "lat": 40.8075355,
+                        "zip": 10027,
+                        "street": "Columbia University"
+                    }
+                },
+                "contact": {
+                    "username": "carer",
+                    "email": "carer@gmail.com",
+                    "phone": "5424210266"
+                }
+            },
+            {
+                "oid": "5905448cf839cd1af1eb6800",
+                "cid": "98877328-2657-46fd-b089-d8ffbee29522",
+                "types": "Owner",
+                "timestamp": 1493517452326,
+                "_id": "5905448cf839cd1af1eb6801",
+                "center": {
+                    "title": "open architecture",
+                    "price": 100,
+                    "size": 66,
+                    "location": {
+                        "zip": 10041,
+                        "street": "4444 Rowland Drive"
+                    }
+                },
+                "contact": {
+                    "username": "rrussam1",
+                    "email": "jgrelak1@nbcnews.com",
+                    "phone": "8553116127"
+                }
+            }
+        ]
+    }
+}
+ */
 router.get('/ordersInfoUser', function(req, res) {
     Account.findOne({ 'username' : req.query.username}, 'ordersInfo', function (err, account) {
         if (err || account === null ||account.ordersInfo === null) {
@@ -18,10 +79,47 @@ router.get('/ordersInfoUser', function(req, res) {
     });
 });
 
+
+/*
+ --------input--------:
+ http://localhost:3000/ordersInfoSpec?username=owner&oid=59054404f839cd1af1eb67fa
+
+ --------output--------:
+{
+    "status": "succ",
+    "result": {
+    "ordersInfo": [
+        {
+            "oid": "59054404f839cd1af1eb67fa",
+            "cid": "20170429",
+            "types": "Owner",
+            "timestamp": 1493517316293,
+            "_id": "59054404f839cd1af1eb67fb",
+            "center": {
+                "title": "Carer Post",
+                "price": 100,
+                "size": 50,
+                "location": {
+                    "state": "NY",
+                    "city": "New York",
+                    "lng": -73.9625727,
+                    "lat": 40.8075355,
+                    "zip": 10027,
+                    "street": "Columbia University"
+                }
+            },
+            "contact": {
+                "username": "carer",
+                "email": "carer@gmail.com",
+                "phone": "5424210266"
+            }
+        }]
+    }
+}*/
 router.get('/ordersInfoSpec', function(req, res) {
     var oid = req.query.oid;
     // console.log(cid);
-    Account.findOne({ 'ordersInfo.oid' : oid}, 'ordersInfo', function (err, account) {
+    Account.findOne({ 'username' : req.query.username}, 'ordersInfo', function (err, account) {
         if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find orders information"}}));
             res.end();
@@ -44,6 +142,22 @@ router.get('/ordersInfoSpec', function(req, res) {
 });
 
 
+
+/*
+ --------input--------:
+ http://localhost:3000/ordersInfo
+ username: "owner"
+ cid: "5a940412-ce8a-4bb5-9ee7-a714e5aa3c56"
+
+ --------output--------:
+{
+    "status": "succ",
+    "result": {
+    "username": "owner",
+        "cid": "5a940412-ce8a-4bb5-9ee7-a714e5aa3c56",
+        "oid": "59054aecd5a3c91b5f7071b3"
+    }
+} */
 router.post('/ordersInfo', function (req, res) {
     // create centersInfo
     // console.log(req.body.username);
@@ -116,7 +230,7 @@ router.post('/ordersInfo', function (req, res) {
                                     res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
                                     res.end();
                                 } else {
-                                    res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: req.body.cid}}));
+                                    res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: req.body.cid, oid: id}}));
                                     res.end();
                                 }
                             });
@@ -130,6 +244,22 @@ router.post('/ordersInfo', function (req, res) {
     });
 });
 
+
+/*
+ --------input--------:
+ http://localhost:3000/ordersInfo
+ username: "owner"
+ oid: "59054aecd5a3c91b5f7071b3"
+
+ --------output--------:
+{
+    "status": "succ",
+    "result": {
+    "username": "owner",
+        "oid": "59054aecd5a3c91b5f7071b3"
+    }
+}
+*/
 router.delete('/ordersInfo', function(req, res) {
     Account.findOne({ 'username' : req.body.username}, 'username ordersInfo', function (err, account1) {
         if (err || account1 === null) {

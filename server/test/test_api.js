@@ -42,20 +42,7 @@ describe('test user functions', function() {
         });
     });
 
-    it('test get basicInfo', function(done) {
-        var request = require('request');
-        request.get({url:'http://localhost:3000/basicInfo?username=master'}, function optionalCallback(err, res, body) {
-            var body = JSON.parse(body);
-            expect(err).to.equal(null);
-            expect(body.status).to.equal("succ");
-            expect(body.result.username).to.equal("master");
-            expect(body.result.birth).to.equal(1993);
-            expect(body.result.gender).to.equal("male");
-            expect(body.result.email).to.equal("master@gmail.com");
-            expect(body.result.phone).to.equal("9292081000");
-            done();
-        });
-    });
+
 
     it('test put basicInfo', function(done) {
         var formData = {
@@ -74,7 +61,20 @@ describe('test user functions', function() {
         });
     });
 
-
+    it('test get basicInfo', function(done) {
+        var request = require('request');
+        request.get({url:'http://localhost:3000/basicInfo?username=master'}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            expect(body.result.username).to.equal("master");
+            expect(body.result.birth).to.equal(1993);
+            expect(body.result.gender).to.equal("male");
+            expect(body.result.email).to.equal("master@gmail.com");
+            expect(body.result.phone).to.equal("9292081000");
+            done();
+        });
+    });
 
 });
 
@@ -102,8 +102,7 @@ describe('test center functions', function() {
             street: "Columbia University",
             city: "New York",
             state: "NY",
-            size: 15,
-            timestamp: 201704291413
+            size: 15
         };
         var request = require('request');
         request.post({url:'http://localhost:3000/centersInfo', formData: formData}, function optionalCallback(err, res, body) {
@@ -124,7 +123,6 @@ describe('test center functions', function() {
             city: "New York",
             state: "NY",
             size: 15,
-            timestamp: 201704291413
         };
         var request = require('request');
         request.put({url:'http://localhost:3000/centersInfo', formData: formData}, function optionalCallback(err, res, body) {
@@ -154,6 +152,64 @@ describe('test center functions', function() {
         };
         var request = require('request');
         request.delete({url:'http://localhost:3000/centersInfo', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            done();
+        });
+    });
+
+
+    // it('test getOrder', function(done) {
+    //     var request = require('request');
+    //     request.get({url:'http://localhost:3000/order/getOrder?username=test2'}, function optionalCallback(err, res, body) {
+    //         var body = JSON.parse(body);
+    //         expect(err).to.equal(null);
+    //         expect(body.status).to.equal("succ");
+    //         done();
+    //     });
+    // });
+});
+
+describe('test order functions', function() {
+    this.timeout(15000);
+
+    var oid;
+    it('test post ordersInfo', function(done) {
+        var formData = {
+            username: "owner",
+            cid: "5a940412-ce8a-4bb5-9ee7-a714e5aa3c56"
+        };
+        var request = require('request');
+        request.post({url:'http://localhost:3000/ordersInfo', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            oid = body.result.oid;
+            done();
+        });
+    });
+
+
+    it('test get centersInfo', function(done) {
+        var request = require('request');
+        request.get({url:'http://localhost:3000/ordersInfoSpec?username=owner&oid='+oid}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("succ");
+            expect(body.result.ordersInfo.contact.username).to.equal("sloosc");
+            done();
+        });
+    });
+
+
+    it('test delete centersInfo', function(done) {
+        var formData = {
+            username: "owner",
+            oid: oid
+        };
+        var request = require('request');
+        request.delete({url:'http://localhost:3000/ordersInfo', formData: formData}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");

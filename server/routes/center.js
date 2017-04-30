@@ -203,7 +203,7 @@ router.post('/centersInfo', function (req, res) {
                             zip: zipcode
                         },
                         size: req.body.size,
-                        timestamp: req.body.timestamp
+                        timestamp: new Date().valueOf()
                     });
                     account.save(function (err) {
                         if (err) {
@@ -273,8 +273,7 @@ router.put('/centersInfo', function (req, res) {
                     account.centersInfo[i].location.city = req.body.city;
                 if (req.body.state != null)
                     account.centersInfo[i].location.state = req.body.state;
-                if (req.body.timestamp != null)
-                    account.centersInfo[i].timestamp = req.body.timestamp;
+                account.centersInfo[i].timestamp = new Date().valueOf();;
 
                 if (req.body.street != null)
                 {
