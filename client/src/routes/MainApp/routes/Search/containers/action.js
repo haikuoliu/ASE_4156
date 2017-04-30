@@ -15,19 +15,41 @@ export function changeSearchCenter(loc) {
 
 */
 
-export function loadNeighCenters() {
+export function loadNeighCenters(loc) {
   return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
-    fetchPro(api('centers:getNeighCenters'))
+    fetchPro(api('rest:neighCenters_get', loc.lat, loc.lng, loc.zipcode))
       .then(response => response.json())
       .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
       .then(json => {
         if (json.status === 'fail') {
-          logger.error(api('centers:getNeighCenters'), json.result.msg)
+          logger.error(api('rest:neighCenters_get', loc.lat, loc.lng, loc.zipcode), json.result.msg)
           return
         }
         dispatch({
           type: CENTERS.LOAD_NEIGH_CENTERS,
           result: json.result
+        })
+      })
+  )
+}
+
+export function searchAddress(address) {
+  return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
+    fetchPro(api('rest:searchAddress', address))
+      .then(response => response.json())
+      .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+      .then(json => {
+        if (json.status === 'fail') {
+          logger.error(api('rest:searchAddress', address), json.result.msg)
+          return
+        }
+        dispatch({
+          type: CENTERS.SEARCH_CENTER_ADDRESS,
+          result: {
+            lat: json.result.coordinate.lat,
+            lng: json.result.coordinate.lng,
+            zipcode: json.result.zipcode
+          }
         })
       })
   )

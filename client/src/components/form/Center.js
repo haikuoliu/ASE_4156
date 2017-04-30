@@ -95,7 +95,7 @@ class Center extends Component {
                 <Select style={{ width: '30%' }}>
                   {
                     US_STATES.map(s => (
-                      <Option value={s}>{s}</Option>
+                      <Option key={s} value={s}>{s}</Option>
                     ))
                   }
                 </Select>
@@ -112,7 +112,7 @@ class Center extends Component {
               {getFieldDecorator('size', {
                 initialValue: initialValue.size,
                 rules: [
-                  { required: true, message: 'Please enter the address of center!' }
+                  { required: true, message: 'Please enter the Capacity of center!' }
                 ]
               })(
                 <InputNumber style={{ width: '100%' }} />

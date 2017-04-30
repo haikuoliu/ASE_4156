@@ -2,6 +2,9 @@ import { injectReducer } from 'SRC/reducer.js' // eslint-disable-line no-unused-
 
 export default (store) => ({ // eslint-disable-line no-unused-vars
   path: '/main',
+  indexRoute: {
+    onEnter: (nextState, replace) => replace('/main/search')
+  },
   getComponent(location, cb) {
     require.ensure([], (require) => {
       // Asyn Injection Of Reducers

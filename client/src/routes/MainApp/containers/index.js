@@ -54,15 +54,17 @@ class AdsApp extends Component {
                   theme="dark"
                   mode="horizontal"
                   >
-                  <Menu.Item key="post">
-                    <Link to="/main/post/edit"><Icon type="appstore" />Post</Link>
-                  </Menu.Item>
-                  <Menu.Item key="search">
-                    <Link to="/main/search"><Icon type="mail" />Search</Link>
-                  </Menu.Item>
-                  <Menu.Item key="push">
-                    <Link to="/main/push"><Icon type="cloud-upload" />Push</Link>
-                  </Menu.Item>
+                  {
+                    // <Menu.Item key="post">
+                    //   <Link to="/main/post/edit"><Icon type="appstore" />Post</Link>
+                    // </Menu.Item>
+                    // <Menu.Item key="search">
+                    //   <Link to="/main/search"><Icon type="mail" />Search</Link>
+                    // </Menu.Item>
+                    // <Menu.Item key="push">
+                    //   <Link to="/main/push"><Icon type="cloud-upload" />Push</Link>
+                    // </Menu.Item>
+                  }
                 </Menu>
               </Col>
               {

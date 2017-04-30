@@ -13,7 +13,13 @@ class MapMaker extends Component {
     return (
       <div style={{ position: 'absolute', top: '-24px', left: '5px' }}>
         <div className="text-center" style={{ fontSize: '24px', color: this.props.color }}>
-          <Popover content={this.props.description} title="Title">
+          <Popover
+            content={<div style={{ maxHeight: '150px', overflow: 'auto' }}>
+              {this.props.description}
+            </div>}
+            title={<h3>{this.props.title}</h3>}
+            overlayStyle={{ width: '200px' }}
+            >
             <Icon type="environment" />
           </Popover>
         </div>
@@ -24,10 +30,12 @@ class MapMaker extends Component {
 
 MapMaker.propTypes = {
   description: React.PropTypes.string,
+  title: React.PropTypes.string,
   color: React.PropTypes.string
 }
 
 MapMaker.defaultProps = {
+  title: '',
   description: '',
   color: '#ff2700'
 }
@@ -49,30 +57,37 @@ class GoogleMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      redoSearchEnabled: false,
+      centerChanged: false,
       currentlocation: { lat: 40.809322, lng: -73.9612294 }, // { lat: 59.95, lng: 30.33 }
       searchCenterLocation: { lat: 40.809322, lng: -73.9612294 }
     }
     this._onSearch = this._onSearch.bind(this)
     this._onChange = this._onChange.bind(this)
   }
-  componentWillMount() {
+  componentDidMount() {
     // Set Current Location
     getCurrentLocation()
       .then((pos) => {
         this.setState({
-          currentlocation: pos,
-          searchCenterLocation: pos
+          currentlocation: pos
         })
+        this._onSearch()
       })
   }
   _onChange(args) {
-    this.setState({
-      currentlocation: args.center
-    })
+    if (this.state.currentlocation.lat != args.center.lat) { // eslint-disable-line eqeqeq
+      this.setState({
+        centerChanged: true,
+        currentlocation: args.center
+      })
+    }
   }
   _onSearch() {
     // logger.log(args)
     this.setState({
+      redoSearchEnabled: true,
+      centerChanged: false,
       searchCenterLocation: this.state.currentlocation
     })
     this.props.onSearch(this.state.searchCenterLocation)
@@ -80,11 +95,14 @@ class GoogleMap extends Component {
   render() {
     return (
       <div className="full" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '0px', right: '0px', zIndex: '1', background: '#fbdecc' }} >
-          <Button onClick={this._onSearch} type="danger" ghost>
-            {"Redo Search In Map"}
-          </Button>
-        </div>
+        {
+          !this.state.redoSearchEnabled || !this.state.centerChanged ? null :
+            <div style={{ position: 'absolute', top: '0px', right: '0px', zIndex: '1', background: '#fbdecc' }} >
+              <Button onClick={this._onSearch} type="danger" ghost>
+                {"Redo Search In Map"}
+              </Button>
+            </div>
+        }
         <GoogleMapReact
           bootstrapURLKeys={{
             key: googleAPIKey
@@ -94,12 +112,13 @@ class GoogleMap extends Component {
           onChange={this._onChange}
           >
           {
-            this.props.markers.map((r) => (
+            this.props.markers.map((r, i) => (
               <MapMaker
-                key={r.description}
+                key={`${r.title}-${i}`}
                 lat={r.lat}
                 lng={r.lng}
                 description={r.description}
+                title={r.title}
                 />
             ))
           }
