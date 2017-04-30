@@ -13,7 +13,7 @@ export const mockAPIConfig = {
     {
       // 返回结果－直接返回
       enabled: true,
-      url: new RegExp('http://localhost:8888/user/login'),
+      url: new RegExp('http://localhost:8888/login'),
       type: 'normal',
       dalay: 1000,
       response: (url, config) => {
@@ -25,7 +25,7 @@ export const mockAPIConfig = {
     }, {
       // 返回结果－直接返回
       enabled: true,
-      url: new RegExp('http://localhost:8888/user/register'),
+      url: new RegExp('http://localhost:8888/register'),
       type: 'normal',
       dalay: 1000,
       response: (url, config) => {
@@ -37,13 +37,13 @@ export const mockAPIConfig = {
     }, {
       // 返回结果－直接返回
       enabled: true,
-      url: new RegExp('http://localhost:8888/user/getBasicInfo\\?username=[^&]*'),
+      url: new RegExp('http://localhost:8888/basicInfo\\?username=[^&]*'),
       type: 'normal',
       dalay: 1000,
       response: (url, config) => ({
         status: 'succ',
         result: {
-          username: url.replace(/http:\/\/localhost:8888\/user\/getBasicInfo\?username=([^&]*)/, '$1')
+          username: url.replace(/http:\/\/localhost:8888\/basicInfo\?username=([^&]*)/, '$1')
         }
       })
     }, {
