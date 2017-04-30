@@ -354,3 +354,124 @@ router.delete('/centersInfo', function(req, res) {
 
 
 module.exports = router;
+
+/*
+--------input--------:
+http://localhost:3000/popular
+
+--------output--------:
+{
+   "status":"succ",
+   "result":{
+      "centersInfo":[
+         {
+            "cid":"98877328-2657-46fd-b089-d8ffbee29522",
+            "title":"open architecture",
+            "content":"Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
+            "size":66,
+            "timestamp":20171965,
+            "price":100,
+            "location":{
+               "street":"4444 Rowland Drive",
+               "zip":10041
+            }
+         },
+         {
+            "cid":"37d1c65b-f66e-4054-8777-6eddf4caf98b",
+            "title":"3rd generation",
+            "content":"Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
+            "size":82,
+            "timestamp":20178882,
+            "price":100,
+            "location":{
+               "street":"91043 Riverside Parkway",
+               "zip":10062
+            }
+         },
+         {
+            "cid":"20170429",
+            "title":"Carer Post",
+            "content":"Etiam fau. Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
+            "size":50,
+            "timestamp":20173949,
+            "price":100,
+            "location":{
+               "street":"Columbia University",
+               "zip":10027,
+               "lat":40.8075355,
+               "lng":-73.9625727,
+               "city":"New York",
+               "state":"NY"
+            }
+         }
+      ]
+   }
+}
+*/
+router.get('/popular', function(req, res) {
+    Account.find({}, 'ordersInfo', function (err, account) {
+        if (err || account === null) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
+            res.end();
+        }
+        else {
+            cid_dict = [];
+            for (var i = 0; i < account.length; i++) {
+                for (var j = 0; j < account[i].ordersInfo.length; j++) {
+                    var cur_cid = account[i].ordersInfo[j].cid;
+                    var need_push = true;
+                    for (var k = 0; k < cid_dict.length; k++) {
+                        if (cid_dict[k].cid === cur_cid) {
+                            cid_dict[k].count++;
+                            need_push = false;
+                            break;
+                        }
+                    }
+                    if (need_push) {
+                        cid_dict.push({cid: cur_cid, count: 1});
+                    }
+                }
+            }
+            cid_dict.sort(function(a, b) {
+                return b.count - a.count
+            });
+            cid_dict = cid_dict.slice(0, 20);
+            cids = [];
+            for (var i = 0; i < cid_dict.length; i++) {
+                cids.push(cid_dict[i].cid);
+            }
+            console.log(cids);
+            Account.find({ 'centersInfo.cid' : {"$in": cids}}, 'centersInfo', function (err, account) {
+                if (err || account === null) {
+                    res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
+                    res.end();
+                }
+                else {
+                    centers = [];
+                    for (var i = 0; i < account.length; i++) {
+                        for (var j = 0; j < account[i].centersInfo.length; j++) {
+                            cur_cid = account[i].centersInfo[j].cid;
+                            // found = false;
+                            for (var k = 0; k < cids.length; k++) {
+                                if (cur_cid === cids[k]) {
+                                    // found = true;
+                                    centers.push(account[i].centersInfo[j]);
+                                    break;
+                                }
+                            }
+                            // if (found) {
+                            //     break;
+                            // }
+                        }
+                    }
+                }
+                res.write(JSON.stringify({status: "succ", result: {centersInfo: centers}}));
+                res.end();
+            });
+        }
+    });
+});
+
+module.exports = router;
+
+
