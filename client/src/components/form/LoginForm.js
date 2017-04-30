@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import { Form, Icon, Input, Button } from 'antd'
 const FormItem = Form.Item
 
@@ -82,6 +83,7 @@ class NormalLoginForm extends Component {
             <Button type="primary" htmlType="submit" className="login-form-button">
               Log in
             </Button>
+            <a href="http://localhost:3000/fblogin"><Icon type="dingding" /></a>
             <span style={{ margin: '0 20px' }}>Or</span>
             <span className="fc-blue pointer" onClick={this.loginAsVisitor}>Visitor</span>
           </div>

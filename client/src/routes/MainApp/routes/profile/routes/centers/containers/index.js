@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import * as ClientProfileAction from '../../../containers/action'
 // import * as PersistentActions from 'SRC/action'
 
-import { Card } from 'antd'
+import { Card, Icon } from 'antd'
 //
 // import moment from 'moment'
 // import { throttle } from 'SRC/utils/utils'
@@ -21,10 +21,13 @@ class CentersList extends Component {
         {
           centersList.map((center) => (
             <Card
+              title={<h3>{center.title}</h3>}
+              extra={<Icon type="edit" />}
               bordered
-              style={{ height: '100%' }}
+              style={{ height: '100%', marginBottom: '20px' }}
               >
-              {`size: ${center.size}, location: ${center.location}`}
+              <p className="fs14" style={{ marginBottom: '10px' }}>{`${center.content}`}</p>
+              <p><i>{`${center.location.street} ${center.location.zip}`}</i></p>
             </Card>
           ))
         }
@@ -32,7 +35,16 @@ class CentersList extends Component {
     )
   }
 }
-
+// title: 'software',
+// content: 'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.',
+// size: 186,
+// timestamp: 20178115,
+// location: {
+//   street: '301 Elmside Drive',
+//   zip: 77042,
+//   lat: 29.7328935,
+//   lng: -95.5431595
+// }
 CentersList.propTypes = {
   location: React.PropTypes.object,
   centersList: React.PropTypes.object,

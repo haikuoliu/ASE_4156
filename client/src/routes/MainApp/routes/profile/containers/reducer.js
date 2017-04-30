@@ -22,8 +22,17 @@ const initialState = Immutable.fromJS({
     birth: 1900
   }],
   centersList: [{
-    size: 'big',
-    location: 'New York'
+    cid: '9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682',
+    title: 'software',
+    content: 'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.',
+    size: 186,
+    timestamp: 20178115,
+    location: {
+      street: '301 Elmside Drive',
+      zip: 77042,
+      lat: 29.7328935,
+      lng: -95.5431595
+    }
   }]
 })
 
