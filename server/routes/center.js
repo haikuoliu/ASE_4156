@@ -23,6 +23,8 @@ router.get('/updateCenter', function(req, res) {
                         if (coord!=null) {
                             account[i].centersInfo[j].location.lat = coord.lat;
                             account[i].centersInfo[j].location.lng = coord.lng;
+                            account[i].centersInfo[j].location.city = "New York";
+                            account[i].centersInfo[j].location.state = "NY";
                             account[i].centersInfo[j].location.zip = zipcode;
 
                             console.log("lat = " + coord.lat + " lng = " + coord.lng + " zip = " + zipcode);

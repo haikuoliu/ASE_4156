@@ -10,6 +10,7 @@ var googleMapsClient = require('@google/maps').createClient({
 module.exports.searchAddress = function searchAddress(address, callback) {
     console.log('Search Address');
     // Geocode an address.
+    address = address + " NY";
     googleMapsClient.geocode({
         address: address
     }, function(err, response) {
