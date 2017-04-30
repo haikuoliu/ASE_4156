@@ -76,15 +76,23 @@ http://localhost:3000/near?zipcode=10027&lat=12&lng=20
 
 */
 router.get('/near', function (req,res) {
-   var zipcode = Number(req.query.zipcode);
+   var query_sentence = {};
    var cent_lat = req.query.lat;
    var cent_lng = req.query.lng;
-   var scope = 3;
-   var zips = [];
-   for (i = zipcode - scope; i < zipcode + scope; i++) {
-       zips[i - (zipcode - scope)] = i;
+   if (req.query.zipcode === undefined) {
+       query_sentence = {}
    }
-   Account.find({ 'centersInfo.location.zip' : {"$in": zips}}, 'centersInfo', function (err, account) {
+   else {
+       var zipcode = Number(req.query.zipcode);
+       var scope = 3;
+       var zips = [];
+       for (i = zipcode - scope; i < zipcode + scope; i++) {
+           zips[i - (zipcode - scope)] = i;
+       }
+       query_sentence = { 'centersInfo.location.zip' : {"$in": zips}};
+   }
+
+   Account.find(query_sentence, 'centersInfo', function (err, account) {
        // when there is error
        if (err || account == null) {
            res.write(JSON.stringify({status: "fail", result: {msg: "Can't find location"}}));
@@ -95,10 +103,15 @@ router.get('/near', function (req,res) {
            for (var i = 0; i < account.length; i++) {
                var centers = account[i].centersInfo;
                for (var j = 0; j < centers.length; j++) {
-                   for (var k = 0; k < zips.length;k++) {
-                       if (centers[j].location.zip == zips[k]) {
-                           res_centers.push(centers[j]);
-                           break;
+                   if (req.query.zipcode === undefined) {
+                       res_centers.push(centers[j]);
+                   }
+                   else {
+                       for (var k = 0; k < zips.length; k++) {
+                           if (centers[j].location.zip == zips[k]) {
+                               res_centers.push(centers[j]);
+                               break;
+                           }
                        }
                    }
                }
