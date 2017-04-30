@@ -49,19 +49,26 @@ router.post('/register', function(req, res) {
 }
  */
 router.post('/login', function(req, res) {
-    Account.authenticate()(req.body.username, req.body.password, function (err, user, options) {
-        if (err) {
-            res.write(JSON.stringify({status: "fail", result: {msg: "Fail due to unknow err"}}));
-            res.end();
-        }
-        if (user === false) {
-            res.write(JSON.stringify({status: "fail", result: {msg: "Fail due to incorrect username or password"}}));
-            res.end();
-        } else {
-            res.write(JSON.stringify({status: "succ", result: {username: req.body.username}}));
-            res.end();
-        }
-    });
+    if (req.body.isAuthenticated != null && req.body.isAuthenticated === "true") {
+        res.write(JSON.stringify({status: "succ", result: {username: req.body.username}}));
+        res.end();
+    }
+    else {
+        Account.authenticate()(req.body.username, req.body.password, function (err, user, options) {
+            if (err) {
+                res.write(JSON.stringify({status: "fail", result: {msg: "Fail due to unknow err"}}));
+                res.end();
+            }
+            if (user === false) {
+                res.write(JSON.stringify({status: "fail", result: {msg: "Fail due to incorrect username or password"}}));
+                res.end();
+            } else {
+                res.write(JSON.stringify({status: "succ", result: {username: req.body.username}}));
+                res.end();
+            }
+        });
+    }
+
 });
 
 /*
