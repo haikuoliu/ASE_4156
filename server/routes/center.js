@@ -363,7 +363,7 @@ router.post('/upload',  function(req,res){
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
             res.end();
         } else {
-            res.write(JSON.stringify({status: "succ", result: {cid: req.body.cid, types: path.extname(req.file.originalname)}}));
+            res.write(JSON.stringify({status: "succ", result: {cid: path.parse(req.file.filename).name, types: path.extname(req.file.originalname)}}));
             res.end();
         }
     });
@@ -396,6 +396,19 @@ router.post('/save', function(req, res) {
         })
     });
     // res.render('upload');
+});
+
+
+router.get('/display', function(req, res) {
+    Account.findOne({ 'centersInfo.cid' : req.query.cid}, 'centersInfo', function (err, account) {
+        var i;
+        for (i = 0; i < account.centersInfo.length; i++) {
+            if (account.centersInfo[i].cid === req.query.cid)
+                break;
+        }
+        res.contentType(account.centersInfo[i].img[0].contentType);
+        res.send(account.centersInfo[i].img[0].data);
+    });
 });
 
 /*

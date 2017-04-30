@@ -81,7 +81,7 @@ http://localhost:3000/basicInfo?username=zehao
 }
  */
 router.get('/basicInfo', function(req, res) {
-    Account.findOne({ 'username' : req.query.username}, 'username birth gender email phone image', function (err, account) {
+    Account.findOne({ 'username' : req.query.username}, 'username birth gender email phone', function (err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
             res.end();
@@ -97,7 +97,7 @@ router.get('/basicInfo', function(req, res) {
             }
             res.write(JSON.stringify({status: "succ", result: {username: account.username,
                 birth : account.birth, gender : account.gender,
-                email : account.email, phone : account.phone, image: account.img
+                email : account.email, phone : account.phone
             }}));
             res.end();
         }
