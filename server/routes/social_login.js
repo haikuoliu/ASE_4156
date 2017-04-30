@@ -8,7 +8,9 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var Account = require('../models/account');
 var configAuth = require('../config/auth');
 var router = express.Router();
-var rp = require('request-promise');
+// var rp = require('request-promise');
+var notp = require('notp');
+
 
 //fb strategy
 passport.use(new FacebookStrategy({
@@ -120,72 +122,31 @@ router.get('/fblogin/callback',
                 // res.end();
 
 
-                //
-                // if (typeof localStorage === "undefined" || localStorage === null) {
-                //     var LocalStorage = require('node-localstorage').LocalStorage;
-                //     localStorage = new LocalStorage('./scratch');
-                // }
-                //
-                // localStorage.setItem('username', username);
-                // console.log(localStorage.getItem('username'));
-                //
-                //
-                // res.redirect("http://localhost:6888/#/main");
+                var encoded = notp.totp.gen(username, {});
+                var endpoint = 'http://localhost:3000/login?n=' + username + '&secret=' + encoded;
+                console.log('endpoint: ', endpoint);
+                console.log("encoded: ",encoded);
 
-                // var request = require('request');
-                //
-                // request.post({
-                //     uri: 'http://localhost:3000/login',
-                //     method: 'POST',
-                //     encoding: 'utf8',
-                //     body: {
-                //         username: username,
-                //         isAuthenticated: req.isAuthenticated()
-                //     }
-                // }, function optionalCallback(err2, res2, body2) {
-                //     if (err2) {
-                //         console.log("post to login error!: ", err2);
-                //     }
-                //     console.log(res2);
-                // }).end();
-
-                var newreq = rp.post("http://localhost:3000/login");
-
-                var form = newreq.form();
-                form.append('username', username);
-                form.append('isAuthenticated', req.isAuthenticated().toString());
-                newreq.then(function (body) {
-                    console.log('URL: ' + body);
-                })
-                    .catch(function (err2) {
-                        console.log('Error! ',err2);
-                    });
-
-                // var options = {
-                //     method: 'POST',
-                //     uri: 'http://localhost:3000/login',
-                //     form: {
-                //         username: username,
-                //         isAuthenticated: req.isAuthenticated()
-                //     },
-                //     headers: {
-                //         /* 'content-type': 'application/x-www-form-urlencoded' */ // Set automatically
-                //     }
-                // };
-                //
-                // rp(options)
-                //     .then(function (body) {
-                //         // POST succeeded...
-                //         console.log(body);
-                //     })
-                //     .catch(function (err) {
-                //         // POST failed...
-                //         console.log(err);
-                //     });
-
-
+                res.redirect(endpoint);
             }
         });
     });
+
+
+router.get('/login', function(req, res) {
+    if(notp.totp.verify(req.query.secret, req.query.n, {window:5})) {
+        console.log('Success!!!: ', notp.totp.verify(req.query.secret, req.query.n, {window:5}));
+    }
+    res.end()
+    console.log(req);
+});
+
+
+// if(notp.totp.verify(encoded, 'longlong', {window:2})) {
+//     console.log('Success!!!: ', notp.totp.verify(encoded, K, {}));
+// } else {
+//     console.log('failed to verify');
+// }
+
 
 module.exports = router;
