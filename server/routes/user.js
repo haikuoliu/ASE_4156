@@ -22,7 +22,7 @@ phone = "9179575118"
 }
 */
 router.post('/register', function(req, res) {
-    Account.register(new Account({ username : req.body.username, birth : req.body.birth, gender : req.body.gender, email : req.body.email, phone : req.body.phone, petsInfo: [], centersInfo: [], order: []}), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username, birth : req.body.birth, gender : req.body.gender, email : req.body.email, phone : req.body.phone, petsInfo: [], centersInfo: [], ordersInfo: []}), req.body.password, function(err, account) {
         if (err) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Register fail"}}));
             res.end();

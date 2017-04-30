@@ -39,11 +39,28 @@ var Account = new Schema({
         size: Number,
         timestamp: Number
     }],
-    order: [{
+    ordersInfo: [{
         oid: String, //Schema.Types.ObjectId,
         cid: String,
-        type: String,
-        another: Account,
+        types: String,
+        contact: {
+            username: String,
+            email: String,
+            phone: String
+        },
+        center: {
+            title: String,
+            price: Number,
+            location: {
+                lat: Number,
+                lng: Number,
+                street: String,
+                city: String,
+                state: String,
+                zip: Number
+            },
+            size: Number
+        },
         timestamp: Number
     }]
 });

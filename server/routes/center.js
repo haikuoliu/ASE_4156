@@ -191,7 +191,7 @@ router.post('/centersInfo', function (req, res) {
                         title: req.body.title,
                         content: req.body.content,
                         price: req.body.price,
-                        available: req.body.available,
+                        available: true,
                         location: {
                             lat: coord.lat,
                             lng: coord.lng,
