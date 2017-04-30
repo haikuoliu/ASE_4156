@@ -72,3 +72,54 @@ export function loadCentersInfo(username) {
       })
   )
 }
+
+export function updateCenterInfo(centerInfo) {
+  return (dispatch, getState) => { // eslint-disable-line no-unused-vars
+    const formData = new FormData()
+    if (centerInfo.cid) {
+      formData.append('cid', centerInfo.cid)
+    }
+    formData.append('username', centerInfo.username)
+    formData.append('title', centerInfo.title)
+    formData.append('content', centerInfo.content)
+    formData.append('size', centerInfo.size)
+    formData.append('timestamp', centerInfo.timestamp)
+    formData.append('street', centerInfo.street)
+    formData.append('state', centerInfo.state)
+    formData.append('city', centerInfo.city)
+    return fetchPro(api('rest:centersInfo'), {
+      method: centerInfo.cid ? 'put' : 'post',
+      body: formData
+    })
+      .then(response => response.json())
+      .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+      .then(json => {
+        if (json.status === 'fail') {
+          logger.error(api('rest:centersInfo'), json.result.msg)
+          return
+        }
+        loadCentersInfo(centerInfo.username)(dispatch, getState)
+      })
+  }
+}
+
+export function deleteCenterInfo(centerInfo) {
+  return (dispatch, getState) => { // eslint-disable-line no-unused-vars
+    const formData = new FormData()
+    formData.append('cid', centerInfo.cid)
+    formData.append('username', centerInfo.username)
+    return fetchPro(api('rest:centersInfo'), {
+      method: 'delete',
+      body: formData
+    })
+      .then(response => response.json())
+      .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+      .then(json => {
+        if (json.status === 'fail') {
+          logger.error(api('rest:centersInfo'), json.result.msg)
+          return
+        }
+        loadCentersInfo(centerInfo.username)(dispatch, getState)
+      })
+  }
+}

@@ -30,6 +30,8 @@ const initialState = Immutable.fromJS({
     location: {
       street: '301 Elmside Drive',
       zip: 77042,
+      city: 'New York',
+      state: 'NY',
       lat: 29.7328935,
       lng: -95.5431595
     }
