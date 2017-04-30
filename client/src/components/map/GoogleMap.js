@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import GoogleMapReact from 'google-map-react'
 
 import googleAPIKey, { getCurrentLocation } from 'SRC/utils/googleAPI'
-import { Icon, Popover } from 'antd'
+import { Icon, Popover, Button } from 'antd'
 
-import logger from 'SRC/utils/logger'
+// import logger from 'SRC/utils/logger'
 
 /* eslint-disable react/no-multi-comp */
 
@@ -49,52 +49,66 @@ class GoogleMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentlocation: { lat: 40.809322, lng: -73.9612294 } // { lat: 59.95, lng: 30.33 }
+      currentlocation: { lat: 40.809322, lng: -73.9612294 }, // { lat: 59.95, lng: 30.33 }
+      searchCenterLocation: { lat: 40.809322, lng: -73.9612294 }
     }
-    this._onClick = this._onClick.bind(this)
+    this._onSearch = this._onSearch.bind(this)
+    this._onChange = this._onChange.bind(this)
   }
   componentWillMount() {
     // Set Current Location
     getCurrentLocation()
       .then((pos) => {
         this.setState({
-          currentlocation: pos
+          currentlocation: pos,
+          searchCenterLocation: pos
         })
       })
   }
-  _onClick(args) {
-    // logger.log(args)
-    const location = { lat: args.lat, lng: args.lng }
+  _onChange(args) {
     this.setState({
-      currentlocation: location
+      currentlocation: args.center
     })
-    this.props.onClick(location)
+  }
+  _onSearch() {
+    // logger.log(args)
+    this.setState({
+      searchCenterLocation: this.state.currentlocation
+    })
+    this.props.onSearch(this.state.searchCenterLocation)
   }
   render() {
     return (
-      <GoogleMapReact
-        bootstrapURLKeys={{
-          key: googleAPIKey
-        }}
-        center={this.state.currentlocation}
-        defaultZoom={this.props.zoom}
-        onClick={this._onClick}
-        >
-        {
-          this.props.markers.map((r) => (
-            <MapMaker
-              key={r.description}
-              lat={r.lat}
-              lng={r.lng}
-              description={r.description}
-              />
-          ))
-        }
-        <CenterMarker
-          lat={this.state.currentlocation.lat}
-          lng={this.state.currentlocation.lng}
-          />
-      </GoogleMapReact>
+      <div className="full" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '0px', right: '0px', zIndex: '1', background: '#fbdecc' }} >
+          <Button onClick={this._onSearch} type="danger" ghost>
+            {"Redo Search In Map"}
+          </Button>
+        </div>
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: googleAPIKey
+          }}
+          center={this.state.currentlocation}
+          defaultZoom={this.props.zoom}
+          onChange={this._onChange}
+          >
+          {
+            this.props.markers.map((r) => (
+              <MapMaker
+                key={r.description}
+                lat={r.lat}
+                lng={r.lng}
+                description={r.description}
+                />
+            ))
+          }
+          <CenterMarker
+            lat={this.state.searchCenterLocation.lat}
+            lng={this.state.searchCenterLocation.lng}
+            />
+        </GoogleMapReact>
+      </div>
     )
   }
 }
@@ -109,7 +123,7 @@ GoogleMap.propTypes = {
       description: React.PropTypes.string
     })
   ),
-  onClick: React.PropTypes.func
+  onSearch: React.PropTypes.func
 }
 
 GoogleMap.defaultProps = {
@@ -118,7 +132,7 @@ GoogleMap.defaultProps = {
     { lat: 40.809322, lng: -73.9612294, description: 'Center1' },
     { lat: 40.810877, lng: -73.957235, description: 'Center2' }
   ],
-  onClick: () => {}
+  onSearch: () => {}
 }
 
 export default GoogleMap

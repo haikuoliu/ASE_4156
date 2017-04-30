@@ -1,3 +1,5 @@
+// import logger from 'SRC/utils/logger'
+
 export function persistentSet(key, value) {
   return {
     type: 'PERSISTENT@SET',
@@ -15,6 +17,7 @@ export function persistentRemove(key, value) {
 }
 
 export function persistentClear() {
+  // logger.warn('Persistent Store Clear!')
   return {
     type: 'PERSISTENT@CLEAR'
   }
