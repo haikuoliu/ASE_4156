@@ -2,6 +2,10 @@
 
 ## Install Instruction
 
+## Status [![Build Status](https://travis-ci.org/haikuoliu/ASE_4156.svg?branch=master)](https://travis-ci.org/haikuoliu/ASE_4156) [![Coverage Status](https://coveralls.io/repos/github/haikuoliu/ASE_4156/badge.svg)](https://coveralls.io/github/haikuoliu/ASE_4156)
+
+
+
 Front-End
 
 ```
