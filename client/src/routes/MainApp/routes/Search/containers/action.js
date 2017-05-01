@@ -68,14 +68,16 @@ export function searchAddress(address) {
           logger.error(api('rest:searchAddress', address), json.result.msg)
           return
         }
+        const loc = {
+          lat: json.result.coordinate.lat,
+          lng: json.result.coordinate.lng,
+          zipcode: json.result.zipcode
+        }
         dispatch({
           type: CENTERS.SEARCH_CENTER_ADDRESS,
-          result: {
-            lat: json.result.coordinate.lat,
-            lng: json.result.coordinate.lng,
-            zipcode: json.result.zipcode
-          }
+          result: loc
         })
+        loadNeighCenters(loc)(dispatch, getState)
       })
   )
 }
