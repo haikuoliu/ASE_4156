@@ -6,15 +6,14 @@ node_js:
 install:
     - cd server
     - npm install
+    - npm install istanbul
     - cd ../client
     - npm install
 
 script:
-    - npm install istanbul
     - npm test
     - cd ../server
     - node ./bin/www &
-    -
     - npm test
 
 before_install:
