@@ -11,7 +11,10 @@ class OrderForm extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.onSubmit(values)
+        this.props.onSubmit({
+          ...values,
+          cid: this.props.centersInfo.cid
+        })
         this.props.form.resetFields()
       }
     })

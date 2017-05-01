@@ -5,14 +5,16 @@ import { bindActionCreators } from 'redux'
 import * as ClientProfileGeneralAction from './action'
 import * as PersistentActions from 'SRC/action'
 
-import { Row, Col, Menu, Card } from 'antd'
+import { Row, Col, Menu, Card, Modal, Icon } from 'antd'
+import { RegisterForm } from 'SRC/components/form'
+
 import moment from 'moment'
 
 const BASIC_HEIGHT = '360px'
 
 const menus = [
   { name: 'History', path: '/main/profile/history' },
-  { name: 'Pets', path: '/main/profile/pets' },
+  // { name: 'Pets', path: '/main/profile/pets' },
   { name: 'Centers', path: '/main/profile/centers' }
 ]
 
@@ -25,12 +27,22 @@ const infoList = [
 ]
 
 class Profile extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      profileEditModalVisible: false
+    }
+    this._openProfileEditModal = this._openProfileEditModal.bind(this)
+    this._closeProfileEditModal = this._closeProfileEditModal.bind(this)
+    this.editUserProfile = this.editUserProfile.bind(this)
+  }
   componentWillMount() {
     const query = this.props.location.query
     const { username } = this.props.persistentStore
     this.props.actions.loadBasicInfo(username, query.username || username)
-    this.props.actions.loadPetsInfo(query.username || username)
+    // this.props.actions.loadPetsInfo(query.username || username)
     this.props.actions.loadCentersInfo(query.username || username)
+    this.props.actions.loadOrdersInfo(query.username || username)
     // this.props.actions.getPostsOfUser(query.uid || userId, userId)
     // this.props.actions.getUsersFollowedBy(query.uid || userId)
   }
@@ -40,11 +52,22 @@ class Profile extends Component {
     if (query.username !== nextQuery.username) {
       const { username } = this.props.persistentStore
       this.props.actions.loadBasicInfo(username, nextQuery.username || username)
-      this.props.actions.loadPetsInfo(nextQuery.username || username)
+      // this.props.actions.loadPetsInfo(nextQuery.username || username)
       this.props.actions.loadCentersInfo(nextQuery.username || username)
       // this.props.actions.getPostsOfUser(nextQuery.uid || userId, userId)
       // this.props.actions.getUsersFollowedBy(nextQuery.uid || userId)
     }
+  }
+  _openProfileEditModal() {
+    this.setState({ profileEditModalVisible: true })
+  }
+  _closeProfileEditModal() {
+    this.setState({ profileEditModalVisible: false })
+  }
+  editUserProfile() {
+    const { username } = this.props.persistentStore
+    this.props.actions.loadBasicInfo(username, username)
+    this._closeProfileEditModal()
   }
   render() {
     const pathname = this.props.location.pathname
@@ -59,10 +82,15 @@ class Profile extends Component {
                 style={{ padding: '20px 5%', height: BASIC_HEIGHT }}
                 >
                 <Card
+                  title={<h1>Basic Info</h1>}
+                  extra={<div className="pointer">
+                    <span onClick={this._openProfileEditModal} style={{ marginRight: '15px' }}>
+                      <Icon type="edit" className="fs20" />
+                    </span>
+                  </div>}
                   bordered
                   style={{ height: '100%' }}
                   >
-                  <h1>Basic Info</h1>
                   {
                     infoList.map((args) => (
                       <Row key={args[0]} className="fs16" style={{ marginBottom: '24px' }}>
@@ -94,6 +122,25 @@ class Profile extends Component {
             {this.props.children}
           </div>
         </div>
+        <Modal
+          title={"Edit User Profile"}
+          closable={false}
+          visible={this.state.profileEditModalVisible}
+          footer={null}
+          >
+          {
+            !this.state.profileEditModalVisible ? null :
+              <RegisterForm
+                onSubmit={this.editUserProfile}
+                isEdit
+                initialValue={{
+                  ...this.props.userInfo,
+                  username: this.props.userInfo.userName,
+                  gender: this.props.userInfo.gender === 'Male' ? 'male' : 'female'
+                }}
+                />
+          }
+        </Modal>
       </div>
     )
   }
