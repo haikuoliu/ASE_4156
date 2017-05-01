@@ -5,7 +5,17 @@ const RadioGroup = Radio.Group
 
 import moment from 'moment'
 
-import { userRegister } from 'SRC/utils/login'
+import { userRegister, userEdit } from 'SRC/utils/login'
+
+const initialValueDefault = {
+  username: '',
+  email: '',
+  password: '',
+  confirm: '',
+  phone: '',
+  gender: 'male',
+  birthday: moment().valueOf()
+}
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -23,16 +33,29 @@ class RegistrationForm extends Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        userRegister(values)
-          .then(json => {
-            if (json.status === 'fail') {
-              this.setState({
-                emailValid: { status: 'error', msg: json.result.msg }
-              })
-            } else {
-              this.props.onSubmit(json.result.username)
-            }
-          })
+        if (this.props.isEdit) {
+          userEdit(values)
+            .then(json => {
+              if (json.status === 'fail') {
+                this.setState({
+                  emailValid: { status: 'error', msg: json.result.msg }
+                })
+              } else {
+                this.props.onSubmit(json.result.username)
+              }
+            })
+        } else {
+          userRegister(values)
+            .then(json => {
+              if (json.status === 'fail') {
+                this.setState({
+                  emailValid: { status: 'error', msg: json.result.msg }
+                })
+              } else {
+                this.props.onSubmit(json.result.username)
+              }
+            })
+        }
       }
     })
   }
@@ -61,6 +84,7 @@ class RegistrationForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form
+    const initialValue = this.props.initialValue
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 }
@@ -73,9 +97,10 @@ class RegistrationForm extends Component {
           hasFeedback
           >
           {getFieldDecorator('username', {
+            initialValue: initialValue.username,
             rules: [{ required: true, message: 'Please input your username!' }]
           })(
-            <Input />
+            <Input disabled={this.props.isEdit} />
           )}
         </FormItem>
         <FormItem
@@ -84,6 +109,7 @@ class RegistrationForm extends Component {
           hasFeedback
           >
           {getFieldDecorator('email', {
+            initialValue: initialValue.email,
             rules: [{
               type: 'email', message: 'The input is not valid E-mail!'
             }, {
@@ -93,41 +119,49 @@ class RegistrationForm extends Component {
             <Input />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Password"
-          hasFeedback
-          >
-          {getFieldDecorator('password', {
-            rules: [{
-              required: true, message: 'Please input your password!'
-            }, {
-              validator: this.checkConfirm
-            }]
-          })(
-            <Input type="password" onBlur={this.handlePasswordBlur} />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Confirm Password"
-          hasFeedback
-          >
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: 'Please confirm your password!'
-            }, {
-              validator: this.checkPassowrd
-            }]
-          })(
-            <Input type="password" />
-          )}
-        </FormItem>
+        {
+          this.props.isEdit ? null :
+            <div>
+              <FormItem
+                {...formItemLayout}
+                label="Password"
+                hasFeedback
+                >
+                {getFieldDecorator('password', {
+                  initialValue: initialValue.password,
+                  rules: [{
+                    required: true, message: 'Please input your password!'
+                  }, {
+                    validator: this.checkConfirm
+                  }]
+                })(
+                  <Input type="password" onBlur={this.handlePasswordBlur} />
+                )}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="Confirm Password"
+                hasFeedback
+                >
+                {getFieldDecorator('confirm', {
+                  initialValue: initialValue.confirm,
+                  rules: [{
+                    required: true, message: 'Please confirm your password!'
+                  }, {
+                    validator: this.checkPassowrd
+                  }]
+                })(
+                  <Input type="password" />
+                )}
+              </FormItem>
+            </div>
+        }
         <FormItem
           {...formItemLayout}
           label="Phone Number"
           >
           {getFieldDecorator('phone', {
+            initialValue: initialValue.phone,
             rules: [{
               type: 'string', message: 'The input is not valid Phone Number!'
             }, {
@@ -142,7 +176,7 @@ class RegistrationForm extends Component {
           label="Gender"
           >
           {getFieldDecorator('gender', {
-            initialValue: 'male',
+            initialValue: initialValue.gender,
             rules: [
               { required: true, message: 'Please select Sex!' }
             ]
@@ -158,6 +192,7 @@ class RegistrationForm extends Component {
           label="Birthday"
           >
           {getFieldDecorator('birth', {
+            initialValue: moment(initialValue.birth),
             rules: [{ type: 'object', required: true, message: 'Please select time!' }]
           })(
             <DatePicker disabledDate={this.checkBirthDate} />
@@ -169,7 +204,7 @@ class RegistrationForm extends Component {
           >
           <div className="text-center">
             <Button type="primary" htmlType="submit" className="login-form-button">
-              Register
+              {this.props.isEdit ? 'Submit' : 'Register'}
             </Button>
           </div>
         </FormItem>
@@ -180,10 +215,14 @@ class RegistrationForm extends Component {
 
 RegistrationForm.propTypes = {
   form: React.PropTypes.object,
+  isEdit: React.PropTypes.bool,
+  initialValue: React.PropTypes.object,
   onSubmit: React.PropTypes.func
 }
 
 RegistrationForm.defaultProps = {
+  isEdit: false,
+  initialValue: initialValueDefault,
   onSubmit: console.log // eslint-disable-line no-console
 }
 

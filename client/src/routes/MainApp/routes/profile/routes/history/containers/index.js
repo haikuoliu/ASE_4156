@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ClientProfileAction from '../../../containers/action'
-import * as PersistentActions from 'SRC/action'
+// import * as PersistentActions from 'SRC/action'
 
-import { Row, Col, Button, Card } from 'antd'
+import { Card } from 'antd'
 
 import moment from 'moment'
-import { throttle } from 'SRC/utils/utils'
+// import { throttle } from 'SRC/utils/utils'
 
 class ProfileInfo extends Component {
   constructor(props) {
@@ -19,14 +19,18 @@ class ProfileInfo extends Component {
     return (
       <div style={{ padding: '30px' }}>
         {
-          history.map((order) => (
+          history.slice(0, 10).map((order) => (
             <Card
+              key={order.oid}
               bordered
-              style={{ height: '100%' }}
+              style={{ height: '100%', marginBottom: '15px' }}
               >
-              {`id: ${order.id}, title: ${order.title}, date: ${order.date}`}
+              <h4>{`${moment(order.timestamp).format('YYYY-MM-DD')}`}</h4>
+              <p className="fs20 margB5">{`${order.center.title} - ${order.contact.username}`}</p>
+              <p className="margB5"><strong>Email: </strong> {order.contact.email} <strong>Phone: </strong> {order.contact.phone}</p>
+              <p><i>{`${order.center.location.street}, ${order.center.location.city}, ${order.center.location.state}, ${order.center.location.zip}`}</i></p>
             </Card>
-          )) 
+          ))
         }
       </div>
     )
@@ -35,7 +39,7 @@ class ProfileInfo extends Component {
 
 ProfileInfo.propTypes = {
   location: React.PropTypes.object,
-  history: React.PropTypes.object,
+  history: React.PropTypes.array,
   persistentStore: React.PropTypes.object,
   persistentActions: React.PropTypes.object,
   actions: React.PropTypes.object

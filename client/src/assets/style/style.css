@@ -76,6 +76,12 @@
 }
 
 /* Margin */
+.margB5 {
+  margin-bottom: 5px;
+}
+.margB10 {
+  margin-bottom: 10px;
+}
 .margB15 {
   margin-bottom: 15px;
 }
