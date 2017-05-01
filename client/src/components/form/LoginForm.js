@@ -47,6 +47,7 @@ class NormalLoginForm extends Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
           {getFieldDecorator('userName', {
+            initialValue: '',
             rules: [{
               required: true,
               type: 'string',
@@ -64,6 +65,7 @@ class NormalLoginForm extends Component {
         </FormItem>
         <FormItem>
           {getFieldDecorator('password', {
+            initialValue: '',
             rules: [{
               type: 'string',
               required: true,
@@ -80,12 +82,12 @@ class NormalLoginForm extends Component {
           help={this.state.loginStatus.msg}
           >
           <div className="text-center">
-            <Button type="primary" htmlType="submit" className="login-form-button">
+            <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginRight: '20px' }}>
               Log in
             </Button>
-            <a href="http://localhost:3000/fblogin"><Icon type="dingding" /></a>
-            <span style={{ margin: '0 20px' }}>Or</span>
-            <span className="fc-blue pointer" onClick={this.loginAsVisitor}>Visitor</span>
+            <Button>
+              <a href="http://localhost:3000/fblogin">Facebook</a>
+            </Button>
           </div>
         </FormItem>
       </Form>
