@@ -8,12 +8,12 @@ install:
     - npm install
     - cd ../client
     - npm install
+    - npm install istanbul
 
 script:
     - npm test
     - cd ../server
     - node ./bin/www &
-    -
     - npm test
 
 before_install:
