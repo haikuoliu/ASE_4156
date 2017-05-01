@@ -1,5 +1,5 @@
 import fetchPro from 'SRC/utils/fetchPro'
-import { CENTERS } from 'SRC/constants/action_const'
+import { CENTERS, ORDER } from 'SRC/constants/action_const'
 import api from 'SRC/apis'
 import logger from 'SRC/utils/logger'
 
@@ -31,6 +31,31 @@ export function loadNeighCenters(loc) {
         })
       })
   )
+}
+
+export function postOrder(orderInfo) {
+  return (dispatch, getState) => { // eslint-disable-line no-unused-vars
+    const formData = new FormData()
+    formData.append('username', orderInfo.username)
+    formData.append('cid', orderInfo.cid)
+    formData.append('msg', orderInfo.msg)
+    return fetchPro(api('rest:ordersInfo_post'), {
+      method: 'post',
+      body: formData
+    })
+      .then(response => response.json())
+      .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+      .then(json => {
+        if (json.status === 'fail') {
+          logger.error(api('rest:ordersInfo_post'), json.result.msg)
+          return
+        }
+        dispatch({
+          type: ORDER.CREATE_ORDER,
+          result: json.result
+        })
+      })
+  }
 }
 
 export function searchAddress(address) {

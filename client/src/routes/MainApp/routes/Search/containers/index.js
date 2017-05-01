@@ -59,7 +59,12 @@ class Search extends Component {
     })
   }
   _onOrderSubmit(args) {
-    console.log('orderSubmit', args)
+    // console.log('orderSubmit', args)
+    const orderInfo = {
+      ...args,
+      username: this.props.persistentStore.username
+    }
+    this.props.actions.postOrder(orderInfo)
     this._closeOrderModal()
   }
   handleSearchBarSubmit(args) {

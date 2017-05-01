@@ -39,12 +39,14 @@ class AdsApp extends Component {
           <div className="fix-top-row" style={{ height: '80px', background: '#404040' }}>
             <Row className="full-height">
               <Col span={4} className="full-height">
-                <h1
-                  className="text-center fc-white"
-                  style={{ height: '80px', lineHeight: '80px', background: '#404040' }}
-                  >
-                  Pets Master
-                </h1>
+                <Link to="/main/search" className="fc-white">
+                  <h1
+                    className="text-center fc-white"
+                    style={{ height: '80px', lineHeight: '80px', background: '#404040' }}
+                    >
+                    Pets Matter
+                  </h1>
+                </Link>
               </Col>
               <Col span={12}>
                 <Menu

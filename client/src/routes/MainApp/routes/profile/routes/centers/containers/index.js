@@ -130,7 +130,7 @@ class CentersList extends Component {
 
 CentersList.propTypes = {
   location: React.PropTypes.object,
-  centersList: React.PropTypes.object,
+  centersList: React.PropTypes.array,
   persistentStore: React.PropTypes.object,
   persistentActions: React.PropTypes.object,
   actions: React.PropTypes.object

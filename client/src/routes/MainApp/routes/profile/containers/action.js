@@ -55,6 +55,25 @@ export function loadPetsInfo(username) {
   )
 }
 
+export function loadOrdersInfo(username) {
+  return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
+    fetchPro(api('rest:ordersInfo_user_get', username))
+      .then(response => response.json())
+      .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+      .then(json => {
+        if (json.status === 'fail') {
+          logger.error(api('rest:ordersInfo_user_get', username), json.result.msg)
+          return
+        }
+        json.result.ordersInfo.sort((a, b) => (b.timestamp - a.timestamp))
+        dispatch({
+          type: PROFILE.LOAD_ORDERS_INFO,
+          result: json.result
+        })
+      })
+  )
+}
+
 export function loadCentersInfo(username) {
   return (dispatch, getState) => ( // eslint-disable-line no-unused-vars
     fetchPro(api('rest:centersInfo_user_get', username))
