@@ -61,6 +61,10 @@ app.use('/', search);
 app.use('/', social);
 app.use('/', msg);
 
+app.use('/', function(req,res) {
+    res.sendfile(path.join(__dirname)+'/views/index.html');
+});
+
 // catch 404 error
 app.use(function (req, res, next) {
     res.write(JSON.stringify({status: "fail", result: {msg: "Request URI doesn't exist"}}));
