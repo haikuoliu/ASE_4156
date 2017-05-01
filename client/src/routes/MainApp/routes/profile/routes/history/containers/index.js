@@ -25,10 +25,16 @@ class ProfileInfo extends Component {
               bordered
               style={{ height: '100%', marginBottom: '15px' }}
               >
-              <h4>{`${moment(order.timestamp).format('YYYY-MM-DD')}`}</h4>
-              <p className="fs20 margB5">{`${order.center.title} - ${order.contact.username}`}</p>
-              <p className="margB5"><strong>Email: </strong> {order.contact.email} <strong>Phone: </strong> {order.contact.phone}</p>
-              <p><i>{`${order.center.location.street}, ${order.center.location.city}, ${order.center.location.state}, ${order.center.location.zip}`}</i></p>
+              <h4 className="margB10">{`${moment(order.timestamp).format('YYYY-MM-DD')} -`}<span className="fc-grey">{`#${order.oid}`}</span></h4>
+              {
+                order.types === 'Carer' ? null :
+                  <p className="fs20 margB5">{`${order.center.title}`}</p>
+              }
+              <p className="margB5"><strong>Username: </strong> {order.contact.username} <strong>Email: </strong> {order.contact.email} <strong>Phone: </strong> {order.contact.phone}</p>
+                {
+                  order.types === 'Carer' ? null :
+                    <p><i>{`${order.center.location.street}, ${order.center.location.city}, ${order.center.location.state}, ${order.center.location.zip}`}</i></p>
+                }
             </Card>
           ))
         }

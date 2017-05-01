@@ -114,7 +114,20 @@ router.get('/ordersInfoUser', function(req, res) {
                 "email": "carer@gmail.com",
                 "phone": "5424210266"
             }
-        }]
+        },
+        {
+          "oid": "59079d8e69192c4459c824b4",
+          "cid": "59078f24df4eb93573013ad8",
+          "types": "Carer",
+          "timestamp": 1493671310133,
+          "_id": "59079d8e69192c4459c824b6",
+          "contact": {
+              "username": "kaihe",
+              "email": "kaihe@columbia.edu",
+              "phone": "9292089515"
+          }
+        }
+        ]
     }
 }*/
 router.get('/ordersInfoSpec', function(req, res) {
