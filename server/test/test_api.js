@@ -58,6 +58,7 @@ describe('test user functions', function() {
     });
 
 
+
     it('test put basicInfo', function(done) {
         var formData = {
             username: "master",
