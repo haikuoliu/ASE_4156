@@ -36,6 +36,10 @@ var Account = new Schema({
             state: String,
             zip: Number
         },
+        img: [{
+            data: Buffer,
+            contentType: String
+        }],
         size: Number,
         timestamp: Number
     }],

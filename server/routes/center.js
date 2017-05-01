@@ -4,6 +4,10 @@ var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
 var search = require('../helpers/util');
+var multer  = require('multer');
+var fs = require('fs');
+var path = require('path');
+var upload = multer().single('userFile');
 
 // for test only
 router.get('/updateCenter', function(req, res) {
@@ -352,7 +356,60 @@ router.delete('/centersInfo', function(req, res) {
 });
 
 
-module.exports = router;
+
+router.post('/upload',  function(req,res){
+    upload(req, res, function(err) {
+        if (err) {
+            res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
+            res.end();
+        } else {
+            res.write(JSON.stringify({status: "succ", result: {cid: path.parse(req.file.filename).name, types: path.extname(req.file.originalname)}}));
+            res.end();
+        }
+    });
+});
+
+router.post('/save', function(req, res) {
+    Account.findOne({ 'centersInfo.cid' : req.body.cid}, 'centersInfo', function (err, account) {
+        var i;
+        for (i = 0; i < account.centersInfo.length; i++) {
+            if (account.centersInfo[i].cid === req.body.cid)
+                break;
+        }
+        if (account.centersInfo[i].img == null) {
+            account.centersInfo[i].img = [];
+        }
+        account.centersInfo[i].img.push({
+            data : fs.readFileSync("./uploads/" + req.body.cid + req.body.types),
+            contentType : 'image/png'
+        });
+
+        console.log(account);
+        account.save(function (err) {
+            if (err) {
+                res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
+                res.end();
+            } else {
+                res.write(JSON.stringify({status: "succ", result: {msg: "saved"}}));
+                res.end();
+            }
+        })
+    });
+    // res.render('upload');
+});
+
+
+router.get('/display', function(req, res) {
+    Account.findOne({ 'centersInfo.cid' : req.query.cid}, 'centersInfo', function (err, account) {
+        var i;
+        for (i = 0; i < account.centersInfo.length; i++) {
+            if (account.centersInfo[i].cid === req.query.cid)
+                break;
+        }
+        res.contentType(account.centersInfo[i].img[0].contentType);
+        res.send(account.centersInfo[i].img[0].data);
+    });
+});
 
 /*
 --------input--------:
@@ -414,7 +471,7 @@ router.get('/popular', function(req, res) {
             res.end();
         }
         else {
-            cid_dict = [];
+            var cid_dict = [];
             for (var i = 0; i < account.length; i++) {
                 for (var j = 0; j < account[i].ordersInfo.length; j++) {
                     var cur_cid = account[i].ordersInfo[j].cid;
@@ -435,7 +492,7 @@ router.get('/popular', function(req, res) {
                 return b.count - a.count
             });
             cid_dict = cid_dict.slice(0, 20);
-            cids = [];
+            var cids = [];
             for (var i = 0; i < cid_dict.length; i++) {
                 cids.push(cid_dict[i].cid);
             }
@@ -446,7 +503,7 @@ router.get('/popular', function(req, res) {
                     res.end();
                 }
                 else {
-                    centers = [];
+                    var centers = [];
                     for (var i = 0; i < account.length; i++) {
                         for (var j = 0; j < account[i].centersInfo.length; j++) {
                             cur_cid = account[i].centersInfo[j].cid;
