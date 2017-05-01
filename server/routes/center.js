@@ -116,6 +116,7 @@ http://localhost:3000/centersInfoSpec?cid=9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682
 {
     "status":"succ",
     "result":{
+        "username": "epayne2h",
         "centersInfo":{
             "cid":"9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682",
             "title":"software",
@@ -135,7 +136,7 @@ http://localhost:3000/centersInfoSpec?cid=9c33d1dd-e6f0-4fed-9ef9-7a7bf9c98682
 router.get('/centersInfoSpec', function(req, res) {
     var cid = req.query.cid;
     // console.log(cid);
-    Account.findOne({ 'centersInfo.cid' : cid}, 'centersInfo', function (err, account) {
+    Account.findOne({ 'centersInfo.cid' : cid}, 'username centersInfo', function (err, account) {
         if (err || account === null) {
             res.write(JSON.stringify({status: "fail", result: {msg: "Can't find centers information"}}));
             res.end();
@@ -146,7 +147,7 @@ router.get('/centersInfoSpec', function(req, res) {
                 // console.log(account.centersInfo[i]);
                 // console.log(account.centersInfo[i].cid);
                 if (cid === account.centersInfo[i].cid) {
-                    res.write(JSON.stringify({status: "succ", result: {centersInfo: account.centersInfo[i]}}));
+                    res.write(JSON.stringify({status: "succ", result: {username: account.username, centersInfo: account.centersInfo[i]}}));
                     res.end();
                     return;
                 }

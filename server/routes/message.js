@@ -12,7 +12,7 @@ router.post('/msg', function(req, res) {
     console.log(req.body.content);
     client.messages.create({
         body: req.body.content,
-        to: '+1 917-957-5118',
+        to: '+1 929-208-9515',
         from: twilioKeys.TwilioNumber
 //  mediaUrl: imageUrl
     }, function(err, data) {
