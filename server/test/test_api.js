@@ -9,7 +9,7 @@ describe('test user functions', function() {
     var myDate = new Date();
     var username = "master" + myDate.getTime().toString()
 
-    it('test user register', function(done) {
+    it('test user register - case1', function(done) {
 
         var request = require('request');
         var formData = {
@@ -28,7 +28,8 @@ describe('test user functions', function() {
         });
     });
 
-    it('test user login', function(done) {
+
+    it('test user login (correct login)', function(done) {
         var request = require('request');
         var formData = {     
             username: username,
@@ -42,6 +43,19 @@ describe('test user functions', function() {
         });
     });
 
+    it('test user login (incorrect login)', function(done) {
+        var request = require('request');
+        var formData = {
+            username: "None",
+            password: "None"
+        };
+        request.post({url:'http://localhost:3000/login', formData: formData}, function optionalCallback(err, res, body) {
+            var body = JSON.parse(body);
+            expect(err).to.equal(null);
+            expect(body.status).to.equal("fail");
+            done();
+        });
+    });
 
 
     it('test put basicInfo', function(done) {
@@ -258,39 +272,5 @@ describe('test search functions', function() {
     });
 });
 
-
-// describe('test post functions', function() {           
-//     this.timeout(15000);
-
-//     // it('test addPost', function(done) {
-//     //     var request = require('request');
-//     //     var formData = {     
-//     //         username: "zehao",
-//     //         birth: '2017-03-08',
-//     //         gender: 'male',
-//     //         email: 'aa@gmail.com',
-//     //         phone: 'adfasd'
-//     //     };
-//     //     request.post({url:'http://localhost:3000/addPost', formData: formData}, function optionalCallback(err, res, body) {
-//     //         var body = JSON.parse(body);
-//     //         expect(err).to.equal(null);
-//     //         expect(body.status).to.equal("succ");
-//     //         done();
-//     //     });
-//     // });
-
-//     it('test getPost', function(done) {
-//         var request = require('request');
-//         request.get({url:'http://localhost:3000/getPost?username=zehao'}, function optionalCallback(err, res, body) {
-//             console.log(body);
-//             var body = JSON.parse(body);
-            
-//             expect(err).to.equal(null);
-//             expect(body.status).to.equal("succ");
-//             done();
-//         });
-//     });
-
-// });
 
 
