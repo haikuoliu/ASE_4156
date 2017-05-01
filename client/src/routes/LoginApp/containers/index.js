@@ -11,6 +11,8 @@ import { LoginForm, RegisterForm } from 'SRC/components/form'
 import CSSModules from 'react-css-modules'
 import styles from './style.hcss'
 
+import notp from 'notp'
+
 class LoginApp extends Component {
   constructor(props) {
     super(props)
@@ -23,14 +25,19 @@ class LoginApp extends Component {
   }
   componentWillMount() {
     this.props.persistentActions.persistentClear()
+    if (window.location.search) {
+      this.login()
+    }
   }
-  login(type) {
-    if (type === 'client') {
-      this.props.persistentActions.persistentSet('userId', 2)
-      this.props.router.push('/client/feed')
-    } else { // type === 'ads'
-      this.props.persistentActions.persistentSet('sponsorId', 1)
-      this.props.router.push('/ads/ads_list')
+  login() {
+    const username = window.location.search.replace(/\?username=([^&]+)&.*/, '$1')
+    const secret = window.location.search.replace(/^\?username=[^&]+&secret=([\d+]+)$/, '$1')
+    console.log(username, "" , secret);
+    if(notp.totp.verify(secret, username, {window: 2})) {
+      this.props.persistentActions.persistentSet('username', username)
+      this.props.router.push('/main')
+    } else {
+      console.log('failed to verify')
     }
   }
   switchLoginPanel() {
@@ -104,13 +111,13 @@ class LoginApp extends Component {
 
 LoginApp.propTypes = {
   router: React.PropTypes.object,
-  // state: React.PropTypes.object,
+  persistentStore: React.PropTypes.object,
   persistentActions: React.PropTypes.object
 }
 
 function mapState(state) { // eslint-disable-line
   return {
-    // state: state.blog.BlogContent
+    persistentStore: state.persistentStore.toJS()
   }
 }
 

@@ -12,7 +12,7 @@ router.post('/msg', function(req, res) {
     console.log(req.body.content);
     client.messages.create({
         body: req.body.content,
-        to: '+1 917-957-5118',
+        to: req.body.endpoint,
         from: twilioKeys.TwilioNumber
 //  mediaUrl: imageUrl
     }, function(err, data) {
@@ -20,10 +20,10 @@ router.post('/msg', function(req, res) {
             console.error('Could not notify kuokuo');
             console.error(err);
         } else {
-            console.log('kuokuo notified');
+            console.log('receiver notified');
         }
     });
-    res.write(JSON.stringify({status: "succ", result: "sent to kuokuo"}));
+    res.write(JSON.stringify({status: "succ", result: "sent to receiver"}));
     res.end();
 });
 

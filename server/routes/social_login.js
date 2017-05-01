@@ -47,6 +47,7 @@ passport.use(new FacebookStrategy({
                 }
                 // ---------- for development purpose only!! -------------
 
+
                 // if the user is found, then log them in
                 if (user) {
                     return done(null, user); // user found, return that user
@@ -58,6 +59,7 @@ passport.use(new FacebookStrategy({
                     newUser.facebook.id = profile.id; // set the users facebook id
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user
                     newUser.facebook.name = profile.displayName; // look at the passport user profile to see how names are returned
+                    newUser.username = newUser.facebook.name.replace(/\s+/g, '')
                     newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                     newUser.gender = profile.gender;
                     var raw_birth = profile._json.birthday.split('/');
@@ -69,6 +71,7 @@ passport.use(new FacebookStrategy({
                             throw err;
 
                         // if successful, return the new user
+                        console.log("new fb user stored in db");
                         return done(null, newUser);
                     });
                 }
@@ -99,12 +102,13 @@ router.get('/fblogin/callback',
     passport.authenticate('facebook', {failureRedirect: '/#/login'}),
     function (req, res) {
         // Successful authentication, redirect home.
-        var username = req.user._doc.facebook.name;
+        var username = req.user._doc.username;
         console.log("username: " + username);
 
         // boolean:
-        Account.findOne({'facebook.name': username}, 'username birth gender email phone', function (err, account) {
+        Account.findOne({ 'username' : username}, 'username birth gender email phone', function (err, account) {
             if (err) {
+                console.log("error!!");
                 res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
                 res.end();
             }
@@ -121,9 +125,8 @@ router.get('/fblogin/callback',
                 // }}));
                 // res.end();
 
-
                 var encoded = notp.totp.gen(username, {});
-                var endpoint = 'http://localhost:3000/login?n=' + username + '&secret=' + encoded;
+                var endpoint = 'http://localhost:6888?username=' + username + '&secret=' + encoded;
                 console.log('endpoint: ', endpoint);
                 console.log("encoded: ",encoded);
 
