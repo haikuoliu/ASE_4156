@@ -6,9 +6,9 @@ node_js:
 install:
     - cd server
     - npm install
+    - npm install istanbul
     - cd ../client
     - npm install
-    - npm install istanbul
 
 script:
     - npm test
