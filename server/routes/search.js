@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var Account = require('../models/account');
-var search = require('../helpers/util');
+var util = require('../helpers/util');
 
 
 /*
@@ -26,7 +26,7 @@ http://localhost:3000/addr?location=180 Claremont Ave
 router.get('/addr', function(req, res) {
     var addr = req.query.location;
     console.log(addr);
-    search.searchAddress(addr, function(coord,zipcode) {
+    util.searchAddress(addr, function(coord,zipcode) {
         if (coord!=null) {
             res.write(JSON.stringify({status: "succ", result: {coordinate: coord, zipcode: zipcode}}));
             res.end();

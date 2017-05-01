@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
-var search = require('../helpers/util');
+var uril = require('../helpers/util');
 var multer  = require('multer');
 var fs = require('fs');
 var path = require('path');
@@ -22,7 +22,7 @@ router.get('/updateCenter', function(req, res) {
             account.forEach(function(acc, i)  {
                 acc.centersInfo.forEach(function ( center, j) {
                     console.log("street = " + account[i].centersInfo[j].location.street);
-                    search.searchAddress(account[i].centersInfo[j].location.street, function(coord,zipcode) {
+                    uril.searchAddress(account[i].centersInfo[j].location.street, function(coord,zipcode) {
                         console.log("coord = " + coord + " zip = " + zipcode);
                         if (coord!=null) {
                             account[i].centersInfo[j].location.lat = coord.lat;
@@ -191,7 +191,7 @@ router.post('/centersInfo', function (req, res) {
             var id = objectId.toString();
             if (req.body.cid != null)
                 id = req.body.cid;
-            search.searchAddress(req.body.street, function(coord,zipcode) {
+            util.searchAddress(req.body.street, function(coord,zipcode) {
                 if (coord!=null) {
                     account.centersInfo.push({
                         cid: id,
@@ -282,7 +282,7 @@ router.put('/centersInfo', function (req, res) {
 
                 if (req.body.street != null)
                 {
-                    search.searchAddress(req.body.street, function(coord,zipcode) {
+                    util.searchAddress(req.body.street, function(coord,zipcode) {
                         if (coord!=null) {
                             account.centersInfo[i].location.lat = coord.lat;
                             account.centersInfo[i].location.lng = coord.lng;

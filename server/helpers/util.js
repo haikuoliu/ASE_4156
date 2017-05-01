@@ -1,11 +1,30 @@
 /**
  * Created by kaihe on 4/29/17.
  */
-
+var twilio = require('twilio');
+var twilioKeys = require('../config/twillio-keys').twilioKeys;
+var twilioClient = new twilio.RestClient(twilioKeys.AccountSID, twilioKeys.AuthToken);
 var googleMapsClient = require('@google/maps').createClient({
     key: 'AIzaSyCYAXFUzdidNb5J_EnXz9Pa6Jbsedt6FdM'
 });
 
+
+module.exports.sendMessage = function (content, receiver, callback) {
+    twilioClient.messages.create({
+        body: content,
+        to: receiver,
+        from: twilioKeys.TwilioNumber
+//  mediaUrl: imageUrl
+    }, function(err, data) {
+        if (err) {
+            console.error('Could not notify');
+            console.error(err);
+        } else {
+            console.log('notified');
+            callback();
+        }
+    });
+};
 
 module.exports.searchAddress = function searchAddress(address, callback) {
     console.log('Search Address');
