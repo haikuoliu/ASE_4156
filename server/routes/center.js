@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
-var uril = require('../helpers/util');
+var util = require('../helpers/util');
 var multer  = require('multer');
 var fs = require('fs');
 var path = require('path');
@@ -22,7 +22,7 @@ router.get('/updateCenter', function(req, res) {
             account.forEach(function(acc, i)  {
                 acc.centersInfo.forEach(function ( center, j) {
                     console.log("street = " + account[i].centersInfo[j].location.street);
-                    uril.searchAddress(account[i].centersInfo[j].location.street, function(coord,zipcode) {
+                    util.searchAddress(account[i].centersInfo[j].location.street, function(coord,zipcode) {
                         console.log("coord = " + coord + " zip = " + zipcode);
                         if (coord!=null) {
                             account[i].centersInfo[j].location.lat = coord.lat;
