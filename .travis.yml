@@ -10,7 +10,6 @@ install:
     - npm install
 
 script:
-    - npm install istanbul
     - npm test
     - cd ../server
     - node ./bin/www &
