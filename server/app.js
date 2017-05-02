@@ -34,6 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // passport config
 var Account = require('./models/account');
@@ -60,8 +61,12 @@ app.use('/', order);
 app.use('/', search);
 app.use('/', social);
 
+app.use('/welcome', function(req,res) {
+    res.sendfile(path.join(__dirname)+'/views/welcome.html');
+});
+
 app.use('/', function(req,res) {
-    res.sendfile(path.join(__dirname)+'/views/index.html');
+    res.sendfile(path.join(__dirname)+'/frontend/index.html');
 });
 
 // catch 404 error

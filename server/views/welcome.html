@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="en-US">
+<head>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="SemiColonWeb" />
+
+    <!-- Stylesheets
+    ============================================= -->
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="css/bootstrap-rtl.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style-rtl.css" type="text/css" />
+    <link rel="stylesheet" href="css/dark.css" type="text/css" />
+    <link rel="stylesheet" href="css/dark-rtl.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-icons.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-icons-rtl.css" type="text/css" />
+    <link rel="stylesheet" href="css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+
+    <link rel="stylesheet" href="css/responsive.css" type="text/css" />
+    <link rel="stylesheet" href="css/responsive-rtl.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+
+    <!-- External JavaScripts
+    ============================================= -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/plugins.js"></script>
+
+    <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
+    <script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+
+    <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+    <link rel="stylesheet" type="text/css" href="include/rs-plugin/css/settings.css" media="screen" />
+
+    <!-- Document Title
+    ============================================= -->
+    <title>Home - Corporate Layout | Canvas</title>
+
+
+</head>
+
+<body class="stretched">
+
+<!-- Document Wrapper
+============================================= -->
+<div id="wrapper" class="clearfix">
+
+    <!-- Top Bar
+        ============================================= -->
+    <div id="top-bar">
+
+        <div class="container-fullwidth clearfix">
+
+            <div class="col_half nobottommargin">
+
+                <!-- Top Links
+                ============================================= -->
+                <div class="top-links">
+                    <ul>
+                        <li><a href="http://localhost:6888/#/login">Login</a></li>
+                        <li><a href="http://localhost:6888/#/login">Sign Up</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="http://localhost:6888/#/login">Become a Host</a></li>
+                    </ul>
+                </div><!-- .top-links end -->
+
+            </div>
+
+        </div>
+
+    </div><!-- #top-bar end -->
+
+    <section id="slider" class="slider-parallax swiper_wrapper clearfix" style="height: 600px;">
+
+        <div class="swiper-container swiper-parent">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide dark" style="background-image: url('images/index/homepagepic1.jpg');">
+                    <div class="container clearfix">
+                        <div class="slider-caption slider-caption-center" style="margin-top: -1.8em;">
+                            <h2 data-caption-animate="fadeInUp">Pets Matter</h2>
+                            <!--<p data-caption-animate="fadeInUp" data-caption-delay="200">Find your pets a perfect hotel.</p>-->
+                            <!--<div id="widget-subscribe-form2-result" data-notify-type="success" data-notify-msg=""></div>-->
+
+                            <form data-caption-animate="fadeInUp" data-caption-delay="400" id="searchbox" class="nobottommargin">
+                                <div class="input-group input-group-lg divcenter" style="max-width:600px;margin-top: -0.8em;">
+                                    <input type="text" name="location" id="search-box-text" class="form-control required" placeholder="Find perfect homes for your pets near...">
+                                    <span class="input-group-btn">
+                                        <!--<button id="search-button" class="btn btn-default">Search</button>-->
+                                        <input id="search-button" class="btn btn-default" type = "button" value = "Search"/>
+                                    </span>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            jQuery(document).ready(function($){
+                var swiperSlider = new Swiper('.swiper-parent',{
+                    paginationClickable: false,
+                    slidesPerView: 1,
+                    onSwiperCreated: function(swiper){
+                        $('[data-caption-animate]').each(function(){
+                            var $toAnimateElement = $(this);
+                            var toAnimateDelay = $(this).attr('data-caption-delay');
+                            var toAnimateDelayTime = 0;
+                            if( toAnimateDelay ) { toAnimateDelayTime = Number( toAnimateDelay ) + 750; } else { toAnimateDelayTime = 750; }
+                            if( !$toAnimateElement.hasClass('animated') ) {
+                                $toAnimateElement.addClass('not-animated');
+                                var elementAnimation = $toAnimateElement.attr('data-caption-animate');
+                                setTimeout(function() {
+                                    $toAnimateElement.removeClass('not-animated').addClass( elementAnimation + ' animated');
+                                }, toAnimateDelayTime);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
+        <!--<script>-->
+            <!--jQuery("#widget-subscribe-form2").validate({-->
+                <!--submitHandler: function(form) {-->
+                    <!--jQuery(form).find('.input-group-addon').find('.icon-email2').removeClass('icon-email2').addClass('icon-line-loader icon-spin');-->
+                    <!--jQuery(form).ajaxSubmit({-->
+                        <!--target: '#widget-subscribe-form2-result',-->
+                        <!--success: function() {-->
+                            <!--jQuery(form).find('.input-group-addon').find('.icon-line-loader').removeClass('icon-line-loader icon-spin').addClass('icon-email2');-->
+                            <!--jQuery('#searchbox').find('.form-control').val('');-->
+                            <!--jQuery('#widget-subscribe-form2-result').attr('data-notify-msg', jQuery('#widget-subscribe-form2-result').html()).html('');-->
+                            <!--SEMICOLON.widget.notifications(jQuery('#widget-subscribe-form2-result'));-->
+                        <!--}-->
+                    <!--});-->
+                <!--}-->
+            <!--});-->
+        <!--</script>-->
+
+        <script>
+
+            $('#search-button').click(function() {
+                var addr = $('#search-box-text').val();
+                var url = "http://localhost:3000/addr/";
+
+                $.ajax({
+                    type: "GET",
+                    url: url+"?location="+addr,
+                    timeout: 8000,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        //show content
+                        var data = JSON.parse(data);
+                        var url = 'http://localhost:3000/#/main/search?lat=' + data.result.coordinate.lat + '&lng=' + data.result.coordinate.lng;
+                        console.log(url)
+                        window.location = url;
+                    }
+                });
+
+            });
+        </script>
+
+    </section>
+
+    <!-- Content
+    ============================================= -->
+    <section id="content">
+
+        <div class="content-wrap container clearfix">
+
+            <div class="clear"></div>
+
+            <section class="page-title-mini">
+
+                <div class="container clearfix">
+                    <h3 style="text-align: center;">New & Hot Homes</h3>
+                </div>
+
+            </section>
+
+            <!-- Portfolio Items
+                    ============================================= -->
+            <div id="portfolio" class="portfolio-3 clearfix">
+
+                <article class="portfolio-item pf-media pf-icons">
+                    <div class="portfolio-image">
+                        <a href="portfolio-single.html">
+                            <img src="images/portfolio/3/1.jpg" alt="Open Imagination">
+                        </a>
+                        <div class="portfolio-overlay">
+                            <a href="images/portfolio/full/1.jpg" class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
+                            <a href="portfolio-single.html" class="right-icon"><i class="icon-line-ellipsis"></i></a>
+                        </div>
+                    </div>
+                    <div class="portfolio-desc">
+                        <h3><a href="portfolio-single.html">Open Imagination</a></h3>
+                        <span><a href="#">Media</a>, <a href="#">Icons</a></span>
+                    </div>
+                </article>
+
+                <article class="portfolio-item pf-illustrations">
+                    <div class="portfolio-image">
+                        <a href="portfolio-single.html">
+                            <img src="images/portfolio/3/2.jpg" alt="Locked Steel Gate">
+                        </a>
+                        <div class="portfolio-overlay">
+                            <a href="images/portfolio/full/2.jpg" class="left-icon" data-lightbox="image"><i class="icon-line-plus"></i></a>
+                            <a href="portfolio-single.html" class="right-icon"><i class="icon-line-ellipsis"></i></a>
+                        </div>
+                    </div>
+                    <div class="portfolio-desc">
+                        <h3><a href="portfolio-single.html">Locked Steel Gate</a></h3>
+                        <span><a href="#">Illustrations</a></span>
+                    </div>
+                </article>
+
+                <article class="portfolio-item pf-graphics pf-uielements">
+                    <div class="portfolio-image">
+                        <a href="#">
+                            <img src="images/portfolio/3/3.jpg" alt="Mac Sunglasses">
+                        </a>
+                        <div class="portfolio-overlay">
+                            <a href="http://vimeo.com/89396394" class="left-icon" data-lightbox="iframe"><i class="icon-line-play"></i></a>
+                            <a href="portfolio-single-video.html" class="right-icon"><i class="icon-line-ellipsis"></i></a>
+                        </div>
+                    </div>
+                    <div class="portfolio-desc">
+                        <h3><a href="portfolio-single-video.html">Mac Sunglasses</a></h3>
+                        <span><a href="#">Graphics</a>, <a href="#">UI Elements</a></span>
+                    </div>
+                </article>
+
+            </div><!-- #portfolio end -->
+
+            <!-- Portfolio Script
+            ============================================= -->
+            <script type="text/javascript">
+
+                jQuery(window).load(function(){
+
+                    var $container = $('#portfolio');
+
+                    $container.isotope({ transitionDuration: '0.65s' });
+
+                    $('#portfolio-filter a').click(function(){
+                        $('#portfolio-filter li').removeClass('activeFilter');
+                        $(this).parent('li').addClass('activeFilter');
+                        var selector = $(this).attr('data-filter');
+                        $container.isotope({ filter: selector });
+                        return false;
+                    });
+
+                    $('#portfolio-shuffle').click(function(){
+                        $container.isotope('updateSortData').isotope({
+                            sortBy: 'random'
+                        });
+                    });
+
+                    $(window).resize(function() {
+                        $container.isotope('layout');
+                    });
+
+                });
+
+            </script><!-- Portfolio Script End -->
+
+
+        </div>
+
+    </section><!-- #content end -->
+
+    <!-- Footer
+    ============================================= -->
+    <footer id="footer" class="dark">
+
+        <!-- Copyrights
+        ============================================= -->
+        <div id="copyrights">
+
+            <div class="container clearfix">
+
+                <div class="col_half">
+                    Copyrights &copy; 2014 All Rights Reserved by Canvas Inc.<br>
+                    <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+                </div>
+
+                <div class="col_half col_last tleft">
+                    <div class="fleft clearfix">
+                        <a href="#" class="social-icon si-small si-borderless si-facebook">
+                            <i class="icon-facebook"></i>
+                            <i class="icon-facebook"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-twitter">
+                            <i class="icon-twitter"></i>
+                            <i class="icon-twitter"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-gplus">
+                            <i class="icon-gplus"></i>
+                            <i class="icon-gplus"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-pinterest">
+                            <i class="icon-pinterest"></i>
+                            <i class="icon-pinterest"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-vimeo">
+                            <i class="icon-vimeo"></i>
+                            <i class="icon-vimeo"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-github">
+                            <i class="icon-github"></i>
+                            <i class="icon-github"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-yahoo">
+                            <i class="icon-yahoo"></i>
+                            <i class="icon-yahoo"></i>
+                        </a>
+
+                        <a href="#" class="social-icon si-small si-borderless si-linkedin">
+                            <i class="icon-linkedin"></i>
+                            <i class="icon-linkedin"></i>
+                        </a>
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <i class="icon-envelope2"></i> info@canvas.com <span class="middot">&middot;</span> <i class="icon-headphones"></i> +91-11-6541-6369 <span class="middot">&middot;</span> <i class="icon-skype2"></i> CanvasOnSkype
+                </div>
+
+            </div>
+
+        </div><!-- #copyrights end -->
+
+    </footer><!-- #footer end -->
+
+</div><!-- #wrapper end -->
+
+<!-- Go To Top
+============================================= -->
+<div id="gotoTop" class="icon-angle-up"></div>
+
+<!-- Footer Scripts
+============================================= -->
+<script type="text/javascript" src="js/functions.js"></script>
+
+</body>
+</html>

@@ -17,7 +17,8 @@ class Search extends Component {
     super(props)
     this.state = {
       orderModalVisible: false,
-      orderCenterInfo: null
+      orderCenterInfo: null,
+      shouldSearchUserLocation: true
     }
     this.handleSearchBarSubmit = this.handleSearchBarSubmit.bind(this)
     this.onMapClick = this.onMapClick.bind(this)
@@ -26,6 +27,17 @@ class Search extends Component {
     this._onOrderSubmit = this._onOrderSubmit.bind(this)
   }
   componentWillMount() {
+    const loc = {
+      lat: this.props.query.lat,
+      lng: this.props.query.lng
+    }
+    if (loc.lat && loc.lng) {
+      this.props.actions.changeSearchCenter(loc)
+      this.props.actions.loadNeighCenters(loc)
+      this.setState({
+        shouldSearchUserLocation: false
+      })
+    }
     // const center = this.props.store.centerLocation
     // this.props.actions.loadNeighCenters({
     //   lat: center.lat,
@@ -33,6 +45,7 @@ class Search extends Component {
     // })
   }
   componentWillReceiveProps(nextProps) {
+    // console.log(this.props.query)
     // const center = this.props.store.centerLocation
     // const nextCenter = nextProps.store.centerLocation
     // if (nextCenter.lng !== center.lng || nextCenter.lat !== center.lat) {
@@ -108,6 +121,7 @@ class Search extends Component {
                   <div className="full" style={{ padding: '10px' }} >
                     <GoogleMap
                       ref="googleMap"
+                      shouldSearchUserLocation={this.state.shouldSearchUserLocation}
                       markers={markers}
                       onSearch={this.onMapClick}
                       />
@@ -143,6 +157,7 @@ Search.propTypes = {
     React.PropTypes.string,
     React.PropTypes.element
   ]),
+  query: React.PropTypes.object,
   location: React.PropTypes.object,
   store: React.PropTypes.object,
   persistentStore: React.PropTypes.object,
@@ -152,7 +167,8 @@ Search.propTypes = {
 function mapState(state) {
   return {
     persistentStore: state.persistentStore.toJS(),
-    store: state.main.search.toJS()
+    store: state.main.search.toJS(),
+    query: state.routing.locationBeforeTransitions.query
   }
 }
 

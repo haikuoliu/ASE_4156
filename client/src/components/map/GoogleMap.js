@@ -67,13 +67,15 @@ class GoogleMap extends Component {
   }
   componentDidMount() {
     // Set Current Location
-    getCurrentLocation()
-      .then((pos) => {
-        this.setState({
-          currentlocation: pos
+    if (this.props.shouldSearchUserLocation) {
+      getCurrentLocation()
+        .then((pos) => {
+          this.setState({
+            currentlocation: pos
+          })
+          this._onSearch()
         })
-        this._onSearch()
-      })
+    }
   }
   _onChange(args) {
     if (this.state.currentlocation.lat != args.center.lat) { // eslint-disable-line eqeqeq
@@ -136,6 +138,7 @@ class GoogleMap extends Component {
 GoogleMap.propTypes = {
   // state: React.PropTypes.object,
   zoom: React.PropTypes.number,
+  shouldSearchUserLocation: React.PropTypes.bool,
   markers: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       lat: React.PropTypes.number,
@@ -152,6 +155,7 @@ GoogleMap.defaultProps = {
     { lat: 40.809322, lng: -73.9612294, description: 'Center1' },
     { lat: 40.810877, lng: -73.957235, description: 'Center2' }
   ],
+  shouldSearchUserLocation: true,
   onSearch: () => {}
 }
 
