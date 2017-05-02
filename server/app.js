@@ -68,8 +68,6 @@ var center = require('./routes/center');
 var order = require('./routes/order');
 var search = require('./routes/search');
 var social = require('./routes/social_login');
-var msg = require('./routes/message');
-var test = require('./routes/test');
 
 app.use('/', user);
 app.use('/', pet);
@@ -77,8 +75,6 @@ app.use('/', center);
 app.use('/', order);
 app.use('/', search);
 app.use('/', social);
-app.use('/', msg);
-app.use('/', test);
 
 app.use('/', function(req,res) {
     res.sendfile(path.join(__dirname)+'/views/index.html');
