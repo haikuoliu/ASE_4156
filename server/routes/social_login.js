@@ -38,13 +38,13 @@ passport.use(new FacebookStrategy({
                 if (err)
                     return done(err);
                 // ---------- for development purpose only!! -------------
-                if (user) {
-                    user.remove(function (err) {
-                        console.log("error in remove older user!");
-                    });
-                    console.log("removed old Long Long!");
-                    user = null;
-                }
+                // if (user) {
+                //     user.remove(function (err) {
+                //         console.log("error in remove older user!");
+                //     });
+                //     console.log("removed old Long Long!");
+                //     user = null;
+                // }
                 // ---------- for development purpose only!! -------------
 
 
@@ -60,9 +60,9 @@ passport.use(new FacebookStrategy({
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user
                     newUser.facebook.name = profile.displayName; // look at the passport user profile to see how names are returned
                     newUser.username = newUser.facebook.name.replace(/\s+/g, '')
-                    newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-                    newUser.gender = profile.gender;
-                    var raw_birth = profile._json.birthday.split('/');
+                    if (newUser.email) newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    if (newUser.gender) newUser.gender = profile.gender;
+                    if (profile._json.birthday) var raw_birth = profile._json.birthday.split('/');
                     newUser.birth = raw_birth[2];
                     // save our user to the database
 
