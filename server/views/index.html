@@ -33,8 +33,8 @@
     <script type="text/javascript" src="js/plugins.js"></script>
 
     <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-    <!--<script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>-->
-    <!--<script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>-->
+    <script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
     <link rel="stylesheet" type="text/css" href="include/rs-plugin/css/settings.css" media="screen" />
@@ -64,10 +64,10 @@
                 ============================================= -->
                 <div class="top-links">
                     <ul>
-                        <li><a href="#">Login</a></li>
-                        <li><a href="#">Sign Up</a></li>
+                        <li><a href="http://localhost:6888/#/login">Login</a></li>
+                        <li><a href="http://localhost:6888/#/login">Sign Up</a></li>
                         <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Become a Host</a></li>
+                        <li><a href="http://localhost:6888/#/login">Become a Host</a></li>
                     </ul>
                 </div><!-- .top-links end -->
 
@@ -92,7 +92,8 @@
                                 <div class="input-group input-group-lg divcenter" style="max-width:600px;margin-top: -0.8em;">
                                     <input type="text" name="location" id="search-box-text" class="form-control required" placeholder="Find perfect homes for your pets near...">
                                     <span class="input-group-btn">
-                                        <button id="search-button" class="btn btn-default">Search</button>
+                                        <!--<button id="search-button" class="btn btn-default">Search</button>-->
+                                        <input id="search-button" class="btn btn-default" type = "button" value = "Search"/>
                                     </span>
                                 </div>
                             </form>
@@ -147,13 +148,10 @@
 
         <script>
 
-            $('#search-button').submit(function() {
+            $('#search-button').click(function() {
                 var addr = $('#search-box-text').val();
                 var url = "http://localhost:3000/addr/";
-                alert("after append  ");
-                alert(url);
-                alert("input address: ");
-                alert(addr);
+
                 $.ajax({
                     type: "GET",
                     url: url+"?location="+addr,
@@ -162,7 +160,6 @@
                     contentType: false,
                     success: function(data) {
                         //show content
-                        alert('Success!', data)
                         console.log(data);
                     }
                 });
