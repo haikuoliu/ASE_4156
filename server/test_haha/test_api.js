@@ -3,13 +3,13 @@ var chai = require('chai')
 var expect = chai.expect
 
 
-describe('test user functions', function() {
+describe('test_haha user functions', function() {
     this.timeout(15000);
 
     var myDate = new Date();
     var username = "master" + myDate.getTime().toString()
 
-    it('test user register - case1', function(done) {
+    it('test_haha user register - case1', function(done) {
 
         var request = require('request');
         var formData = {
@@ -29,7 +29,7 @@ describe('test user functions', function() {
     });
 
 
-    it('test user login (correct login)', function(done) {
+    it('test_haha user login (correct login)', function(done) {
         var request = require('request');
         var formData = {     
             username: username,
@@ -43,7 +43,7 @@ describe('test user functions', function() {
         });
     });
 
-    it('test user login (incorrect login)', function(done) {
+    it('test_haha user login (incorrect login)', function(done) {
         var request = require('request');
         var formData = {
             username: "None",
@@ -59,7 +59,7 @@ describe('test user functions', function() {
 
 
 
-    it('test put basicInfo', function(done) {
+    it('test_haha put basicInfo', function(done) {
         var formData = {
             username: "master",
             birth: 1993,
@@ -76,7 +76,7 @@ describe('test user functions', function() {
         });
     });
 
-    it('test get basicInfo', function(done) {
+    it('test_haha get basicInfo', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/basicInfo?username=master'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -95,11 +95,11 @@ describe('test user functions', function() {
 
 
 
-describe('test center functions', function() {
+describe('test_haha center functions', function() {
     this.timeout(15000);
 
 
-    // it('test getPetsInfo', function(done) {
+    // it('test_haha getPetsInfo', function(done) {
     //     var request = require('request');
     //     request.get({url:'http://localhost:3000/petsInfo?username=test2'}, function optionalCallback(err, res, body) {
     //         var body = JSON.parse(body);
@@ -108,7 +108,7 @@ describe('test center functions', function() {
     //         done();
     //     });
     // });
-    it('test post centersInfo', function(done) {
+    it('test_haha post centersInfo', function(done) {
         var formData = {
             username: "master",
             cid: "20170429",
@@ -128,7 +128,7 @@ describe('test center functions', function() {
         });
     });
 
-    it('test put centersInfo', function(done) {
+    it('test_haha put centersInfo', function(done) {
         var formData = {
             username: "master",
             cid: "20170429",
@@ -148,7 +148,7 @@ describe('test center functions', function() {
         });
     });
 
-    it('test get centersInfo', function(done) {
+    it('test_haha get centersInfo', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/centersInfoSpec?username=master&cid=20170429'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -160,7 +160,7 @@ describe('test center functions', function() {
 
 
 
-    it('test delete centersInfo', function(done) {
+    it('test_haha delete centersInfo', function(done) {
         var formData = {
             username: "master",
             cid: "20170429",
@@ -175,7 +175,7 @@ describe('test center functions', function() {
     });
 
 
-    // it('test getOrder', function(done) {
+    // it('test_haha getOrder', function(done) {
     //     var request = require('request');
     //     request.get({url:'http://localhost:3000/order/getOrder?username=test2'}, function optionalCallback(err, res, body) {
     //         var body = JSON.parse(body);
@@ -186,11 +186,11 @@ describe('test center functions', function() {
     // });
 });
 
-describe('test order functions', function() {
+describe('test_haha order functions', function() {
     this.timeout(15000);
 
     var oid;
-    it('test post ordersInfo', function(done) {
+    it('test_haha post ordersInfo', function(done) {
         var formData = {
             username: "kaihe",
             msg: "Test in TravisCI",
@@ -207,7 +207,7 @@ describe('test order functions', function() {
     });
 
 
-    it('test get ordersInfo', function(done) {
+    it('test_haha get ordersInfo', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/ordersInfoSpec?username=kaihe&oid='+oid}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -219,7 +219,7 @@ describe('test order functions', function() {
     });
 
 
-    it('test delete ordersInfo', function(done) {
+    it('test_haha delete ordersInfo', function(done) {
         var formData = {
             username: "kaihe",
             oid: oid
@@ -234,7 +234,7 @@ describe('test order functions', function() {
     });
 
 
-    // it('test getOrder', function(done) {
+    // it('test_haha getOrder', function(done) {
     //     var request = require('request');
     //     request.get({url:'http://localhost:3000/order/getOrder?username=test2'}, function optionalCallback(err, res, body) {
     //         var body = JSON.parse(body);
@@ -246,11 +246,11 @@ describe('test order functions', function() {
 });
 
 
-describe('test search functions', function() {
+describe('test_haha search functions', function() {
     this.timeout(15000);
 
 
-    it('test get addr', function(done) {
+    it('test_haha get addr', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/addr?location=Columbia Univeristy'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
@@ -263,7 +263,7 @@ describe('test search functions', function() {
         });
     });
 
-    it('test get near', function(done) {
+    it('test_haha get near', function(done) {
         var request = require('request');
         request.get({url:'http://localhost:3000/near?zipcode=10027&lat=12&lng=20'}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
