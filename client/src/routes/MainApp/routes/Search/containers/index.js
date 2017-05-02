@@ -59,11 +59,22 @@ class Search extends Component {
     })
   }
   _onOrderSubmit(args) {
-    console.log('orderSubmit', args)
+    // console.log('orderSubmit', args)
+    const orderInfo = {
+      ...args,
+      username: this.props.persistentStore.username
+    }
+    this.props.actions.postOrder(orderInfo)
     this._closeOrderModal()
   }
   handleSearchBarSubmit(args) {
     this.props.actions.searchAddress(`${args.address}, ${args.city}, ${args.state}`)
+      .then(() => {
+        this.refs.googleMap._onChange({
+          center: this.props.store.centerLocation
+        })
+        this.refs.googleMap._onSearch()
+      })
   }
   render() {
     const markers = this.props.store.centersList.map((r) => (
@@ -96,7 +107,7 @@ class Search extends Component {
                 <Col span={18} className="full-height">
                   <div className="full" style={{ padding: '10px' }} >
                     <GoogleMap
-                      zoom={10}
+                      ref="googleMap"
                       markers={markers}
                       onSearch={this.onMapClick}
                       />

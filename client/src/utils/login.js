@@ -39,3 +39,23 @@ export function userRegister(args) {
       return json
     })
 }
+
+export function userEdit(args) {
+  const formData = new FormData()
+  formData.append('username', args.username)
+  formData.append('email', args.email)
+  formData.append('birth', args.birth.valueOf())
+  formData.append('gender', args.gender)
+  formData.append('phone', args.phone)
+  return fetchPro(api('rest:basicInfo_put'), {
+    method: 'put',
+    body: formData
+  }).then(response => response.json())
+    .catch(() => ({ status: 'fail', result: { msg: 'Network Unavailable!' } }))
+    .then(json => {
+      if (json.status === 'fail') {
+        logger.error(api('rest:basicInfo_put'), json.result.msg)
+      }
+      return json
+    })
+}

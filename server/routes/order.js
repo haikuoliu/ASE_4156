@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Account = require('../models/account');
 var ObjectID = require('mongodb').ObjectID;
+var util = require('../helpers/util');
 
 /*
  --------input--------:
@@ -113,7 +114,20 @@ router.get('/ordersInfoUser', function(req, res) {
                 "email": "carer@gmail.com",
                 "phone": "5424210266"
             }
-        }]
+        },
+        {
+          "oid": "59079d8e69192c4459c824b4",
+          "cid": "59078f24df4eb93573013ad8",
+          "types": "Carer",
+          "timestamp": 1493671310133,
+          "_id": "59079d8e69192c4459c824b6",
+          "contact": {
+              "username": "kaihe",
+              "email": "kaihe@columbia.edu",
+              "phone": "9292089515"
+          }
+        }
+        ]
     }
 }*/
 router.get('/ordersInfoSpec', function(req, res) {
@@ -147,13 +161,15 @@ router.get('/ordersInfoSpec', function(req, res) {
  --------input--------:
  http://localhost:3000/ordersInfo
  username: "owner"
+ msg: "send message",
  cid: "5a940412-ce8a-4bb5-9ee7-a714e5aa3c56"
 
  --------output--------:
 {
     "status": "succ",
     "result": {
-    "username": "owner",
+        "ownerName": "owner",
+        "carerName": "carer",
         "cid": "5a940412-ce8a-4bb5-9ee7-a714e5aa3c56",
         "oid": "59054aecd5a3c91b5f7071b3"
     }
@@ -230,8 +246,12 @@ router.post('/ordersInfo', function (req, res) {
                                     res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
                                     res.end();
                                 } else {
-                                    res.write(JSON.stringify({status: "succ", result: {username: req.body.username, cid: req.body.cid, oid: id}}));
-                                    res.end();
+                                    util.sendMessage("You center has been booked! Message from Pets Owner" + req.body.msg, carer.phone, function () {
+                                       util.sendMessage("You have just made an order!", owner.phone, function () {
+                                           res.write(JSON.stringify({status: "succ", result: {ownerName: owner.username, carerName: carer.username, cid: req.body.cid, oid: id}}));
+                                           res.end();
+                                       });
+                                    });
                                 }
                             });
                         }

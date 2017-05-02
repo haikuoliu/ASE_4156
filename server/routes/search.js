@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var Account = require('../models/account');
-var search = require('../helpers/util');
+var util = require('../helpers/util');
 
 
 /*
@@ -26,7 +26,7 @@ http://localhost:3000/addr?location=180 Claremont Ave
 router.get('/addr', function(req, res) {
     var addr = req.query.location;
     console.log(addr);
-    search.searchAddress(addr, function(coord,zipcode) {
+    util.searchAddress(addr, function(coord,zipcode) {
         if (coord!=null) {
             res.write(JSON.stringify({status: "succ", result: {coordinate: coord, zipcode: zipcode}}));
             res.end();
@@ -37,7 +37,7 @@ router.get('/addr', function(req, res) {
     });
 });
 
-function cal_dist(x1, y1, x2, y2) {
+function cal_dist(x1, x2, y1, y2) {
     return Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
 }
 
@@ -108,7 +108,8 @@ router.get('/near', function (req,res) {
                    }
                    else {
                        for (var k = 0; k < zips.length; k++) {
-                           if (centers[j].location.zip == zips[k]) {
+                           var loc = centers[j].location;
+                           if (loc.zip == zips[k] && loc.lat !== undefined && loc.lng !== undefined) {
                                res_centers.push(centers[j]);
                                break;
                            }
@@ -121,39 +122,47 @@ router.get('/near', function (req,res) {
            var blat = 0;
            var blng = 0;
            res_centers.sort(function(a, b) {
-               if (a.location.lat === undefined) {
-                   alat = cent_lat;
-               }
-               else {
-                   alat = a.location.lat;
-               }
+               // if (a.location.lat === undefined) {
+               //     alat = cent_lat;
+               // }
+               // else {
+               //     alat = a.location.lat;
+               // }
 
-               if (a.location.lng === undefined) {
-                    alng = cent_lng;
-               }
-               else {
-                    alng = a.location.lng;
-               }
+               alat = a.location.lat;
 
-               if (b.location.lat === undefined) {
-                    blat = cent_lat;
-               }
-               else {
-                    blat = b.location.lat;
-               }
+               /// / if (a.location.lng === undefined) {
+               //      alng = cent_lng;
+               // }
+               // else {
+               //      alng = a.location.lng;
+               // }
 
-               if (b.location.lng === undefined) {
-                    blng = cent_lng;
-               }
-               else {
-                    blng = b.location.lng;
-               }
+               alng = a.location.lng;
+
+               // if (b.location.lat === undefined) {
+               //      blat = cent_lat;
+               // }
+               // else {
+               //      blat = b.location.lat;
+               // }
+
+               blat = b.location.lat;
+
+               // if (b.location.lng === undefined) {
+               //      blng = cent_lng;
+               // }
+               // else {
+               //      blng = b.location.lng;
+               // }
+
+               blng = b.location.lng;
 
                return cal_dist(alat, cent_lat, alng, cent_lng) - cal_dist(blat, cent_lat, blng, cent_lng);
            });
 
-           // we want the nearest 20
-           res_centers = res_centers.slice(0, 20);
+           // we want the nearest 30
+           res_centers = res_centers.slice(0, 30);
 
            res.write(JSON.stringify({
                status: "succ", result: {

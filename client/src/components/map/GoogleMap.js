@@ -81,6 +81,7 @@ class GoogleMap extends Component {
         centerChanged: true,
         currentlocation: args.center
       })
+      // console.log(args)
     }
   }
   _onSearch() {

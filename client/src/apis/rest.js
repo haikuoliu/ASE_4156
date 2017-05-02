@@ -9,7 +9,9 @@ const rest = {
   centersInfo_get: (cid) => `${hostname()}/centersInfoSpec?cid=${cid}`,
   centersInfo: `${hostname()}/centersInfo`,
   searchAddress: (address) => `${hostname()}/addr?location=${encodeURIComponent(address)}`,
-  neighCenters_get: (lat, lng, zipcode) => `${hostname()}/near?lat=${lat}&lng=${lng}${zipcode ? `&zipcode=${zipcode}` : ''}`
+  neighCenters_get: (lat, lng, zipcode) => `${hostname()}/near?lat=${lat}&lng=${lng}${zipcode ? `&zipcode=${zipcode}` : ''}`,
+  ordersInfo_user_get: (username) => `${hostname()}/ordersInfoUser?username=${username}`,
+  ordersInfo_post: `${hostname()}/ordersInfo`
 }
 
 export default rest

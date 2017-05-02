@@ -33,6 +33,9 @@ const reducerMap = {
   },
   [CENTERS.CHANGE_SEARCH_CENTER]: (state, action) => {
     return state.set('centerLocation', Immutable.fromJS(action.result))
+  },
+  [CENTERS.SEARCH_CENTER_ADDRESS]: (state, action) => {
+    return state.set('centerLocation', Immutable.fromJS(action.result))
   }
 }
 
