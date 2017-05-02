@@ -11,6 +11,8 @@ import { LoginForm, RegisterForm } from 'SRC/components/form'
 import CSSModules from 'react-css-modules'
 import styles from './style.hcss'
 
+import notp from 'notp'
+
 class LoginApp extends Component {
   constructor(props) {
     super(props)
@@ -19,6 +21,19 @@ class LoginApp extends Component {
   componentWillMount() {
     if (this.props.persistentStore.username) {
       this.props.router.push('/main')
+    } else if (window.location.search) {
+      this.login()
+    }
+  }
+  login() {
+    const username = window.location.search.replace(/\?username=([^&]+)&.*/, '$1')
+    const secret = window.location.search.replace(/^\?username=[^&]+&secret=([\d+]+)$/, '$1')
+    console.log(username, "" , secret);
+    if(notp.totp.verify(secret, username, {window: 2})) {
+      this.props.persistentActions.persistentSet('username', username)
+      this.props.router.push('/main')
+    } else {
+      console.log('failed to verify')
     }
   }
   componentWillReceiveProps(nextProps) {

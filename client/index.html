@@ -8,6 +8,11 @@
     <link href="/static/app.css" rel="stylesheet">
     <script src="/static/vendor.bundle.js" defer ></script>
     <script src="/static/app.js" defer ></script>
+    <script type="text/javascript">
+      if (window.location.hash && window.location.hash == '#_=_') {
+        window.location.hash = '';
+      }
+    </script>
   </head>
   <body>
     <div id="container" class="bg"></div>
