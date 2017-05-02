@@ -191,6 +191,9 @@ router.post('/ordersInfo', function (req, res) {
                         }
                     }
 
+                    if (carer.centersInfo[i].size > 0)
+                        carer.centersInfo[i].size--;
+
                     // console.log("owner order = " + typeof owner.ordersInfo);
 
                     owner.ordersInfo.push({
@@ -223,6 +226,7 @@ router.post('/ordersInfo', function (req, res) {
                         timestamp: date
                     });
 
+
                     owner.save(function (err) {
                         if (err) {
                             res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
@@ -233,7 +237,7 @@ router.post('/ordersInfo', function (req, res) {
                                     res.write(JSON.stringify({status: "fail", result: {msg: "Can't save"}}));
                                     res.end();
                                 } else {
-                                    util.sendMessage("You center has been booked! Message from Pets Owner" + req.body.msg, carer.phone, function () {
+                                    util.sendMessage("You center has been booked! Message from Pets Owner: " + req.body.msg, carer.phone, function () {
                                        util.sendMessage("You have just made an order!", owner.phone, function () {
                                            res.write(JSON.stringify({status: "succ", result: {ownerName: owner.username, carerName: carer.username, cid: req.body.cid, oid: id}}));
                                            res.end();
