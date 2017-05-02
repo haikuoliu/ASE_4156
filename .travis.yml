@@ -22,9 +22,9 @@ before_install:
     - tar xvf ./server/secrets.tar -C ./server/
 
 after_script:
-  - NODE_ENV=test istanbul cover ./server/node_modules/mocha/bin/_mocha --report lcovonly -- -R spec 
-  - cat ./server/coverage/lcov.info | ./server/node_modules/coveralls/bin/coveralls.js
-  - rm -rf ./server/coverage
+  - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec 
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - rm -rf ./coverage
 
 
 #    - openssl aes-256-cbc -K $encrypted_b0a09f49a4ef_key -iv $encrypted_b0a09f49a4ef_iv
