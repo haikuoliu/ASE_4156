@@ -8,6 +8,9 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var Account = require('../models/account');
 var configAuth = require('../config/auth');
 var router = express.Router();
+// var rp = require('request-promise');
+var notp = require('notp');
+
 
 //fb strategy
 passport.use(new FacebookStrategy({
@@ -16,7 +19,7 @@ passport.use(new FacebookStrategy({
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
         callbackURL: configAuth.facebookAuth.callbackURL,
-        profileFields: ['id', 'displayName', 'gender', 'email','birthday'],
+        profileFields: ['id', 'displayName', 'gender', 'email', 'birthday'],
         // passReqToCallback : true
 
     },
@@ -44,6 +47,7 @@ passport.use(new FacebookStrategy({
                 }
                 // ---------- for development purpose only!! -------------
 
+
                 // if the user is found, then log them in
                 if (user) {
                     return done(null, user); // user found, return that user
@@ -55,6 +59,7 @@ passport.use(new FacebookStrategy({
                     newUser.facebook.id = profile.id; // set the users facebook id
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user
                     newUser.facebook.name = profile.displayName; // look at the passport user profile to see how names are returned
+                    newUser.username = newUser.facebook.name.replace(/\s+/g, '')
                     newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                     newUser.gender = profile.gender;
                     var raw_birth = profile._json.birthday.split('/');
@@ -66,6 +71,7 @@ passport.use(new FacebookStrategy({
                             throw err;
 
                         // if successful, return the new user
+                        console.log("new fb user stored in db");
                         return done(null, newUser);
                     });
                 }
@@ -77,49 +83,73 @@ passport.use(new FacebookStrategy({
 );
 
 // used to serialize the user for the session
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
 // used to deserialize the user
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
         done(err, user);
     });
 });
 
 
-
-router.get('/fblogin', passport.authenticate('facebook', { scope : ['email','user_birthday'] }));
+router.get('/fblogin', passport.authenticate('facebook', {scope: ['email', 'user_birthday']}));
 
 // handle the callback after facebook has authenticated the user
 router.get('/fblogin/callback',
-    passport.authenticate('facebook', { failureRedirect: '/#/login' }),
-    function(req, res) {
+    passport.authenticate('facebook', {failureRedirect: '/#/login'}),
+    function (req, res) {
         // Successful authentication, redirect home.
-        var username = req.user._doc.facebook.name;
-        console.log("username: "+username);
+        var username = req.user._doc.username;
+        console.log("username: " + username);
 
-        // res.write(JSON.stringify({status: "succ", result: {username: username}}));
-        // res.end();
-        Account.findOne({ 'facebook.name' : username}, 'username birth gender email phone', function (err, account) {
+        // boolean:
+        Account.findOne({ 'username' : username}, 'username birth gender email phone', function (err, account) {
             if (err) {
+                console.log("error!!");
                 res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
                 res.end();
             }
             else {
-                console.log("account: " +account);
+                console.log("account: " + account);
                 if (account == null) {
-                    res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
-                    res.end();
+                    // res.write(JSON.stringify({status: "fail", result: {msg: "Can't find user profile"}}));
+                    // res.end();
+                    res.redirect("http://localhost:6888/");
                 }
-                res.write(JSON.stringify({status: "succ", result: {username: username,
-                    birth : account.birth, gender : account.gender,
-                    email : account.email, phone : account.phone
-                }}));
-                res.end();
+                // res.write(JSON.stringify({status: "succ", result: {username: username,
+                //     birth : account.birth, gender : account.gender,
+                //     email : account.email, phone : account.phone
+                // }}));
+                // res.end();
+
+                var encoded = notp.totp.gen(username, {});
+                var endpoint = 'http://localhost:6888?username=' + username + '&secret=' + encoded;
+                console.log('endpoint: ', endpoint);
+                console.log("encoded: ",encoded);
+
+                res.redirect(endpoint);
             }
         });
     });
+
+
+router.get('/login', function(req, res) {
+    if(notp.totp.verify(req.query.secret, req.query.n, {window:5})) {
+        console.log('Success!!!: ', notp.totp.verify(req.query.secret, req.query.n, {window:5}));
+    }
+    res.end()
+    console.log(req);
+});
+
+
+// if(notp.totp.verify(encoded, 'longlong', {window:2})) {
+//     console.log('Success!!!: ', notp.totp.verify(encoded, K, {}));
+// } else {
+//     console.log('failed to verify');
+// }
+
 
 module.exports = router;
