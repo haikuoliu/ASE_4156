@@ -62,8 +62,10 @@ passport.use(new FacebookStrategy({
                     newUser.username = newUser.facebook.name.replace(/\s+/g, '')
                     if (newUser.email) newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                     if (newUser.gender) newUser.gender = profile.gender;
-                    if (profile._json.birthday) var raw_birth = profile._json.birthday.split('/');
-                    newUser.birth = raw_birth[2];
+                    if (profile._json.birthday) {
+                        var raw_birth = profile._json.birthday.split('/');
+                        newUser.birth = raw_birth[2];
+                    }
                     // save our user to the database
 
                     newUser.save(function (err) {
