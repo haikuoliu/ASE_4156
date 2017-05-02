@@ -61,7 +61,7 @@ app.use('/', order);
 app.use('/', search);
 app.use('/', social);
 
-app.use('/welcome', function(req,res) {
+app.use('/app', function(req,res) {
     res.sendfile(path.join(__dirname)+'/views/welcome.html');
 });
 

@@ -128,7 +128,7 @@ router.get('/fblogin/callback',
                 // res.end();
 
                 var encoded = notp.totp.gen(username, {});
-                var endpoint = 'http://localhost:6888?username=' + username + '&secret=' + encoded;
+                var endpoint = 'http://localhost:3000/app/login?username=' + username + '&secret=' + encoded;
                 console.log('endpoint: ', endpoint);
                 console.log("encoded: ",encoded);
 
