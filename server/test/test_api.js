@@ -192,8 +192,9 @@ describe('test order functions', function() {
     var oid;
     it('test post ordersInfo', function(done) {
         var formData = {
-            username: "owner",
-            cid: "5a940412-ce8a-4bb5-9ee7-a714e5aa3c56"
+            username: "kaihe",
+            msg: "Test in TravisCI",
+            cid: "59078f24df4eb93573013ad8"
         };
         var request = require('request');
         request.post({url:'http://localhost:3000/ordersInfo', formData: formData}, function optionalCallback(err, res, body) {
@@ -206,21 +207,21 @@ describe('test order functions', function() {
     });
 
 
-    it('test get centersInfo', function(done) {
+    it('test get ordersInfo', function(done) {
         var request = require('request');
-        request.get({url:'http://localhost:3000/ordersInfoSpec?username=owner&oid='+oid}, function optionalCallback(err, res, body) {
+        request.get({url:'http://localhost:3000/ordersInfoSpec?username=kaihe&oid='+oid}, function optionalCallback(err, res, body) {
             var body = JSON.parse(body);
             expect(err).to.equal(null);
             expect(body.status).to.equal("succ");
-            expect(body.result.ordersInfo.contact.username).to.equal("sloosc");
+            expect(body.result.ordersInfo.contact.username).to.equal("zehao");
             done();
         });
     });
 
 
-    it('test delete centersInfo', function(done) {
+    it('test delete ordersInfo', function(done) {
         var formData = {
-            username: "owner",
+            username: "kaihe",
             oid: oid
         };
         var request = require('request');
