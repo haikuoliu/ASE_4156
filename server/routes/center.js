@@ -357,6 +357,9 @@ router.delete('/centersInfo', function(req, res) {
 });
 
 
+router.get('/upload',  function(req,res){
+    res.render('upload');
+});
 
 router.post('/upload',  function(req,res){
     upload(req, res, function(err) {
