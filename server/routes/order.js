@@ -191,6 +191,9 @@ router.post('/ordersInfo', function (req, res) {
                         }
                     }
 
+                    if (carer.centersInfo[i].size > 0)
+                        carer.centersInfo[i].size--;
+
                     // console.log("owner order = " + typeof owner.ordersInfo);
 
                     owner.ordersInfo.push({
@@ -222,6 +225,7 @@ router.post('/ordersInfo', function (req, res) {
                         },
                         timestamp: date
                     });
+
 
                     owner.save(function (err) {
                         if (err) {
