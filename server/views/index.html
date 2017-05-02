@@ -33,8 +33,8 @@
     <script type="text/javascript" src="js/plugins.js"></script>
 
     <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-    <script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
-    <script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+    <!--<script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>-->
+    <!--<script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>-->
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
     <link rel="stylesheet" type="text/css" href="include/rs-plugin/css/settings.css" media="screen" />
@@ -64,25 +64,10 @@
                 ============================================= -->
                 <div class="top-links">
                     <ul>
-                        <li><a href="login-register.html">Login</a>
+                        <li><a href="#">Login</a></li>
                         <li><a href="#">Sign Up</a></li>
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Become a Host</a></li>
-
-                            <div class="top-link-section">
-                                <form id="top-login" role="form">
-                                    <div class="input-group" id="top-login-username">
-                                        <span class="input-group-addon"><i class="icon-user"></i></span>
-                                        <input type="email" class="form-control" placeholder="Email address" required="">
-                                    </div>
-                                    <div class="input-group" id="top-login-password">
-                                        <span class="input-group-addon"><i class="icon-key"></i></span>
-                                        <input type="password" class="form-control" placeholder="Password" required="">
-                                    </div>
-                                    <button class="btn btn-danger btn-block" type="submit">Sign in</button>
-                                </form>
-                            </div>
-                        </li>
                     </ul>
                 </div><!-- .top-links end -->
 
@@ -101,15 +86,17 @@
                         <div class="slider-caption slider-caption-center" style="margin-top: -1.8em;">
                             <h2 data-caption-animate="fadeInUp">Pets Matter</h2>
                             <!--<p data-caption-animate="fadeInUp" data-caption-delay="200">Find your pets a perfect hotel.</p>-->
-                            <div id="widget-subscribe-form2-result" data-notify-type="success" data-notify-msg=""></div>
-                            <form data-caption-animate="fadeInUp" data-caption-delay="400" id="widget-subscribe-form2" action="include/subscribe.php" role="form" method="post" class="nobottommargin">
+                            <!--<div id="widget-subscribe-form2-result" data-notify-type="success" data-notify-msg=""></div>-->
+
+                            <form data-caption-animate="fadeInUp" data-caption-delay="400" id="searchbox" class="nobottommargin">
                                 <div class="input-group input-group-lg divcenter" style="max-width:600px;margin-top: -0.8em;">
-                                    <input type="email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Find perfect homes for your pets near...">
+                                    <input type="text" name="location" id="search-box-text" class="form-control required" placeholder="Find perfect homes for your pets near...">
                                     <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">Search</button>
-                                </span>
+                                        <button id="search-button" class="btn btn-default">Search</button>
+                                    </span>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -141,20 +128,45 @@
             });
         </script>
 
+        <!--<script>-->
+            <!--jQuery("#widget-subscribe-form2").validate({-->
+                <!--submitHandler: function(form) {-->
+                    <!--jQuery(form).find('.input-group-addon').find('.icon-email2').removeClass('icon-email2').addClass('icon-line-loader icon-spin');-->
+                    <!--jQuery(form).ajaxSubmit({-->
+                        <!--target: '#widget-subscribe-form2-result',-->
+                        <!--success: function() {-->
+                            <!--jQuery(form).find('.input-group-addon').find('.icon-line-loader').removeClass('icon-line-loader icon-spin').addClass('icon-email2');-->
+                            <!--jQuery('#searchbox').find('.form-control').val('');-->
+                            <!--jQuery('#widget-subscribe-form2-result').attr('data-notify-msg', jQuery('#widget-subscribe-form2-result').html()).html('');-->
+                            <!--SEMICOLON.widget.notifications(jQuery('#widget-subscribe-form2-result'));-->
+                        <!--}-->
+                    <!--});-->
+                <!--}-->
+            <!--});-->
+        <!--</script>-->
+
         <script>
-            jQuery("#widget-subscribe-form2").validate({
-                submitHandler: function(form) {
-                    jQuery(form).find('.input-group-addon').find('.icon-email2').removeClass('icon-email2').addClass('icon-line-loader icon-spin');
-                    jQuery(form).ajaxSubmit({
-                        target: '#widget-subscribe-form2-result',
-                        success: function() {
-                            jQuery(form).find('.input-group-addon').find('.icon-line-loader').removeClass('icon-line-loader icon-spin').addClass('icon-email2');
-                            jQuery('#widget-subscribe-form2').find('.form-control').val('');
-                            jQuery('#widget-subscribe-form2-result').attr('data-notify-msg', jQuery('#widget-subscribe-form2-result').html()).html('');
-                            SEMICOLON.widget.notifications(jQuery('#widget-subscribe-form2-result'));
-                        }
-                    });
-                }
+
+            $('#search-button').submit(function() {
+                var addr = $('#search-box-text').val();
+                var url = "http://localhost:3000/addr/";
+                alert("after append  ");
+                alert(url);
+                alert("input address: ");
+                alert(addr);
+                $.ajax({
+                    type: "GET",
+                    url: url+"?location="+addr,
+                    timeout: 8000,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        //show content
+                        alert('Success!', data)
+                        console.log(data);
+                    }
+                });
+
             });
         </script>
 
